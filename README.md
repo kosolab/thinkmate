@@ -65,10 +65,37 @@ URL: `https://[your-app-name].streamlit.app`
 ## 📦 배포 파일 구조
 ```
 thinkmate/
-├── app.py                 # 메인 애플리케이션
-├── requirements.txt       # Python 패키지
+├── index.html            # 정적 HTML 버전 (Netlify용)
+├── netlify.toml          # Netlify 배포 설정
+├── app.py                # Streamlit 버전
+├── requirements.txt      # Python 패키지
 ├── .python-version       # Python 버전 (3.9)
 ├── .streamlit/
 │   └── config.toml       # Streamlit 설정
 └── README.md             # 문서
 ```
+
+## 🌐 Netlify 배포 방법 (정적 HTML 버전)
+
+### 1. Netlify 가입
+- https://www.netlify.com/ 방문
+- GitHub 계정으로 로그인
+
+### 2. 새 사이트 배포
+- "Add new site" → "Import an existing project" 클릭
+- "Deploy with GitHub" 선택
+- Repository: `kosolab/thinkmate` 선택
+- Branch: `main`
+- Build settings는 기본값 사용
+- "Deploy site" 클릭
+
+### 3. 배포 완료! 🎉
+몇 초 후 자동 배포됩니다.
+URL: `https://[your-site-name].netlify.app`
+
+### 💡 특징:
+- ✅ **즉시 배포** - 빌드 없이 바로 배포
+- ✅ **무료** - Netlify Free 플랜 사용 가능
+- ✅ **자동 배포** - GitHub push 시 자동 재배포
+- ✅ **HTTPS** - 무료 SSL 인증서 제공
+- ✅ **모바일 최적화** - 420px 반응형 디자인
