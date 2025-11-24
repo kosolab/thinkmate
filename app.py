@@ -4,7 +4,7 @@ import time
 
 # 페이지 설정
 st.set_page_config(
-    page_title="Pace-Mate (페이스메이트)",
+    page_title="Think Mate (씽크메이트)",
     page_icon="🚀",
     layout="centered",
     initial_sidebar_state="collapsed"

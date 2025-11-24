@@ -1,4 +1,4 @@
-# Pace-Mate (페이스메이트) - Streamlit 버전
+# Think Mate (씽크메이트) - Streamlit 버전
 
 영업 큐레이터를 위한 AI 기반 장소 추천 및 활동 관리 앱
 
