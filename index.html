@@ -9,7 +9,7 @@
     <!-- Kakao JavaScript SDK -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous"></script>
     <!-- Kakao Maps SDK -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=dae6dab95f0be117d76299428daaae46"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=dae6dab95f0be117d76299428daaae46"></script>
     <style>
         /* --- 1. 모던 디자인 시스템 (Design System) --- */
         :root {
@@ -663,10 +663,28 @@
 
     // 카카오 지도 초기화
     function initMap() {
-        if (kakaoMap) return; // 이미 초기화되었으면 리턴
+        if (kakaoMap) {
+            console.log('지도 이미 초기화됨');
+            return; // 이미 초기화되었으면 리턴
+        }
+
+        // 지도 SDK 로딩 확인
+        if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
+            console.error('카카오 지도 SDK가 로드되지 않았습니다.');
+            // 0.5초 후 재시도
+            setTimeout(initMap, 500);
+            return;
+        }
 
         try {
+            console.log('지도 초기화 시작...', currentLocation);
             const mapContainer = document.getElementById('map');
+
+            if (!mapContainer) {
+                console.error('지도 컨테이너를 찾을 수 없습니다.');
+                return;
+            }
+
             const mapOption = {
                 center: new kakao.maps.LatLng(currentLocation.y, currentLocation.x),
                 level: 5 // 확대 레벨
@@ -674,6 +692,7 @@
 
             // 지도 생성
             kakaoMap = new kakao.maps.Map(mapContainer, mapOption);
+            console.log('지도 생성 완료');
 
             // 현재 위치 마커 추가
             const markerPosition = new kakao.maps.LatLng(currentLocation.y, currentLocation.x);
@@ -688,8 +707,15 @@
             });
             infowindow.open(kakaoMap, marker);
 
+            console.log('지도 초기화 완료');
+
         } catch (error) {
             console.error('지도 초기화 오류:', error);
+            // 에러 메시지를 사용자에게 표시
+            const mapContainer = document.getElementById('map');
+            if (mapContainer) {
+                mapContainer.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100%; background:#f0f0f0; color:#666; font-size:14px;">지도를 불러올 수 없습니다</div>';
+            }
         }
     }
 
