@@ -44,3 +44,31 @@ streamlit run app.py
 - **Streamlit**: 웹 앱 프레임워크
 - **Python**: 백엔드 로직
 - **Custom CSS**: 모바일 앱 스타일링
+
+## 🚀 Streamlit Cloud 배포 방법
+
+### 1. Streamlit Cloud 가입
+- https://share.streamlit.io/ 방문
+- GitHub 계정으로 로그인
+
+### 2. 새 앱 배포
+- "New app" 버튼 클릭
+- Repository: `kosolab/thinkmate`
+- Branch: `main`
+- Main file path: `app.py`
+- "Deploy!" 클릭
+
+### 3. 배포 완료!
+몇 분 후 앱이 자동으로 배포됩니다.
+URL: `https://[your-app-name].streamlit.app`
+
+## 📦 배포 파일 구조
+```
+thinkmate/
+├── app.py                 # 메인 애플리케이션
+├── requirements.txt       # Python 패키지
+├── .python-version       # Python 버전 (3.9)
+├── .streamlit/
+│   └── config.toml       # Streamlit 설정
+└── README.md             # 문서
+```
