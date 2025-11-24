@@ -6,10 +6,8 @@
     <title>Think Mate 2.0</title>
     <!-- Pretendard 폰트 (가장 현대적인 한글 폰트) -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
-    <!-- Kakao JavaScript SDK -->
+    <!-- Kakao JavaScript SDK (Navi용) -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous"></script>
-    <!-- Kakao Maps SDK -->
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=dae6dab95f0be117d76299428daaae46"></script>
     <style>
         /* --- 1. 모던 디자인 시스템 (Design System) --- */
         :root {
@@ -546,12 +544,23 @@
     <div id="page-recommend" class="content-area page">
         <div class="section-title" style="margin-top:0;">📍 주변 추천 장소</div>
 
-        <!-- 카카오 지도 -->
-        <div id="map" style="width:100%; height:300px; border-radius:24px; margin-bottom:24px; box-shadow:var(--shadow-sm); overflow:hidden;"></div>
-
-        <!-- 지도 로딩 상태 및 에러 메시지 -->
-        <div id="map-status" style="display:none; width:100%; background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius:24px; padding:24px; margin-bottom:24px; text-align:center; color:#2E7D32;">
-            지도를 불러오는 중...
+        <!-- 현재 위치 카드 -->
+        <div style="width:100%; background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius:24px; padding:20px; margin-bottom:24px; position:relative; overflow:hidden; box-shadow:var(--shadow-sm);">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="width:48px; height:48px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px;">
+                    📍
+                </div>
+                <div style="flex:1;">
+                    <div style="font-size:11px; color:#558B2F; font-weight:600; margin-bottom:3px;">현재 위치</div>
+                    <div style="font-size:16px; font-weight:800; color:#1B5E20;">수원사업국</div>
+                </div>
+                <div style="background:rgba(46, 125, 50, 0.9); color:white; padding:6px 12px; border-radius:12px; font-size:11px; font-weight:700;">
+                    출발지
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.7); padding:10px 14px; border-radius:14px; font-size:12px; color:#2E7D32; line-height:1.4;">
+                📌 경기 수원시 영통구 효원로 400 (매탄동) 탑프라자 601호
+            </div>
         </div>
 
         <!-- 추천 설명 -->
@@ -714,9 +723,6 @@
         }
     };
 
-    // 지도 객체를 전역으로 저장
-    let kakaoMap = null;
-
     // 페이지 이동
     function goToPage(pageId) {
         // 페이지 전환
@@ -731,64 +737,6 @@
         });
 
         if(pageId === 'chat') initChat();
-        if(pageId === 'recommend') initMap();
-    }
-
-    // 카카오 지도 초기화
-    function initMap() {
-        const mapContainer = document.getElementById('map');
-        const mapStatus = document.getElementById('map-status');
-
-        // 이미 지도가 초기화되어 있으면 리턴
-        if(kakaoMap) return;
-
-        console.log('[지도 초기화] 시작...');
-        console.log('[지도 초기화] kakao 객체:', typeof kakao);
-        console.log('[지도 초기화] kakao.maps 객체:', typeof kakao?.maps);
-
-        // Kakao Maps API 체크
-        if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
-            console.error('[지도 초기화 실패] Kakao Maps SDK가 로드되지 않았습니다.');
-            mapStatus.style.display = 'block';
-            mapStatus.innerHTML = '❌ 지도를 불러올 수 없습니다.<br><small>Kakao Maps SDK 로딩 실패</small>';
-            mapStatus.style.background = 'linear-gradient(135deg, #FFEBEE, #FFCDD2)';
-            mapStatus.style.color = '#C62828';
-            return;
-        }
-
-        try {
-            // 지도 옵션
-            const mapOption = {
-                center: new kakao.maps.LatLng(currentLocation.y, currentLocation.x),
-                level: 3
-            };
-
-            // 지도 생성
-            kakaoMap = new kakao.maps.Map(mapContainer, mapOption);
-            console.log('[지도 초기화 성공] 지도 생성 완료');
-
-            // 마커 생성 (현재 위치)
-            const markerPosition = new kakao.maps.LatLng(currentLocation.y, currentLocation.x);
-            const marker = new kakao.maps.Marker({
-                position: markerPosition,
-                map: kakaoMap
-            });
-
-            // 인포윈도우 생성 (위치 정보 표시)
-            const infowindow = new kakao.maps.InfoWindow({
-                content: `<div style="padding:10px 15px; font-size:14px; font-weight:600; color:#2E7D32;">📍 ${currentLocation.name}</div>`
-            });
-            infowindow.open(kakaoMap, marker);
-
-            console.log('[지도 초기화 성공] 마커 및 인포윈도우 생성 완료');
-
-        } catch (error) {
-            console.error('[지도 초기화 실패] 에러 발생:', error);
-            mapStatus.style.display = 'block';
-            mapStatus.innerHTML = `❌ 지도를 불러올 수 없습니다.<br><small>${error.message}</small>`;
-            mapStatus.style.background = 'linear-gradient(135deg, #FFEBEE, #FFCDD2)';
-            mapStatus.style.color = '#C62828';
-        }
     }
 
     // 카카오 내비 연동 기능
