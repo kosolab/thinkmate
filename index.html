@@ -310,6 +310,22 @@
             background: white;
             color: var(--primary);
             display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-go:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(74, 110, 93, 0.3);
+        }
+
+        .btn-go:active {
+            transform: scale(0.95);
         }
 
         /* --- [변경] 하단 네비게이션 (텍스트형) --- */
@@ -538,22 +554,22 @@
             지도를 불러오는 중...
         </div>
 
-        <div class="place-card" onclick="startNavigation('푸른솔 놀이터')">
+        <div class="place-card">
             <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🔥</div>
             <div class="place-info">
                 <div class="place-name">푸른솔 놀이터</div>
                 <div class="place-time">오후 2시 ~ 4시 피크</div>
             </div>
-            <div class="btn-go">Go</div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('푸른솔 놀이터')">Go</div>
         </div>
 
-        <div class="place-card" onclick="startNavigation('꿈나무 유치원')">
+        <div class="place-card">
             <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
             <div class="place-info">
                 <div class="place-name">꿈나무 유치원 앞</div>
                 <div class="place-time">하원 버스 도착 직전</div>
             </div>
-            <div class="btn-go">Go</div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('꿈나무 유치원')">Go</div>
         </div>
     </div>
 
