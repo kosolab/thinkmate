@@ -8,6 +8,8 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <!-- Kakao JavaScript SDK -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous"></script>
+    <!-- Kakao Maps SDK -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=dae6dab95f0be117d76299428daaae46"></script>
     <style>
         /* --- 1. 모던 디자인 시스템 (Design System) --- */
         :root {
@@ -528,16 +530,8 @@
     <div id="page-recommend" class="content-area page">
         <div class="section-title" style="margin-top:0;">📍 주변 추천 장소</div>
 
-        <!-- 지도 대용 이미지 영역 -->
-        <div style="width:100%; height:200px; background:linear-gradient(135deg, #E0E7E4, #D1DBD6); border-radius:24px; display:flex; align-items:center; justify-content:center; margin-bottom:24px; position:relative; overflow:hidden;">
-            <div style="font-size:60px;">🗺️</div>
-            <div style="position:absolute; bottom:16px; left:16px; background:white; padding:6px 12px; border-radius:12px; font-size:12px; font-weight:700; box-shadow:var(--shadow-sm);">
-                📍 수원사업국
-            </div>
-            <div style="position:absolute; top:16px; right:16px; background:rgba(74, 110, 93, 0.9); color:white; padding:6px 12px; border-radius:12px; font-size:11px; font-weight:600; box-shadow:var(--shadow-sm);">
-                현재 위치
-            </div>
-        </div>
+        <!-- 카카오 지도 영역 -->
+        <div id="map" style="width:100%; height:240px; border-radius:24px; margin-bottom:24px; position:relative; overflow:hidden;"></div>
 
         <div class="place-card" onclick="startNavigation('푸른솔 놀이터')">
             <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🔥</div>
@@ -647,6 +641,9 @@
         }
     };
 
+    // 지도 객체를 전역으로 저장
+    let kakaoMap = null;
+
     // 페이지 이동
     function goToPage(pageId) {
         // 페이지 전환
@@ -661,6 +658,39 @@
         });
 
         if(pageId === 'chat') initChat();
+        if(pageId === 'recommend') initMap();
+    }
+
+    // 카카오 지도 초기화
+    function initMap() {
+        if (kakaoMap) return; // 이미 초기화되었으면 리턴
+
+        try {
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(currentLocation.y, currentLocation.x),
+                level: 5 // 확대 레벨
+            };
+
+            // 지도 생성
+            kakaoMap = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 현재 위치 마커 추가
+            const markerPosition = new kakao.maps.LatLng(currentLocation.y, currentLocation.x);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                map: kakaoMap
+            });
+
+            // 인포윈도우로 현재 위치 표시
+            const infowindow = new kakao.maps.InfoWindow({
+                content: `<div style="padding:8px 12px; font-size:13px; font-weight:700;">📍 ${currentLocation.name}</div>`
+            });
+            infowindow.open(kakaoMap, marker);
+
+        } catch (error) {
+            console.error('지도 초기화 오류:', error);
+        }
     }
 
     // 카카오 내비 연동 기능
