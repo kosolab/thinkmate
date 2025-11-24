@@ -22,7 +22,7 @@ open index.html
 python -m http.server 8000
 ```
 
-브라우저에서 http://localhost:8000 접속
+브라우저에서 접속
 
 ## 주요 특징
 
