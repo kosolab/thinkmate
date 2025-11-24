@@ -531,7 +531,12 @@
         <!-- 지도 대용 이미지 영역 -->
         <div style="width:100%; height:200px; background:linear-gradient(135deg, #E0E7E4, #D1DBD6); border-radius:24px; display:flex; align-items:center; justify-content:center; margin-bottom:24px; position:relative; overflow:hidden;">
             <div style="font-size:60px;">🗺️</div>
-            <div style="position:absolute; bottom:16px; left:16px; background:white; padding:6px 12px; border-radius:12px; font-size:12px; font-weight:700; box-shadow:var(--shadow-sm);">내 위치 중심</div>
+            <div style="position:absolute; bottom:16px; left:16px; background:white; padding:6px 12px; border-radius:12px; font-size:12px; font-weight:700; box-shadow:var(--shadow-sm);">
+                📍 수원사업국
+            </div>
+            <div style="position:absolute; top:16px; right:16px; background:rgba(74, 110, 93, 0.9); color:white; padding:6px 12px; border-radius:12px; font-size:11px; font-weight:600; box-shadow:var(--shadow-sm);">
+                현재 위치
+            </div>
         </div>
 
         <div class="place-card" onclick="startNavigation('푸른솔 놀이터')">
@@ -620,6 +625,14 @@
         console.log('Kakao SDK 초기화 완료:', Kakao.isInitialized());
     }
 
+    // 현재 위치 (수원사업국)
+    const currentLocation = {
+        x: 127.0559,  // 경도
+        y: 37.2426,   // 위도
+        name: '수원사업국',
+        address: '경기 수원시 영통구 효원로 400 (매탄동) 탑프라자 601호'
+    };
+
     // 장소별 좌표 데이터 (WGS84 좌표계)
     const placeCoordinates = {
         '푸른솔 놀이터': {
@@ -660,12 +673,16 @@
         }
 
         try {
-            // 카카오 내비 실행
+            // 카카오 내비 실행 (출발지: 수원사업국, 목적지: 선택한 장소)
             Kakao.Navi.start({
                 name: placeData.name,
                 x: placeData.x,
                 y: placeData.y,
-                coordType: 'wgs84'
+                coordType: 'wgs84',
+                // 출발지 설정
+                sX: currentLocation.x,
+                sY: currentLocation.y,
+                sName: currentLocation.name
             });
 
             // 내비 실행 후 일정 시간 후 활동 기록 페이지로 이동 안내
@@ -678,7 +695,7 @@
         } catch (error) {
             console.error('카카오 내비 실행 오류:', error);
             // 카카오 내비가 설치되지 않았거나 오류 발생 시
-            alert(`[${place}]로 안내를 시작합니다.\n카카오내비 앱이 필요합니다.`);
+            alert(`수원사업국에서 [${place}]로 안내를 시작합니다.\n카카오내비 앱이 필요합니다.`);
         }
     }
 
