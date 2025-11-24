@@ -3,614 +3,704 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Think Mate (씽크메이트)</title>
+    <title>Think Mate 2.0</title>
+    <!-- Pretendard 폰트 (가장 현대적인 한글 폰트) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <style>
-        /* --- 1. 기본 스타일 설정 --- */
+        /* --- 1. 모던 디자인 시스템 (Design System) --- */
         :root {
-            --primary: #e67e22;
-            --primary-light: #fbe6e2;
-            --accent: #d35400;
-            --bg: linear-gradient(180deg, #fbe6e2 0%, #f8ddd8 100%);
-            --white: #FFFFFF;
-            --text-main: #2c3e50;
-            --text-sub: #546e7a;
-            --success: #00C853;
+            /* Color Palette: Modern Sage */
+            --primary: #4A6E5D;        /* 차분한 딥 그린 */
+            --primary-light: #EBF2EF;  /* 아주 연한 민트 그레이 */
+            --secondary: #D4A373;      /* 포인트: 따뜻한 샌드 베이지 */
+            --bg-base: #F5F7F6;        /* 배경: 웜 쿨 그레이 */
+
+            --surface: #FFFFFF;
+            --surface-trans: rgba(255, 255, 255, 0.85);
+
+            --text-title: #2C3531;
+            --text-body: #586661;
+            --text-caption: #8D9995;
+
+            /* Shadows & Radius */
+            --shadow-sm: 0 2px 8px rgba(74, 110, 93, 0.06);
+            --shadow-md: 0 12px 24px rgba(74, 110, 93, 0.08), 0 4px 8px rgba(74, 110, 93, 0.04);
+            --shadow-float: 0 20px 40px rgba(74, 110, 93, 0.15);
+
+            --radius-lg: 28px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+            font-family: 'Pretendard', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: #f5ebe9;
+            background-color: #EEF1F0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            color: var(--text-title);
         }
 
-        /* 모바일 앱 프레임 */
+        /* 앱 컨테이너 */
         .app-container {
             width: 100%;
             max-width: 420px;
             height: 100%;
-            max-height: 900px;
-            background: linear-gradient(180deg, #fbe6e2 0%, #f8ddd8 100%);
+            max-height: 920px;
+            background: var(--bg-base);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            box-shadow: 0 0 50px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
         }
 
-        /* 스크롤 영역 */
+        /* --- 상단 헤더 --- */
+        .header {
+            padding: 24px 24px 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            z-index: 10;
+        }
+
+        .profile-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, #769F8B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-info h1 { font-size: 18px; font-weight: 700; color: var(--text-title); }
+        .user-info p { font-size: 13px; color: var(--text-caption); font-weight: 500; }
+
+        .noti-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        .noti-badge {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 6px; height: 6px;
+            background: #FF5252;
+            border-radius: 50%;
+        }
+
+        /* --- 콘텐츠 영역 (스크롤) --- */
         .content-area {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
-            padding-bottom: 100px;
+            padding: 10px 24px 100px 24px;
             scroll-behavior: smooth;
         }
 
-        /* 프리미엄 카드 */
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(230, 126, 34, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeIn 0.3s ease-in;
+        /* 스크롤바 숨김 */
+        .content-area::-webkit-scrollbar { display: none; }
+
+        /* 섹션 타이틀 */
+        .section-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin: 30px 0 16px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .section-title span.more {
+            font-size: 13px;
+            color: var(--text-caption);
+            font-weight: 500;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 48px rgba(230, 126, 34, 0.18);
+        /* --- 1. Bento Grid 대시보드 --- */
+        .bento-grid {
+            display: grid;
+            /* 3개의 컬럼을 한 줄로 배치 (비율조정: 첫번째 칸을 약간 넓게 1.4 : 1 : 1) */
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 8px; /* 간격을 10px -> 8px로 좁혀 공간 확보 */
+            width: 100%;
         }
+
+        .bento-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 14px; /* 내부 여백 최적화 */
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            height: 105px; /* 높이 고정 */
+        }
+
+        .bento-card:active { transform: scale(0.96); }
+
+        .bento-large {
+            /* grid-column 속성 제거 (한 칸만 차지) */
+            background: linear-gradient(120deg, var(--primary) 0%, #355043 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-large::after {
+            content: '';
+            position: absolute;
+            right: -25px; bottom: -25px;
+            width: 70px; height: 70px; /* 장식 원 크기 축소 */
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        /* 좁은 공간을 위한 폰트 조정 */
+        .stat-label { font-size: 11px; font-weight: 500; opacity: 0.85; margin-bottom: 2px; white-space: nowrap; }
+        .stat-value { font-size: 22px; font-weight: 800; line-height: 1.1; letter-spacing: -0.5px; }
+        .stat-sub { font-size: 11px; opacity: 0.8; margin-top: auto; }
+
+        /* --- [NEW] 고객 영업 가능 일정 스타일 --- */
+        .schedule-block {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 0 20px; /* 좌우 패딩만 주고 상하는 row에서 처리 */
+            margin-top: 10px;
+        }
+
+        .schedule-row {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #F0F0F0; /* 구분선 */
+        }
+
+        .schedule-row:last-child {
+            border-bottom: none; /* 마지막 줄은 선 제거 */
+        }
+
+        .time-badge {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-title);
+            min-width: 110px; /* 시간 영역 고정 너비 */
+        }
+
+        .status-divider {
+            width: 1px;
+            height: 14px;
+            background-color: #E0E0E0;
+            margin: 0 16px;
+        }
+
+        .schedule-status {
+            font-size: 14px;
+            color: var(--text-caption); /* 회색 텍스트 (빈 일정 느낌) */
+            font-weight: 500;
+        }
+
+        /* 등록된 일정이 있을 경우를 위한 스타일 (예비용) */
+        .schedule-status.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* --- [NEW] 4개 버튼 그리드 메뉴 --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2열 */
+            gap: 10px; /* 간격 12px -> 10px 축소 */
+            margin-top: 16px; /* 상단 여백 24px -> 16px 축소 */
+            margin-bottom: 20px;
+        }
+
+        .menu-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 12px; /* 패딩 20px -> 12px 대폭 축소 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px; /* 아이콘-텍스트 간격 10px -> 4px 축소 */
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 96px; /* 높이 120px -> 96px 축소 (한 화면에 들어오도록) */
+            text-align: center;
+        }
+
+        .menu-card:active { transform: scale(0.96); }
+
+        .menu-icon { font-size: 24px; margin-bottom: 0; } /* 아이콘 28px -> 24px */
+        .menu-title { font-size: 14px; font-weight: 700; color: var(--text-title); line-height: 1.2; } /* 폰트 15px -> 14px */
+
+        /* 강조 스타일 (AI 장소 추천) */
+        .menu-card.highlight {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(74, 110, 93, 0.3); /* 그림자 강조 */
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .menu-card.highlight .menu-title { color: white; }
+
+        /* --- 3. 리스트 스타일 (추천 장소) --- */
+        .place-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .place-img {
+            width: 56px; height: 56px;
+            border-radius: 16px;
+            background-color: #F0F0F0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+
+        .place-info { flex: 1; }
+        .place-name { font-size: 16px; font-weight: 700; color: var(--text-title); margin-bottom: 4px; }
+        .place-time { font-size: 13px; color: var(--secondary); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+
+        .btn-go {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid #eee;
+            background: white;
+            color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- [변경] 하단 네비게이션 (텍스트형) --- */
+        .bottom-nav {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto; /* 내용물만큼만 너비 차지 (또는 고정 너비) */
+            min-width: 280px;
+            height: 52px; /* 높이 축소 */
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px; /* 둥근 캡슐 형태 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow-float);
+            border: 1px solid rgba(255,255,255,0.4);
+            z-index: 100;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9CA3AF;
+            transition: all 0.2s;
+            cursor: pointer;
+            padding: 0 10px;
+            font-size: 15px; /* 글자 크기 적당히 */
+            font-weight: 500;
+        }
+
+        /* 아이콘 제거 및 텍스트만 활성화 스타일 */
+        .nav-item.active {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        /* 구분선 스타일 */
+        .nav-divider {
+            color: #E5E7EB; /* 아주 연한 회색 */
+            font-size: 12px;
+            margin: 0 2px;
+            user-select: none;
+        }
+
+        /* 페이지 전환 애니메이션 */
+        .page { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .page.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 { font-size: 26px; font-weight: 900; margin: 0; color: var(--text-main); }
-        h2 { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; }
-        h3 { font-size: 20px; font-weight: 700; margin: 20px 0 10px 0; }
-        p { font-size: 16px; color: var(--text-sub); margin: 0; line-height: 1.5; }
-
-        .big-number {
-            font-size: 36px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .label { font-size: 15px; color: #6b7280; font-weight: 600; }
-
-        /* 버튼 스타일 */
-        .btn {
-            border: none;
-            border-radius: 18px;
-            padding: 18px 24px;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        /* 챗봇 스타일 개선 */
+        .chat-container { display: flex; flex-direction: column; gap: 16px; padding-bottom: 20px; }
+        .chat-bubble {
+            max-width: 80%;
+            padding: 14px 18px;
+            font-size: 15px;
+            line-height: 1.5;
             position: relative;
-            overflow: hidden;
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .btn:hover::before { opacity: 1; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-        .btn:active { transform: translateY(0); }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-            color: white;
-        }
-
-        .btn-accent {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-        }
-
-        .btn-white {
-            background: rgba(255, 255, 255, 0.95);
-            color: #1f2937;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        /* 챗봇 메시지 */
-        .chat-message {
-            padding: 18px 22px;
-            border-radius: 22px;
-            margin-bottom: 12px;
-            font-size: 16px;
-            line-height: 1.6;
-            animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-width: 85%;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .msg-bot {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom-left-radius: 6px;
-            border: 1px solid rgba(0, 0, 0, 0.04);
+        .bot {
+            background: white;
+            border-radius: 20px 20px 20px 4px;
+            box-shadow: var(--shadow-sm);
             align-self: flex-start;
+            color: var(--text-body);
         }
-
-        .msg-user {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        .user {
+            background: var(--primary);
             color: white;
-            border-bottom-right-radius: 6px;
+            border-radius: 20px 20px 4px 20px;
             align-self: flex-end;
-            margin-left: auto;
+            box-shadow: 0 4px 12px rgba(74, 110, 93, 0.2);
         }
 
-        /* 지도 */
-        .map-view {
-            width: 100%;
-            height: 240px;
-            background: linear-gradient(135deg, #e67e22 0%, #e74c3c 100%);
-            border-radius: 24px;
-            margin: 20px 0;
-            position: relative;
+        .quick-chips {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 12px 40px rgba(230, 126, 34, 0.3);
-            overflow: hidden;
+            gap: 8px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
         }
-
-        .map-view::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
-        }
-
-        .map-pin {
-            font-size: 72px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
-            animation: bounce 2s infinite ease-in-out;
-            z-index: 2;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* 하단 네비게이션 */
-        .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-item {
-            text-align: center;
-            color: #9ca3af;
-            font-size: 13px;
-            cursor: pointer;
-            width: 33%;
-            transition: all 0.3s;
-            font-weight: 600;
-            padding: 10px 0;
-        }
-
-        .nav-item.active {
+        .chip {
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(74, 110, 93, 0.2);
             color: var(--primary);
-            font-weight: 800;
-        }
-
-        .nav-icon {
-            font-size: 26px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        /* 페이지 전환 */
-        .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s; }
-
-        /* 달성 현황 박스 */
-        .achievement-box {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(251,230,226,0.95) 100%);
-            backdrop-filter: blur(20px);
-            padding: 16px;
+            padding: 10px 16px;
             border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(230, 126, 34, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-        }
-
-        /* 히스토리 카드 */
-        .history-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 24px;
-            border-radius: 20px;
-            margin-bottom: 14px;
-            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            transition: all 0.3s;
-        }
-
-        .history-card:hover {
-            transform: translateX(4px);
-        }
-
-        /* 태그 */
-        .tag {
-            display: inline-block;
-            padding: 8px 14px;
-            border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
-            margin-right: 6px;
-        }
-
-        .tag-lead {
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            color: #4b5563;
-        }
-
-        .tag-contract {
-            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
-            color: #E65100;
-            font-weight: 700;
-        }
-
-        /* 액션 칩 */
-        .action-chip {
-            background: rgba(255, 255, 255, 0.98);
-            border: 2px solid rgba(230, 126, 34, 0.3);
-            color: #e67e22;
-            padding: 14px 20px;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
-            display: inline-block;
-            margin: 5px;
+            backdrop-filter: blur(4px);
         }
+        .chip:hover { background: var(--primary); color: white; border-color: transparent; }
 
-        .action-chip:hover {
-            border-color: rgba(230, 126, 34, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(230, 126, 34, 0.2);
-        }
     </style>
 </head>
 <body>
 
 <div class="app-container">
 
-    <!-- 1. 홈 화면 -->
+    <!-- 공통 헤더 -->
+    <header class="header">
+        <div class="profile-wrap">
+            <div class="avatar">👨‍💼</div>
+            <div class="user-info">
+                <h1>김씽크 님</h1>
+                <p>오늘도 좋은 성과 기대해요!</p>
+            </div>
+        </div>
+        <button class="noti-btn">
+            🔔<div class="noti-badge"></div>
+        </button>
+    </header>
+
+    <!-- 1. 메인 홈 (대시보드) -->
     <div id="page-home" class="content-area page active">
 
-        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-            <div>
-                <p style="color: #6b7280; font-size: 15px; margin-bottom: 4px; font-weight: 600;">반갑습니다,</p>
-                <h1 style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">김씽크 님</h1>
-                <p style="color: #9ca3af; font-size: 14px; margin-top: 4px;">오늘도 힘내세요! 💪</p>
+        <!-- 벤토 그리드 대시보드 -->
+        <div class="bento-grid">
+            <!-- 1번 블럭: 7월 달성률 -->
+            <div class="bento-card bento-large">
+                <div style="z-index: 1; height: 100%; display: flex; flex-direction: column;">
+                    <div class="stat-label">7월 달성</div>
+                    <div class="stat-value">43%</div>
+                    <div class="stat-sub">13/30개</div>
+                </div>
             </div>
 
-            <div class="achievement-box" style="text-align: right;">
-                <div style="font-size: 12px; color: #888; font-weight: bold;">7월 달성 현황</div>
-                <div style="font-size: 20px; font-weight: 800; margin-top: 4px;">
-                    13 <span style="font-size:14px; color:#999;">/ 30개</span>
+            <!-- 2번 블럭: 신규 -->
+            <div class="bento-card">
+                <div style="height: 100%; display: flex; flex-direction: column;">
+                    <div class="stat-label" style="color:var(--text-caption);">신규 목표</div>
+                    <div class="stat-value" style="color:var(--secondary); margin-top: 4px;">5건</div>
                 </div>
-                <div style="font-size: 13px; color: #00C853; font-weight: bold; margin-top: 2px;">
-                    43% 달성 📈
+            </div>
+
+            <!-- 3번 블럭: 진단 -->
+            <div class="bento-card">
+                <div style="height: 100%; display: flex; flex-direction: column;">
+                    <div class="stat-label" style="color:var(--text-caption);">진단 목표</div>
+                    <div class="stat-value" style="color:#4A90E2; margin-top: 4px;">2건</div>
                 </div>
             </div>
         </div>
 
-        <br>
+        <!-- [변경] 빠른 실행 삭제 -> 고객 영업 가능 일정 추가 -->
+        <div class="section-title">
+            고객 영업 가능 일정
+        </div>
 
-        <!-- 대시보드 -->
-        <div class="card">
-            <div style="display:flex; justify-content:space-between; margin-bottom: 24px;">
-                <div>
-                    <div class="label">오늘 신규 목표</div>
-                    <div class="big-number" style="margin-top: 8px;">5 <span style="font-size:20px; color:#9ca3af;">건</span></div>
-                </div>
-                <div style="text-align: right;">
-                    <div class="label">진단 목표</div>
-                    <div class="big-number" style="margin-top: 8px;">2 <span style="font-size:20px; color:#9ca3af;">건</span></div>
-                </div>
+        <div class="schedule-block">
+            <!-- 첫 번째 시간대 -->
+            <div class="schedule-row">
+                <span class="time-badge">11:00 - 13:00</span>
+                <div class="status-divider"></div>
+                <span class="schedule-status">등록 일정 없음</span>
             </div>
-            <hr style="border:0; border-top:2px solid #f3f4f6; margin: 20px 0;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-                <span style="font-size:17px; font-weight:700;">📅 오늘 예정 일정</span>
-                <span style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-                             color:white; padding:6px 14px; border-radius:24px;
-                             font-weight:800; font-size:15px;">3</span>
+            <!-- 두 번째 시간대 -->
+            <div class="schedule-row">
+                <span class="time-badge">14:00 - 16:00</span>
+                <div class="status-divider"></div>
+                <span class="schedule-status">등록 일정 없음</span>
             </div>
         </div>
 
-        <!-- 메인 액션 버튼 -->
-        <div style="display: flex; gap: 10px;">
-            <button class="btn btn-white" style="flex:1;" onclick="alert('일정 등록 화면')">
-                📅<br><br>일정 등록
-            </button>
-            <button class="btn btn-primary" style="flex:2; font-size:20px;" onclick="goToPage('recommend')">
-                🚀<br><br>AI 장소 추천
-            </button>
+        <div class="section-title">
+            오늘의 핫스팟
+            <span class="more" onclick="goToPage('recommend')">더보기</span>
         </div>
 
-        <button class="btn" style="margin-top: 15px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;" onclick="alert('클로징/입회 확정 화면')">
-            🛍️ 클로징 / 입회 확정
-        </button>
+        <div class="place-card" onclick="goToPage('recommend')">
+            <div class="place-img">🌲</div>
+            <div class="place-info">
+                <div class="place-name">푸른솔 놀이터</div>
+                <div class="place-time">⚡ 지금 유동인구 급증</div>
+            </div>
+            <div class="btn-go">➔</div>
+        </div>
+
+        <!-- [NEW] 4개 주요 기능 버튼 그리드 -->
+        <div class="menu-grid">
+            <!-- 1. AI 장소 추천 (강조) -->
+            <div class="menu-card highlight" onclick="goToPage('recommend')">
+                <div class="menu-icon">🚀</div>
+                <div class="menu-title">AI 장소 추천</div>
+            </div>
+
+            <!-- 2. 지금! AI 가이드 -->
+            <div class="menu-card" onclick="alert('AI 가이드: 방문 팁을 알려드릴게요!')">
+                <div class="menu-icon">🤖</div>
+                <div class="menu-title">지금!<br>AI 가이드</div>
+            </div>
+
+            <!-- 3. 성과 등록 -->
+            <div class="menu-card" onclick="goToPage('chat')">
+                <div class="menu-icon">📝</div>
+                <div class="menu-title">성과 등록</div>
+            </div>
+
+            <!-- 4. 입회 확정 -->
+            <div class="menu-card" onclick="alert('축하합니다! 입회 확정 처리를 시작합니다.')">
+                <div class="menu-icon">🎉</div>
+                <div class="menu-title">입회 확정</div>
+            </div>
+        </div>
+
     </div>
 
     <!-- 2. AI 추천 페이지 -->
     <div id="page-recommend" class="content-area page">
-        <h2>📍 AI 추천 핫스팟</h2>
+        <div class="section-title" style="margin-top:0;">📍 주변 추천 장소</div>
 
-        <div class="map-view">
-            <div class="map-pin">📍</div>
-            <div style="position: absolute; bottom: 16px; right: 16px;
-                        background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-                        padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 2;">
-                📡 내 위치 기반
-            </div>
+        <!-- 지도 대용 이미지 영역 -->
+        <div style="width:100%; height:200px; background:linear-gradient(135deg, #E0E7E4, #D1DBD6); border-radius:24px; display:flex; align-items:center; justify-content:center; margin-bottom:24px; position:relative; overflow:hidden;">
+            <div style="font-size:60px;">🗺️</div>
+            <div style="position:absolute; bottom:16px; left:16px; background:white; padding:6px 12px; border-radius:12px; font-size:12px; font-weight:700; box-shadow:var(--shadow-sm);">내 위치 중심</div>
         </div>
 
-        <h3>🤖 지금 가면 딱 좋은 곳</h3>
-
-        <div class="card" onclick="selectPlace('푸른솔 놀이터')" style="cursor: pointer;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <div style="font-size:20px; font-weight:bold; color:#e67e22;">푸른솔 놀이터</div>
-                    <div style="color:#666; margin-top:5px;">🕒 14:00~16:00 유동인구 급증</div>
-                </div>
-                <div style="font-size:28px;">🔥</div>
+        <div class="place-card" onclick="startNavigation('푸른솔 놀이터')">
+            <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🔥</div>
+            <div class="place-info">
+                <div class="place-name">푸른솔 놀이터</div>
+                <div class="place-time">오후 2시 ~ 4시 피크</div>
             </div>
+            <div class="btn-go">Go</div>
         </div>
 
-        <div class="card" onclick="selectPlace('꿈나무 유치원 앞')" style="cursor: pointer;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <div style="font-size:18px; font-weight:bold;">꿈나무 유치원 앞</div>
-                    <div style="color:#666; margin-top:5px;">🕒 하원 버스 도착 시간</div>
-                </div>
-                <div style="font-size:28px;">🚌</div>
+        <div class="place-card" onclick="startNavigation('꿈나무 유치원')">
+            <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
+            <div class="place-info">
+                <div class="place-name">꿈나무 유치원 앞</div>
+                <div class="place-time">하원 버스 도착 직전</div>
             </div>
+            <div class="btn-go">Go</div>
         </div>
-
-        <button class="btn btn-accent" onclick="startNavigation()">
-            🚘 카카오내비로 출발
-        </button>
     </div>
 
-    <!-- 3. 챗봇 페이지 -->
+    <!-- 3. 채팅/기록 페이지 -->
     <div id="page-chat" class="content-area page">
-        <h2>💬 AI 씽크메이트</h2>
-        <p style="color: #9ca3af; margin-bottom: 20px;">활동 결과를 간단히 기록해보세요</p>
+        <div class="section-title" style="margin-top:0;">💬 활동 기록</div>
 
-        <div id="chat-box" style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- 채팅 메시지가 여기에 추가됩니다 -->
+        <div class="chat-container" id="chat-box">
+            <!-- 동적 메시지 추가됨 -->
         </div>
 
-        <div id="quick-replies" style="margin-top: 20px; text-align: right;">
-            <!-- 버튼이 동적으로 생성됩니다 -->
+        <div class="quick-chips" id="quick-replies">
+            <!-- 칩 버튼 -->
         </div>
     </div>
 
     <!-- 4. 마이페이지 -->
     <div id="page-mypage" class="content-area page">
-        <h2>📂 나의 활동 기록</h2>
+        <div class="section-title" style="margin-top:0;">👤 나의 기록</div>
 
-        <div style="display: flex; gap: 10px; margin: 20px 0;">
-            <button class="btn btn-white" style="padding: 14px;" onclick="alert('📋 리스트 보기')">📋 리스트 보기</button>
-            <button class="btn btn-white" style="padding: 14px;" onclick="alert('🗺️ 지도 보기')">🗺️ 지도로 보기</button>
+        <div class="bento-grid" style="margin-bottom:20px;">
+            <div class="bento-card">
+                <div class="stat-label">이번 주 활동</div>
+                <div class="stat-value">12<span style="font-size:16px; color:#999;">회</span></div>
+            </div>
+            <div class="bento-card">
+                <div class="stat-label">획득 리드</div>
+                <div class="stat-value" style="color:var(--secondary);">8<span style="font-size:16px; color:#999;">명</span></div>
+            </div>
         </div>
 
+        <div class="section-title">최근 방문 이력</div>
         <div id="history-list">
-            <!-- 활동 이력 -->
-            <div class="history-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <strong style="font-size:18px;">꿈나무 유치원 앞</strong>
-                    <span style="color:#999; font-size:14px;">어제</span>
-                </div>
-                <div>
-                    <span class="tag tag-lead">리드 1~2명</span>
-                    <span class="tag tag-contract">계약 1건</span>
+            <!-- 이력 리스트 -->
+            <div class="place-card">
+                <div class="place-img">🏁</div>
+                <div class="place-info">
+                    <div class="place-name">꿈나무 유치원</div>
+                    <div class="place-time" style="color:#999;">어제 방문 · 리드 2명</div>
                 </div>
             </div>
         </div>
     </div>
 
+
     <!-- 하단 네비게이션 -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="goToPage('home')">
-            <span class="nav-icon">🏠</span>홈
-        </div>
-        <div class="nav-item" onclick="goToPage('chat')">
-            <span class="nav-icon">💬</span>결과입력
-        </div>
-        <div class="nav-item" onclick="goToPage('mypage')">
-            <span class="nav-icon">👤</span>마이
-        </div>
-    </div>
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="goToPage('home')">홈</div>
+        <span class="nav-divider">|</span>
+
+        <div class="nav-item" onclick="goToPage('recommend')">추천</div>
+        <span class="nav-divider">|</span>
+
+        <div class="nav-item" onclick="goToPage('chat')">기록</div>
+        <span class="nav-divider">|</span>
+
+        <div class="nav-item" onclick="goToPage('mypage')">마이</div>
+    </nav>
 
 </div>
 
 <script>
-    let currentPlace = "푸른솔 놀이터";
-    let chatStep = 0;
-    let visitData = {};
+    /* UI Interaction Scripts */
 
     // 페이지 이동
     function goToPage(pageId) {
-        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+        // 페이지 전환
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('page-' + pageId).classList.add('active');
 
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        // 네비게이션 활성화 상태 변경
+        const navMap = {'home':0, 'recommend':1, 'chat':2, 'mypage':3};
+        document.querySelectorAll('.nav-item').forEach((item, idx) => {
+            if(idx === navMap[pageId]) item.classList.add('active');
+            else item.classList.remove('active');
+        });
 
-        if(pageId === 'chat') {
-            initChat();
-        }
+        if(pageId === 'chat') initChat();
     }
 
-    // 장소 선택
-    function selectPlace(placeName) {
-        currentPlace = placeName;
-        alert(`✅ ${placeName}가 선택되었습니다!`);
-    }
-
-    // 네비게이션 시작
-    function startNavigation() {
-        if(confirm(`[카카오내비 연동]\n'${currentPlace}'(으)로 안내를 시작합니다.`)) {
-            alert(`📍 ${currentPlace}로 출발합니다! 오늘의 추천 장소입니다. 화이팅하세요!`);
-
+    // 네비게이션 기능
+    function startNavigation(place) {
+        if(confirm(`[${place}]로 안내를 시작할까요?`)) {
             setTimeout(() => {
-                if(confirm("📍 목적지에 도착했습니다!\n활동 가이드를 확인하고 결과를 입력하시겠습니까?")) {
-                    goToPage('chat');
-                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                    document.querySelectorAll('.nav-item')[1].classList.add('active');
-                }
-            }, 2000);
+                alert('목적지에 도착했습니다! 활동 결과를 기록해주세요.');
+                goToPage('chat');
+            }, 1000);
         }
     }
 
-    // 챗봇 초기화
+    // 챗봇 기능
     function initChat() {
         const chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML = '';
-        document.getElementById('quick-replies').innerHTML = '';
-        chatStep = 0;
-        visitData = { place: currentPlace, lead: 0, contract: 0 };
+        if(chatBox.children.length > 0) return; // 이미 시작했으면 리턴
 
-        setTimeout(() => addBotMessage(`반갑습니다! 큐레이터님.<br><strong>${currentPlace}</strong>에는 잘 도착하셨나요?`), 500);
+        addBotMsg("반갑습니다! 큐레이터님, 현장 활동은 어떠셨나요?");
         setTimeout(() => {
-            addBotMessage("오늘 활동 결과를 간단히 기록해볼까요? 우선 <strong>리드(가망고객)</strong>는 몇 분 만나셨나요?");
-            showQuickReplies(['0명', '1~2명', '3~5명', '대박 (5명+)'], 'lead');
-        }, 1500);
-    }
-
-    function addBotMessage(html) {
-        const chatBox = document.getElementById('chat-box');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'chat-message msg-bot';
-        msgDiv.innerHTML = html;
-        chatBox.appendChild(msgDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function addUserMessage(text) {
-        const chatBox = document.getElementById('chat-box');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'chat-message msg-user';
-        msgDiv.innerText = text;
-        chatBox.appendChild(msgDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function showQuickReplies(options, stepType) {
-        const replyBox = document.getElementById('quick-replies');
-        replyBox.innerHTML = '';
-
-        options.forEach(opt => {
-            const btn = document.createElement('span');
-            btn.className = 'action-chip';
-            btn.innerText = opt;
-            btn.onclick = () => handleUserReply(opt, stepType);
-            replyBox.appendChild(btn);
-        });
-    }
-
-    function handleUserReply(text, stepType) {
-        addUserMessage(text);
-        document.getElementById('quick-replies').innerHTML = '';
-
-        setTimeout(() => {
-            if (stepType === 'lead') {
-                visitData.lead = text;
-                addBotMessage("오, 고생 많으셨습니다! 👏<br>혹시 <strong>진단이나 계약</strong> 성과도 있었나요?");
-                showQuickReplies(['아직 없음', '진단 성공', '계약 성공!'], 'contract');
-            } else if (stepType === 'contract') {
-                visitData.contract = text;
-                const reaction = text === '아직 없음' ? "괜찮습니다! 씨앗을 뿌린 거니까요 🌱" : "와우! 축하드립니다! 🎉";
-                addBotMessage(`${reaction}<br>오늘 활동을 저장하고 마이페이지에 업데이트할게요.`);
-
+            addBotMsg("가장 먼저, 오늘 만난 <strong>리드(가망고객)</strong>는 몇 분이신가요?");
+            setChips(['0명', '1~2명', '3명이상'], (val) => {
+                addUserMsg(val);
                 setTimeout(() => {
-                    saveToHistory();
-                    goToPage('mypage');
-                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                    document.querySelectorAll('.nav-item')[2].classList.add('active');
-                }, 2000);
-            }
+                    addBotMsg("고생하셨습니다! 혹시 <strong>계약 성과</strong>도 있었나요? 🎉");
+                    setChips(['없음', '가망 있음', '계약 완료!'], (val2) => {
+                        addUserMsg(val2);
+                        setTimeout(() => {
+                            addBotMsg("기록이 저장되었습니다. 마이페이지에서 확인해보세요!");
+                            saveHistory(val, val2);
+                        }, 800);
+                    });
+                }, 800);
+            });
         }, 800);
     }
 
-    function saveToHistory() {
+    function addBotMsg(html) {
+        const box = document.getElementById('chat-box');
+        box.innerHTML += `<div class="chat-bubble bot">${html}</div>`;
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function addUserMsg(text) {
+        const box = document.getElementById('chat-box');
+        box.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+        document.getElementById('quick-replies').innerHTML = ''; // 칩 제거
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function setChips(labels, callback) {
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+        labels.forEach(label => {
+            const btn = document.createElement('div');
+            btn.className = 'chip';
+            btn.innerText = label;
+            btn.onclick = () => callback(label);
+            chipBox.appendChild(btn);
+        });
+    }
+
+    function saveHistory(lead, contract) {
         const list = document.getElementById('history-list');
-        const newItem = document.createElement('div');
-        newItem.className = 'history-card';
-
-        let contractTag = '';
-        if(visitData.contract !== '아직 없음') {
-            contractTag = `<span class="tag tag-contract">${visitData.contract}</span>`;
-        }
-
-        newItem.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <strong style="font-size:18px;">${visitData.place}</strong>
-                <span style="color:#e67e22; font-size:14px; font-weight:bold;">방금 전 (NEW)</span>
-            </div>
-            <div>
-                <span class="tag tag-lead">리드 ${visitData.lead}</span>
-                ${contractTag}
+        const newItem = `
+            <div class="place-card" style="animation: fadeIn 0.5s;">
+                <div class="place-img" style="background:#E8F5E9; color:#2E7D32;">✅</div>
+                <div class="place-info">
+                    <div class="place-name">방금 전 활동</div>
+                    <div class="place-time" style="color:var(--primary);">리드 ${lead} · ${contract}</div>
+                </div>
             </div>
         `;
-        list.insertBefore(newItem, list.firstChild);
+        list.innerHTML = newItem + list.innerHTML;
     }
+
 </script>
 
 </body>
