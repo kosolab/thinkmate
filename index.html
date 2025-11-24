@@ -505,10 +505,10 @@
         </div>
 
         <div class="place-card" onclick="goToPage('recommend')">
-            <div class="place-img">🌲</div>
+            <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
             <div class="place-info">
-                <div class="place-name">푸른솔 놀이터</div>
-                <div class="place-time">⚡ 지금 유동인구 급증</div>
+                <div class="place-name">푸른솔 공원 놀이터</div>
+                <div class="place-time">⚡ 지금 유동인구 급증 중</div>
             </div>
             <div class="btn-go">➔</div>
         </div>
@@ -554,22 +554,59 @@
             지도를 불러오는 중...
         </div>
 
-        <div class="place-card">
-            <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🔥</div>
-            <div class="place-info">
-                <div class="place-name">푸른솔 놀이터</div>
-                <div class="place-time">오후 2시 ~ 4시 피크</div>
-            </div>
-            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('푸른솔 놀이터')">Go</div>
+        <!-- 추천 설명 -->
+        <div style="font-size:12px; color:var(--text-caption); margin-bottom:16px; font-weight:500;">
+            📍 도보 거리, 인원 수 기반 추천 장소
         </div>
 
+        <!-- 1. 푸른솔 공원 놀이터 -->
+        <div class="place-card">
+            <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
+            <div class="place-info">
+                <div class="place-name">푸른솔 공원 놀이터</div>
+                <div class="place-time">하원 후 에너지 넘치는 아이들 집결</div>
+            </div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('푸른솔 공원')">Go</div>
+        </div>
+
+        <!-- 2. 판타지움 -->
+        <div class="place-card">
+            <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🏰</div>
+            <div class="place-info">
+                <div class="place-name">판타지움</div>
+                <div class="place-time">소비력 높은 영통 맘들의 성지</div>
+            </div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('판타지움')">Go</div>
+        </div>
+
+        <!-- 3. 아이파크 캐슬 1단지 -->
         <div class="place-card">
             <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
             <div class="place-info">
-                <div class="place-name">꿈나무 유치원 앞</div>
-                <div class="place-time">하원 버스 도착 직전</div>
+                <div class="place-name">아이파크 캐슬 1단지</div>
+                <div class="place-time">셔틀버스 집결지, 등하원 시간 최적</div>
             </div>
-            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('꿈나무 유치원')">Go</div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('아이파크 캐슬')">Go</div>
+        </div>
+
+        <!-- 4. 망포 글빛 도서관 -->
+        <div class="place-card">
+            <div class="place-img" style="background:#F3E5F5; color:#9C27B0;">📚</div>
+            <div class="place-info">
+                <div class="place-name">망포 글빛 도서관</div>
+                <div class="place-time">교육열 높은 부모님 대화 가능</div>
+            </div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('망포 글빛 도서관')">Go</div>
+        </div>
+
+        <!-- 5. 브런치 빈 (카페거리) -->
+        <div class="place-card">
+            <div class="place-img" style="background:#FBE9E7; color:#FF5722;">☕</div>
+            <div class="place-info">
+                <div class="place-name">브런치 빈 (카페거리)</div>
+                <div class="place-time">오전 10~12시 엄마들 모임 장소</div>
+            </div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('브런치 빈')">Go</div>
         </div>
     </div>
 
@@ -650,15 +687,30 @@
 
     // 장소별 좌표 데이터 (WGS84 좌표계)
     const placeCoordinates = {
-        '푸른솔 놀이터': {
-            x: 127.0601,  // 경도
-            y: 37.5111,   // 위도
-            name: '푸른솔 놀이터'
+        '푸른솔 공원': {
+            x: 127.0573,  // 경도
+            y: 37.2458,   // 위도
+            name: '푸른솔 공원 놀이터'
         },
-        '꿈나무 유치원': {
-            x: 127.0276,
-            y: 37.4833,
-            name: '꿈나무 유치원 앞'
+        '판타지움': {
+            x: 127.0588,
+            y: 37.2455,
+            name: '판타지움'
+        },
+        '아이파크 캐슬': {
+            x: 127.0452,
+            y: 37.2421,
+            name: '아이파크 캐슬 1단지'
+        },
+        '망포 글빛 도서관': {
+            x: 127.0510,
+            y: 37.2440,
+            name: '망포 글빛 도서관'
+        },
+        '브런치 빈': {
+            x: 127.0560,
+            y: 37.2460,
+            name: '브런치 빈 (카페거리)'
         }
     };
 
