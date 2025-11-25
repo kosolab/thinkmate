@@ -476,10 +476,6 @@
         <div style="display:flex; gap:8px; align-items:center;">
             <div class="nav-text-item active" onclick="goToPage('home')" style="font-size:14px; font-weight:600; color:var(--primary); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">홈</div>
             <span style="color:#E0E0E0;">|</span>
-            <div class="nav-text-item" onclick="goToPage('recommend')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">추천</div>
-            <span style="color:#E0E0E0;">|</span>
-            <div class="nav-text-item" onclick="goToPage('chat')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">기록</div>
-            <span style="color:#E0E0E0;">|</span>
             <div class="nav-text-item" onclick="goToPage('mypage')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">마이</div>
         </div>
     </header>
@@ -891,7 +887,7 @@
         });
 
         // 클릭한 메뉴 활성화
-        const navMap = {'home':0, 'recommend':1, 'chat':2, 'mypage':3};
+        const navMap = {'home':0, 'mypage':1, 'recommend':0, 'chat':0};
         const navItems = document.querySelectorAll('.nav-text-item');
         if(navItems[navMap[pageId]]) {
             navItems[navMap[pageId]].classList.add('active');
