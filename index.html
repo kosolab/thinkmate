@@ -703,23 +703,12 @@
         </div>
 
         <!-- 지도 영역 -->
-        <div id="map-container" style="width:100%; height:200px; background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius:20px; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:var(--shadow-md);">
-            <!-- 지도 로딩 플레이스홀더 -->
-            <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(74, 110, 93, 0.05), rgba(74, 110, 93, 0.02));">
-                <div style="font-size:48px; margin-bottom:12px; opacity:0.6;">🗺️</div>
-                <div style="font-size:14px; color:var(--text-caption); font-weight:600;">지도 영역</div>
-                <div style="font-size:12px; color:var(--text-caption); margin-top:4px; opacity:0.8;">카카오맵 연동 예정</div>
-            </div>
+        <div id="map-container" style="width:100%; height:200px; background:#F5F7F6; border-radius:20px; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:var(--shadow-md);">
+            <!-- 네비 이미지 -->
+            <img id="navi-image" src="효원공원.PNG" alt="네비게이션 지도" style="width:100%; height:100%; object-fit:cover;">
 
-            <!-- 출발/도착 마커 표시 (시각적 효과) -->
-            <div style="position:absolute; top:20px; left:20px; background:white; padding:8px 14px; border-radius:12px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:6px;">
-                <div style="width:8px; height:8px; background:#4285F4; border-radius:50%;"></div>
-                <span style="font-size:11px; color:var(--text-title); font-weight:600;">수원사업국</span>
-            </div>
-            <div style="position:absolute; bottom:20px; right:20px; background:var(--primary); padding:8px 14px; border-radius:12px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:6px;">
-                <div style="width:8px; height:8px; background:white; border-radius:50%;"></div>
-                <span style="font-size:11px; color:white; font-weight:600;">목적지</span>
-            </div>
+            <!-- 상단 프레임 오버레이 (숫자/시간 가리기) -->
+            <div style="position:absolute; top:0; left:0; right:0; height:50px; background:linear-gradient(to bottom, var(--bg-base) 0%, var(--bg-base) 60%, rgba(245,247,246,0) 100%); z-index:2;"></div>
         </div>
 
         <!-- 거리/시간 정보 카드 -->
@@ -958,6 +947,7 @@
         '효원공원': {
             icon: '🌲',
             name: '효원공원',
+            naviImage: '효원공원.PNG',
             distance: '350m',
             time: '5분',
             message1: '자, 어제 A단지는 갔었죠?<br />오늘은 <strong style="color:var(--primary);">효원공원</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!',
@@ -973,6 +963,7 @@
         '판타지움': {
             icon: '🏰',
             name: '판타지움',
+            naviImage: '더판타지움.PNG',
             distance: '420m',
             time: '6분',
             message1: '판타지움은 <strong style="color:var(--primary);">키즈카페, 병원, 쇼핑몰</strong>이 모두 모여있는 영통 맘들의 핫플레이스예요!<br />소비력이 높은 고객들을 만날 수 있는 최적의 장소입니다.',
@@ -990,6 +981,7 @@
         '아이파크 캐슬': {
             icon: '🚌',
             name: '아이파크 캐슬 1단지',
+            naviImage: '아이파크캐슬.PNG',
             distance: '280m',
             time: '4분',
             message1: '아이파크 캐슬은 <strong style="color:var(--primary);">유치원·학원 셔틀버스</strong>가 집결하는 곳이에요!<br />근처에 <strong style="color:#FF9800;">꿈나무 유치원, 해님 어린이집</strong>이 있어서 어머니들이 아이들의 하원을 기다리고 있어요.',
@@ -1007,6 +999,7 @@
         '망포 글빛 도서관': {
             icon: '📚',
             name: '망포 글빛 도서관',
+            naviImage: '망포글빛도서관.PNG',
             distance: '520m',
             time: '7분',
             message1: '망포 글빛 도서관은 <strong style="color:var(--primary);">교육열이 높은 부모님들</strong>이 아이들과 함께 방문하는 곳이에요!<br /><strong style="color:#FF9800;">학습 관련 대화</strong>가 자연스럽게 통하는 타겟층입니다.',
@@ -1024,6 +1017,7 @@
         '브런치 빈': {
             icon: '☕',
             name: '브런치 빈 (카페거리)',
+            naviImage: '브런치빈.PNG',
             distance: '380m',
             time: '5분',
             message1: '브런치 빈은 <strong style="color:var(--primary);">오전 10~12시</strong> 사이 엄마들의 모임 장소로 유명해요!<br />근처에 <strong style="color:#FF9800;">요가학원, 필라테스</strong>가 있어서 운동 후 차 한잔 하러 오시는 분들이 많아요.',
@@ -1057,10 +1051,11 @@
         // 제목 업데이트
         detailPage.querySelector('h2').textContent = detail.name;
 
-        // 지도 영역의 목적지 이름 업데이트
-        const mapDestination = detailPage.querySelector('#map-container div:last-child span');
-        if (mapDestination) {
-            mapDestination.textContent = detail.name;
+        // 네비 이미지 업데이트
+        const naviImage = detailPage.querySelector('#navi-image');
+        if (naviImage && detail.naviImage) {
+            naviImage.src = detail.naviImage;
+            naviImage.alt = `${detail.name} 네비게이션`;
         }
 
         // 거리/시간 업데이트
