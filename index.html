@@ -451,10 +451,320 @@
         }
         .chip:hover { background: var(--primary); color: white; border-color: transparent; }
 
-        /* 영업 시작 버튼 hover 효과 */
+        /* 활동 GO! 버튼 hover 효과 */
         .btn-sales-start:hover {
             background: var(--primary) !important;
             color: white !important;
+        }
+
+        /* --- 방문 결과 상세 페이지 스타일 --- */
+        .visit-result-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #5D8A72 100%);
+            margin: -10px -24px 20px -24px;
+            padding: 24px;
+            border-radius: 0 0 28px 28px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .visit-result-header .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
+        }
+
+        .visit-result-header .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .visit-result-header .place-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .visit-result-header .place-title {
+            flex: 1;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .result-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .result-card-label {
+            font-size: 13px;
+            color: var(--text-caption);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .result-card-edit {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .result-card-edit:hover {
+            background: var(--primary-light);
+        }
+
+        .result-card-value {
+            font-size: 16px;
+            color: var(--text-title);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .result-card-value.sub {
+            font-size: 14px;
+            color: var(--text-body);
+            font-weight: 500;
+        }
+
+        /* 결과 상태 배지 */
+        .result-status {
+            display: inline-flex;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .result-status.none {
+            background: #F5F5F5;
+            color: #9E9E9E;
+        }
+
+        .result-status.source {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .result-status.success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        /* 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-input-group {
+            margin-bottom: 16px;
+        }
+
+        .modal-input-label {
+            font-size: 13px;
+            color: var(--text-caption);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: inherit;
+            min-height: 100px;
+            resize: none;
+            transition: border-color 0.2s;
+        }
+
+        .modal-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .modal-btn.cancel {
+            background: #F5F5F5;
+            color: var(--text-body);
+        }
+
+        .modal-btn.cancel:hover {
+            background: #E0E0E0;
+        }
+
+        .modal-btn.save {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btn.save:hover {
+            background: #3D5C4D;
+        }
+
+        /* 결과 선택 옵션 */
+        .result-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .result-option {
+            padding: 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .result-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .result-option-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .result-option-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-title);
+        }
+
+        /* 마이페이지 이력 카드 클릭 가능 표시 */
+        .history-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .history-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .history-card .arrow-icon {
+            color: var(--text-caption);
+            font-size: 16px;
+            font-weight: 600;
         }
 
     </style>
@@ -665,7 +975,7 @@
         </div>
 
         <!-- 지도 영역 (장소 이미지 공란) -->
-        <div id="place-image-container" style="width:100%; height:200px; background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius:20px; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:var(--shadow-md); display:flex; align-items:center; justify-content:center;">
+        <div id="place-image-container" style="width:calc(100% + 48px); height:240px; background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius:0 0 24px 24px; margin-left:-24px; margin-right:-24px; margin-bottom:24px; position:relative; overflow:hidden; box-shadow:var(--shadow-md); display:flex; align-items:center; justify-content:center;">
             <!-- 공란 플레이스홀더 -->
             <div style="text-align:center;">
                 <div style="font-size:48px; margin-bottom:8px; opacity:0.4;">📍</div>
@@ -776,17 +1086,26 @@
                 <span>🚀</span>
                 <span>카카오내비로 출발하기</span>
             </button>
-            <!-- 영업 시작 버튼 -->
-            <button class="btn-sales-start" onclick="alert('영업 시작!')" style="width:100%; height:56px; background:white; border:2px solid var(--primary); color:var(--primary); border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
+            <!-- 활동 GO! 버튼 -->
+            <button class="btn-sales-start" onclick="startSalesActivity()" style="width:100%; height:56px; background:white; border:2px solid var(--primary); color:var(--primary); border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
                 <span>💼</span>
-                <span>영업 시작</span>
+                <span>활동 GO!</span>
             </button>
         </div>
     </div>
 
-    <!-- 3. 채팅/기록 페이지 -->
+    <!-- 3. 성과 입력 챗봇 페이지 -->
     <div id="page-chat" class="content-area page">
-        <div class="section-title" style="margin-top:0;">💬 활동 기록</div>
+        <!-- 챗봇 헤더 -->
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, var(--primary), #769F8B); display:flex; align-items:center; justify-content:center; font-size:22px;">
+                🤖
+            </div>
+            <div>
+                <div style="font-size:16px; font-weight:700; color:var(--text-title);">Think Mate</div>
+                <div id="chat-place-name" style="font-size:13px; color:var(--text-caption);">성과 입력</div>
+            </div>
+        </div>
 
         <div class="chat-container" id="chat-box">
             <!-- 동적 메시지 추가됨 -->
@@ -813,7 +1132,7 @@
 
     <!-- 5. 마이페이지 -->
     <div id="page-mypage" class="content-area page">
-        <div class="section-title" style="margin-top:0;">👤 나의 기록</div>
+        <div class="section-title" style="margin-top:0;">나의 기록</div>
 
         <div class="bento-grid" style="margin-bottom:20px;">
             <div class="bento-card">
@@ -828,16 +1147,163 @@
 
         <div class="section-title">최근 방문 이력</div>
         <div id="history-list">
-            <!-- 이력 리스트 -->
-            <div class="place-card">
-                <div class="place-img">🏁</div>
+            <!-- 샘플 데이터 1: 푸른솔 공원 -->
+            <div class="place-card history-card" onclick="goToVisitResult(0)">
+                <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
+                <div class="place-info">
+                    <div class="place-name">푸른솔 공원</div>
+                    <div class="place-time" style="color:#999;">어제 방문 · 리드 3명</div>
+                </div>
+                <div class="arrow-icon">›</div>
+            </div>
+            <!-- 샘플 데이터 2: 꿈나무 유치원 -->
+            <div class="place-card history-card" onclick="goToVisitResult(1)">
+                <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🏫</div>
                 <div class="place-info">
                     <div class="place-name">꿈나무 유치원</div>
-                    <div class="place-time" style="color:#999;">어제 방문 · 리드 2명</div>
+                    <div class="place-time" style="color:#999;">2일 전 방문 · 리드 2명</div>
                 </div>
+                <div class="arrow-icon">›</div>
+            </div>
+            <!-- 샘플 데이터 3: 망포 글빛 도서관 -->
+            <div class="place-card history-card" onclick="goToVisitResult(2)">
+                <div class="place-img" style="background:#F3E5F5; color:#9C27B0;">📚</div>
+                <div class="place-info">
+                    <div class="place-name">망포 글빛 도서관</div>
+                    <div class="place-time" style="color:#999;">3일 전 방문 · 리드 1명</div>
+                </div>
+                <div class="arrow-icon">›</div>
             </div>
         </div>
     </div>
+
+    <!-- 6. 방문 결과 상세 페이지 -->
+    <div id="page-visit-result" class="content-area page">
+        <!-- 그라디언트 헤더 -->
+        <div class="visit-result-header">
+            <div class="back-btn" onclick="goToPage('mypage')">←</div>
+            <div id="visit-result-icon" class="place-icon">🌲</div>
+            <div id="visit-result-title" class="place-title">푸른솔 공원</div>
+        </div>
+
+        <!-- 날짜 및 시간 -->
+        <div class="result-card">
+            <div class="result-card-header">
+                <div class="result-card-label">📅 날짜 및 시간</div>
+                <div class="result-card-edit" onclick="openModal('datetime')">수정</div>
+            </div>
+            <div id="visit-date" class="result-card-value">2024년 11월 24일</div>
+            <div id="visit-time" class="result-card-value sub">14:00 ~ 16:30</div>
+        </div>
+
+        <!-- 리드 -->
+        <div class="result-card">
+            <div class="result-card-header">
+                <div class="result-card-label">👥 리드</div>
+                <div class="result-card-edit" onclick="openModal('leads')">수정</div>
+            </div>
+            <div id="visit-leads" class="result-card-value" style="color:var(--secondary);">3명</div>
+        </div>
+
+        <!-- 결과 -->
+        <div class="result-card">
+            <div class="result-card-header">
+                <div class="result-card-label">✨ 결과</div>
+                <div class="result-card-edit" onclick="openModal('result')">수정</div>
+            </div>
+            <div id="visit-result-status" class="result-status source">소스만 확보</div>
+        </div>
+
+        <!-- 비고 -->
+        <div class="result-card">
+            <div class="result-card-header">
+                <div class="result-card-label">📝 비고</div>
+                <div class="result-card-edit" onclick="openModal('note')">수정</div>
+            </div>
+            <div id="visit-note" class="result-card-value sub" style="white-space:pre-wrap;">아이 두 명 엄마, 교육에 관심 많음.
+다음주 상담 예정.</div>
+        </div>
+    </div>
+
+    <!-- 모달들 -->
+    <!-- 날짜/시간 수정 모달 -->
+    <div id="modal-datetime" class="modal-overlay" onclick="closeModalOnOverlay(event, 'datetime')">
+        <div class="modal-content">
+            <div class="modal-title">📅 날짜 및 시간 수정</div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">날짜</label>
+                <input type="date" id="input-date" class="modal-input">
+            </div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">시작 시간</label>
+                <input type="time" id="input-start-time" class="modal-input">
+            </div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">종료 시간</label>
+                <input type="time" id="input-end-time" class="modal-input">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal('datetime')">취소</button>
+                <button class="modal-btn save" onclick="saveDatetime()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 리드 수정 모달 -->
+    <div id="modal-leads" class="modal-overlay" onclick="closeModalOnOverlay(event, 'leads')">
+        <div class="modal-content">
+            <div class="modal-title">👥 리드 수정</div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">리드 수 (명)</label>
+                <input type="number" id="input-leads" class="modal-input" min="0" placeholder="0">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal('leads')">취소</button>
+                <button class="modal-btn save" onclick="saveLeads()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 결과 수정 모달 -->
+    <div id="modal-result" class="modal-overlay" onclick="closeModalOnOverlay(event, 'result')">
+        <div class="modal-content">
+            <div class="modal-title">✨ 결과 선택</div>
+            <div class="result-options">
+                <div class="result-option" data-value="none" onclick="selectResultOption(this)">
+                    <div class="result-option-icon" style="background:#F5F5F5;">⭕</div>
+                    <div class="result-option-text">없음</div>
+                </div>
+                <div class="result-option" data-value="source" onclick="selectResultOption(this)">
+                    <div class="result-option-icon" style="background:#E3F2FD;">📋</div>
+                    <div class="result-option-text">소스만 확보</div>
+                </div>
+                <div class="result-option" data-value="success" onclick="selectResultOption(this)">
+                    <div class="result-option-icon" style="background:#E8F5E9;">🎉</div>
+                    <div class="result-option-text">계약 성공</div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal('result')">취소</button>
+                <button class="modal-btn save" onclick="saveResult()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 비고 수정 모달 -->
+    <div id="modal-note" class="modal-overlay" onclick="closeModalOnOverlay(event, 'note')">
+        <div class="modal-content">
+            <div class="modal-title">📝 비고 수정</div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">특이사항 메모</label>
+                <textarea id="input-note" class="modal-textarea" placeholder="방문 시 특이사항을 입력하세요..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal('note')">취소</button>
+                <button class="modal-btn save" onclick="saveNote()">저장</button>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -1125,28 +1591,298 @@
         goToPage(window.previousPage || 'place-detail');
     }
 
-    // 챗봇 기능
+    // 장소 데이터 (아이콘 포함)
+    const placeOptionsData = [
+        { name: '푸른솔 공원 놀이터', icon: '🌲', iconBg: '#E8F5E9', iconColor: '#4CAF50' },
+        { name: '꿈나무 유치원', icon: '🏫', iconBg: '#FFF3E0', iconColor: '#FF9800' },
+        { name: '망포 글빛 도서관', icon: '📚', iconBg: '#F3E5F5', iconColor: '#9C27B0' },
+        { name: '기타 장소', icon: '🏢', iconBg: '#E0E0E0', iconColor: '#757575' }
+    ];
+
+    // 챗봇 기능 - 일반 성과 등록 (홈에서 진입)
     function initChat() {
         const chatBox = document.getElementById('chat-box');
-        if(chatBox.children.length > 0) return; // 이미 시작했으면 리턴
+        chatBox.innerHTML = ''; // 초기화
+        document.getElementById('quick-replies').innerHTML = '';
+        document.getElementById('chat-place-name').textContent = '성과 입력';
 
-        addBotMsg("반갑습니다! 큐레이터님, 현장 활동은 어떠셨나요?");
+        // 임시 데이터 초기화
+        window.tempSalesData = {
+            placeName: '',
+            icon: '📍',
+            iconBg: '#E0E0E0',
+            iconColor: '#757575',
+            leads: 0,
+            result: 'none',
+            note: ''
+        };
+
         setTimeout(() => {
-            addBotMsg("가장 먼저, 오늘 만난 <strong>리드(가망고객)</strong>는 몇 분이신가요?");
-            setChips(['0명', '1~2명', '3명이상'], (val) => {
-                addUserMsg(val);
+            startPlaceQuestion();
+        }, 300);
+    }
+
+    // 활동 GO!에서 진입하는 챗봇
+    function initSalesChat() {
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML = ''; // 초기화
+        document.getElementById('quick-replies').innerHTML = '';
+
+        const placeName = window.currentSalesPlace?.name || '현재 장소';
+        const placeIcon = window.currentSalesPlace?.icon || '📍';
+
+        // 아이콘 색상 매핑
+        const iconColorMap = {
+            '🌲': { bg: '#E8F5E9', color: '#4CAF50' },
+            '🏰': { bg: '#FFF3E0', color: '#FF9800' },
+            '🚌': { bg: '#E3F2FD', color: '#2196F3' },
+            '📚': { bg: '#F3E5F5', color: '#9C27B0' },
+            '☕': { bg: '#FBE9E7', color: '#FF5722' },
+            '🏫': { bg: '#FFF3E0', color: '#FF9800' },
+            '🏢': { bg: '#E0E0E0', color: '#757575' },
+            '📍': { bg: '#E0E0E0', color: '#757575' }
+        };
+        const iconStyle = iconColorMap[placeIcon] || { bg: '#E0E0E0', color: '#757575' };
+
+        // 임시 데이터 초기화
+        window.tempSalesData = {
+            placeName: placeName,
+            icon: placeIcon,
+            iconBg: iconStyle.bg,
+            iconColor: iconStyle.color,
+            leads: 0,
+            result: 'none',
+            note: ''
+        };
+
+        addBotMsg(`<strong>${placeName}</strong>에서 영업 활동을 시작하셨군요! 💪<br><br>오늘 만난 <strong>리드(가망고객)</strong>는 몇 분이신가요?`);
+        setTimeout(() => {
+            startLeadQuestionChipsOnly();
+        }, 600);
+    }
+
+    // 리드 질문 칩만 표시 (메시지 없이)
+    function startLeadQuestionChipsOnly() {
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+
+        const leadOptions = ['0명', '1명', '2명', '3명', '4명', '5명', '6명 이상'];
+
+        leadOptions.forEach(option => {
+            const btn = document.createElement('div');
+            btn.className = 'chip';
+            btn.innerText = option;
+            btn.onclick = () => {
+                addUserMsg(option);
+
+                if (option === '6명 이상') {
+                    window.tempSalesData.leads = 6;
+                } else {
+                    window.tempSalesData.leads = parseInt(option);
+                }
+
+                chipBox.innerHTML = '';
+
                 setTimeout(() => {
-                    addBotMsg("고생하셨습니다! 혹시 <strong>계약 성과</strong>도 있었나요? 🎉");
-                    setChips(['없음', '가망 있음', '계약 완료!'], (val2) => {
-                        addUserMsg(val2);
-                        setTimeout(() => {
-                            addBotMsg("기록이 저장되었습니다. 마이페이지에서 확인해보세요!");
-                            saveHistory(val, val2);
-                        }, 800);
-                    });
-                }, 800);
-            });
-        }, 800);
+                    startResultQuestion();
+                }, 600);
+            };
+            chipBox.appendChild(btn);
+        });
+    }
+
+    // 1단계: 장소 선택 질문
+    function startPlaceQuestion() {
+        addBotMsg("반갑습니다! 김씽크님 👋<br><br>어느 장소에서 활동하셨나요?");
+
+        // 장소 선택 칩 (아이콘 포함)
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+
+        placeOptionsData.forEach(place => {
+            const btn = document.createElement('div');
+            btn.className = 'chip';
+            btn.innerHTML = `${place.icon} ${place.name}`;
+            btn.onclick = () => {
+                addUserMsg(`${place.icon} ${place.name}`);
+                window.tempSalesData.placeName = place.name;
+                window.tempSalesData.icon = place.icon;
+                window.tempSalesData.iconBg = place.iconBg;
+                window.tempSalesData.iconColor = place.iconColor;
+                chipBox.innerHTML = '';
+
+                setTimeout(() => {
+                    startLeadQuestion();
+                }, 600);
+            };
+            chipBox.appendChild(btn);
+        });
+    }
+
+    // 2단계: 리드 수 질문
+    function startLeadQuestion() {
+        addBotMsg("오늘 만난 <strong>리드(가망고객)</strong>는 몇 분이신가요?");
+
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+
+        const leadOptions = ['0명', '1명', '2명', '3명', '4명', '5명', '6명 이상'];
+
+        leadOptions.forEach(option => {
+            const btn = document.createElement('div');
+            btn.className = 'chip';
+            btn.innerText = option;
+            btn.onclick = () => {
+                addUserMsg(option);
+
+                // 숫자 파싱
+                if (option === '6명 이상') {
+                    window.tempSalesData.leads = 6;
+                } else {
+                    window.tempSalesData.leads = parseInt(option);
+                }
+
+                chipBox.innerHTML = '';
+
+                setTimeout(() => {
+                    startResultQuestion();
+                }, 600);
+            };
+            chipBox.appendChild(btn);
+        });
+    }
+
+    // 3단계: 계약 성과 질문
+    function startResultQuestion() {
+        addBotMsg("고생하셨습니다! 혹시 <strong>계약 성과</strong>도 있었나요? 🎉");
+
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+
+        const resultOptions = [
+            { label: '없음', value: 'none' },
+            { label: '소스만 확보', value: 'source' },
+            { label: '계약 성공!', value: 'success' }
+        ];
+
+        resultOptions.forEach(option => {
+            const btn = document.createElement('div');
+            btn.className = 'chip';
+            btn.innerText = option.label;
+            btn.onclick = () => {
+                addUserMsg(option.label);
+                window.tempSalesData.result = option.value;
+                chipBox.innerHTML = '';
+
+                setTimeout(() => {
+                    startNoteQuestion();
+                }, 600);
+            };
+            chipBox.appendChild(btn);
+        });
+    }
+
+    // 4단계: 특이사항 질문
+    function startNoteQuestion() {
+        addBotMsg("그럼 기타 특이사항은 있었나요? 📝<br><span style='font-size:13px; color:var(--text-caption);'>(예: 판촉물 필요 여부, 관련 담당자 응대 방법)</span>");
+
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+
+        // 텍스트 입력 영역 생성
+        const inputWrapper = document.createElement('div');
+        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%; margin-top:8px;';
+
+        const textInput = document.createElement('input');
+        textInput.type = 'text';
+        textInput.id = 'note-text-input';
+        textInput.placeholder = '특이사항을 입력하세요...';
+        textInput.style.cssText = 'flex:1; padding:12px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:14px; font-family:inherit; transition:border-color 0.2s;';
+        textInput.onfocus = () => { textInput.style.borderColor = 'var(--primary)'; };
+        textInput.onblur = () => { textInput.style.borderColor = '#E0E0E0'; };
+
+        const submitBtn = document.createElement('button');
+        submitBtn.innerText = '완료';
+        submitBtn.style.cssText = 'padding:12px 20px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer;';
+        submitBtn.onclick = () => {
+            const noteText = textInput.value.trim();
+            window.tempSalesData.note = noteText;
+            addUserMsg(noteText || '(특이사항 없음)');
+            chipBox.innerHTML = '';
+
+            setTimeout(() => {
+                completeSalesChat();
+            }, 600);
+        };
+
+        // 엔터키로 제출
+        textInput.onkeypress = (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        };
+
+        inputWrapper.appendChild(textInput);
+        inputWrapper.appendChild(submitBtn);
+        chipBox.appendChild(inputWrapper);
+
+        // 없음 버튼도 추가
+        const skipBtn = document.createElement('div');
+        skipBtn.className = 'chip';
+        skipBtn.innerText = '없음';
+        skipBtn.style.marginTop = '8px';
+        skipBtn.onclick = () => {
+            window.tempSalesData.note = '';
+            addUserMsg('특이사항 없음');
+            chipBox.innerHTML = '';
+
+            setTimeout(() => {
+                completeSalesChat();
+            }, 600);
+        };
+        chipBox.appendChild(skipBtn);
+
+        // 입력창에 포커스
+        setTimeout(() => {
+            textInput.focus();
+        }, 100);
+    }
+
+    // 챗봇 완료 - 데이터 저장 및 성과 확인 페이지로 이동
+    function completeSalesChat() {
+        // 현재 날짜/시간
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        // 새 방문 기록 생성
+        const newVisit = {
+            id: visitHistoryData.length,
+            name: window.tempSalesData.placeName,
+            icon: window.tempSalesData.icon,
+            iconBg: window.tempSalesData.iconBg,
+            iconColor: window.tempSalesData.iconColor,
+            date: dateStr,
+            startTime: `${hours}:${minutes}`,
+            endTime: '',
+            leads: window.tempSalesData.leads,
+            result: window.tempSalesData.result,
+            note: window.tempSalesData.note
+        };
+
+        // 데이터 배열 맨 앞에 추가
+        visitHistoryData.unshift(newVisit);
+
+        // 마이페이지 이력 리스트에 새 카드 추가
+        addNewHistoryCard(newVisit, 0);
+
+        addBotMsg("기록이 저장되었습니다. 마이페이지에서 확인해보세요! ✅");
+
+        setTimeout(() => {
+            // 1초 후 방문 결과 페이지로 자동 이동
+            goToVisitResult(0);
+        }, 1000);
     }
 
     function addBotMsg(html) {
@@ -1174,24 +1910,310 @@
         });
     }
 
-    function saveHistory(lead, contract) {
-        const list = document.getElementById('history-list');
-        const newItem = `
-            <div class="place-card" style="animation: fadeIn 0.5s;">
-                <div class="place-img" style="background:#E8F5E9; color:#2E7D32;">✅</div>
-                <div class="place-info">
-                    <div class="place-name">방금 전 활동</div>
-                    <div class="place-time" style="color:var(--primary);">리드 ${lead} · ${contract}</div>
-                </div>
-            </div>
-        `;
-        list.innerHTML = newItem + list.innerHTML;
-    }
 
     // 페이지 로드 시 랜덤 핫스팟 설정
     window.addEventListener('DOMContentLoaded', function() {
         updateRandomHotspot();
     });
+
+    // ========================================
+    // 방문 결과 상세 페이지 관련 기능
+    // ========================================
+
+    // 샘플 방문 이력 데이터
+    const visitHistoryData = [
+        {
+            id: 0,
+            name: '푸른솔 공원',
+            icon: '🌲',
+            iconBg: '#E8F5E9',
+            iconColor: '#4CAF50',
+            date: '2024-11-24',
+            startTime: '14:00',
+            endTime: '16:30',
+            leads: 3,
+            result: 'source', // none, source, success
+            note: '아이 두 명 엄마, 교육에 관심 많음.\n다음주 상담 예정.'
+        },
+        {
+            id: 1,
+            name: '꿈나무 유치원',
+            icon: '🏫',
+            iconBg: '#FFF3E0',
+            iconColor: '#FF9800',
+            date: '2024-11-23',
+            startTime: '10:00',
+            endTime: '12:00',
+            leads: 2,
+            result: 'none',
+            note: '하원 시간에 맞춰 방문.\n학부모 분위기 좋음.'
+        },
+        {
+            id: 2,
+            name: '망포 글빛 도서관',
+            icon: '📚',
+            iconBg: '#F3E5F5',
+            iconColor: '#9C27B0',
+            date: '2024-11-22',
+            startTime: '15:00',
+            endTime: '17:00',
+            leads: 1,
+            result: 'success',
+            note: '초등생 엄마 계약 성공!\n영어 학습지 패키지.'
+        }
+    ];
+
+    // 현재 선택된 방문 이력 인덱스
+    let currentVisitIndex = 0;
+    let selectedResultValue = 'none';
+
+    // 방문 결과 상세 페이지로 이동
+    function goToVisitResult(index) {
+        currentVisitIndex = index;
+        const visit = visitHistoryData[index];
+
+        // 헤더 업데이트
+        document.getElementById('visit-result-icon').textContent = visit.icon;
+        document.getElementById('visit-result-title').textContent = visit.name;
+
+        // 날짜/시간 업데이트
+        const dateObj = new Date(visit.date);
+        const dateStr = `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+        document.getElementById('visit-date').textContent = dateStr;
+        document.getElementById('visit-time').textContent = `${visit.startTime} ~ ${visit.endTime}`;
+
+        // 리드 업데이트
+        document.getElementById('visit-leads').textContent = visit.leads + '명';
+
+        // 결과 업데이트
+        updateResultStatus(visit.result);
+
+        // 비고 업데이트
+        document.getElementById('visit-note').textContent = visit.note || '메모 없음';
+
+        // 페이지 전환
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-visit-result').classList.add('active');
+    }
+
+    // 결과 상태 UI 업데이트
+    function updateResultStatus(result) {
+        const statusEl = document.getElementById('visit-result-status');
+        statusEl.className = 'result-status ' + result;
+
+        const statusText = {
+            'none': '없음',
+            'source': '소스만 확보',
+            'success': '계약 성공'
+        };
+        statusEl.textContent = statusText[result] || '없음';
+    }
+
+    // 모달 열기
+    function openModal(type) {
+        const visit = visitHistoryData[currentVisitIndex];
+
+        if (type === 'datetime') {
+            document.getElementById('input-date').value = visit.date;
+            document.getElementById('input-start-time').value = visit.startTime;
+            document.getElementById('input-end-time').value = visit.endTime;
+        } else if (type === 'leads') {
+            document.getElementById('input-leads').value = visit.leads;
+        } else if (type === 'result') {
+            selectedResultValue = visit.result;
+            // 선택 상태 초기화
+            document.querySelectorAll('.result-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.value === visit.result) {
+                    opt.classList.add('selected');
+                }
+            });
+        } else if (type === 'note') {
+            document.getElementById('input-note').value = visit.note || '';
+        }
+
+        document.getElementById('modal-' + type).classList.add('active');
+    }
+
+    // 모달 닫기
+    function closeModal(type) {
+        document.getElementById('modal-' + type).classList.remove('active');
+    }
+
+    // 오버레이 클릭 시 모달 닫기
+    function closeModalOnOverlay(event, type) {
+        if (event.target.classList.contains('modal-overlay')) {
+            closeModal(type);
+        }
+    }
+
+    // 날짜/시간 저장
+    function saveDatetime() {
+        const visit = visitHistoryData[currentVisitIndex];
+        visit.date = document.getElementById('input-date').value;
+        visit.startTime = document.getElementById('input-start-time').value;
+        visit.endTime = document.getElementById('input-end-time').value;
+
+        // UI 업데이트
+        const dateObj = new Date(visit.date);
+        const dateStr = `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+        document.getElementById('visit-date').textContent = dateStr;
+        document.getElementById('visit-time').textContent = `${visit.startTime} ~ ${visit.endTime}`;
+
+        closeModal('datetime');
+    }
+
+    // 리드 저장
+    function saveLeads() {
+        const visit = visitHistoryData[currentVisitIndex];
+        visit.leads = parseInt(document.getElementById('input-leads').value) || 0;
+
+        // UI 업데이트
+        document.getElementById('visit-leads').textContent = visit.leads + '명';
+
+        // 마이페이지 이력 카드도 업데이트
+        updateHistoryCard(currentVisitIndex);
+
+        closeModal('leads');
+    }
+
+    // 결과 옵션 선택
+    function selectResultOption(element) {
+        document.querySelectorAll('.result-option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedResultValue = element.dataset.value;
+    }
+
+    // 결과 저장
+    function saveResult() {
+        const visit = visitHistoryData[currentVisitIndex];
+        visit.result = selectedResultValue;
+
+        // UI 업데이트
+        updateResultStatus(visit.result);
+
+        closeModal('result');
+    }
+
+    // 비고 저장
+    function saveNote() {
+        const visit = visitHistoryData[currentVisitIndex];
+        visit.note = document.getElementById('input-note').value;
+
+        // UI 업데이트
+        document.getElementById('visit-note').textContent = visit.note || '메모 없음';
+
+        closeModal('note');
+    }
+
+    // 마이페이지 이력 카드 업데이트
+    function updateHistoryCard(index) {
+        const visit = visitHistoryData[index];
+        const historyCards = document.querySelectorAll('#history-list .history-card');
+
+        if (historyCards[index]) {
+            const timeEl = historyCards[index].querySelector('.place-time');
+            const daysAgo = getDaysAgo(visit.date);
+            timeEl.textContent = `${daysAgo} · 리드 ${visit.leads}명`;
+        }
+    }
+
+    // 며칠 전인지 계산
+    function getDaysAgo(dateStr) {
+        const visitDate = new Date(dateStr);
+        const today = new Date();
+        const diffTime = today - visitDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 0) return '오늘 방문';
+        if (diffDays === 1) return '어제 방문';
+        return `${diffDays}일 전 방문`;
+    }
+
+    // 활동 GO! - 챗봇 성과 입력 페이지로 이동
+    function startSalesActivity() {
+        if (!window.currentPlace) {
+            alert('장소를 먼저 선택해주세요.');
+            return;
+        }
+
+        const detail = placeDetails[window.currentPlace];
+        if (!detail) return;
+
+        // 현재 장소 정보 저장
+        window.currentSalesPlace = {
+            name: detail.name,
+            icon: detail.icon
+        };
+
+        // 챗봇 헤더에 장소명 표시
+        document.getElementById('chat-place-name').textContent = detail.name + ' 성과 입력';
+
+        // 챗봇 페이지로 이동하고 대화 시작
+        goToPage('chat');
+        initSalesChat();
+    }
+
+    // 마이페이지에 새 이력 카드 추가
+    function addNewHistoryCard(visit, index) {
+        const historyList = document.getElementById('history-list');
+        const newCard = document.createElement('div');
+        newCard.className = 'place-card history-card';
+        newCard.onclick = () => goToVisitResult(index);
+        newCard.innerHTML = `
+            <div class="place-img" style="background:${visit.iconBg}; color:${visit.iconColor};">${visit.icon}</div>
+            <div class="place-info">
+                <div class="place-name">${visit.name}</div>
+                <div class="place-time" style="color:#999;">오늘 방문 · 리드 ${visit.leads}명</div>
+            </div>
+            <div class="arrow-icon">›</div>
+        `;
+
+        // 맨 위에 추가
+        historyList.insertBefore(newCard, historyList.firstChild);
+
+        // 기존 카드들의 onclick 인덱스 업데이트
+        updateHistoryCardIndices();
+    }
+
+    // 이력 카드 인덱스 업데이트
+    function updateHistoryCardIndices() {
+        const cards = document.querySelectorAll('#history-list .history-card');
+        cards.forEach((card, idx) => {
+            card.onclick = () => goToVisitResult(idx);
+        });
+    }
+
+    // 새로 생성된 방문 기록 상세 페이지로 이동 (뒤로가기 시 마이페이지로)
+    function goToVisitResultNew(index) {
+        currentVisitIndex = index;
+        const visit = visitHistoryData[index];
+
+        // 헤더 업데이트
+        document.getElementById('visit-result-icon').textContent = visit.icon;
+        document.getElementById('visit-result-title').textContent = visit.name;
+
+        // 날짜/시간 업데이트
+        const dateObj = new Date(visit.date);
+        const dateStr = `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+        document.getElementById('visit-date').textContent = dateStr;
+        document.getElementById('visit-time').textContent = visit.endTime
+            ? `${visit.startTime} ~ ${visit.endTime}`
+            : `${visit.startTime} ~ (진행 중)`;
+
+        // 리드 업데이트
+        document.getElementById('visit-leads').textContent = visit.leads + '명';
+
+        // 결과 업데이트
+        updateResultStatus(visit.result);
+
+        // 비고 업데이트
+        document.getElementById('visit-note').textContent = visit.note || '메모를 입력하세요';
+
+        // 페이지 전환
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-visit-result').classList.add('active');
+    }
 
 </script>
 
