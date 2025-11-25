@@ -383,6 +383,72 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* 핫스팟 실시간 강조 애니메이션 */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        @keyframes iconGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 152, 0, 0.6),
+                             0 0 20px rgba(255, 152, 0, 0.4);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 152, 0, 0.9),
+                             0 0 30px rgba(255, 152, 0, 0.6),
+                             0 0 40px rgba(255, 152, 0, 0.3);
+            }
+        }
+
+        /* 핫스팟 카드 스타일 */
+        .hotspot-card {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 50%, #FFCC80 100%);
+            background-size: 200% 200%;
+            animation: shimmer 3s ease-in-out infinite;
+            border: 2px solid #FF9800;
+            box-shadow: 0 8px 24px rgba(255, 152, 0, 0.3),
+                        0 0 0 1px rgba(255, 152, 0, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hotspot-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            animation: shimmer 2s linear infinite;
+        }
+
+        .hotspot-icon {
+            animation: pulse 2s ease-in-out infinite, iconGlow 2s ease-in-out infinite;
+        }
+
+        .hotspot-text {
+            animation: blink 1.5s ease-in-out infinite;
+            font-weight: 800;
+            color: #E65100;
+        }
+
         /* 챗봇 스타일 개선 */
         .chat-container { display: flex; flex-direction: column; gap: 16px; padding-bottom: 20px; }
         .chat-bubble {
@@ -498,17 +564,17 @@
         </div>
 
         <div class="section-title">
-            오늘의 핫스팟
+            지금 가야 할 핫스팟
             <span class="more" onclick="goToPage('recommend')">더보기</span>
         </div>
 
-        <div class="place-card" onclick="goToPage('recommend')">
-            <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
+        <div class="place-card hotspot-card" onclick="goToPage('recommend')">
+            <div class="place-img hotspot-icon" style="background:linear-gradient(135deg, #FFE0B2, #FF9800); color:#E65100;">🌲</div>
             <div class="place-info">
-                <div class="place-name">푸른솔 공원 놀이터</div>
-                <div class="place-time">⚡ 지금 유동인구 급증 중</div>
+                <div class="place-name" style="color:#E65100; font-weight:800;">푸른솔 공원 놀이터</div>
+                <div class="place-time hotspot-text">⚡ 지금 유동인구 급증 중</div>
             </div>
-            <div class="btn-go">➔</div>
+            <div class="btn-go" style="background:#FF9800; color:white; border-color:#FF9800;">➔</div>
         </div>
 
         <!-- [NEW] 4개 주요 기능 버튼 그리드 -->
