@@ -577,7 +577,7 @@
         <div class="place-card hotspot-card" onclick="goToPage('recommend')">
             <div class="place-img hotspot-icon" style="background:linear-gradient(135deg, #FFE0B2, #FF9800); color:#E65100;">🌲</div>
             <div class="place-info">
-                <div class="place-name" style="color:#E65100; font-weight:800;">푸른솔 공원 놀이터</div>
+                <div class="place-name" style="color:#E65100; font-weight:800;">효원공원</div>
                 <div class="place-time hotspot-text">⚡ 지금 유동인구 급증 중</div>
             </div>
             <div class="btn-go" style="background:#FF9800; color:white; border-color:#FF9800;">➔</div>
@@ -640,14 +640,14 @@
             📍 도보 거리, 인원 수 기반 추천 장소
         </div>
 
-        <!-- 1. 푸른솔 공원 놀이터 -->
-        <div class="place-card" onclick="goToPlaceDetail('푸른솔 공원')">
+        <!-- 1. 효원공원 -->
+        <div class="place-card" onclick="goToPlaceDetail('효원공원')">
             <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
             <div class="place-info">
-                <div class="place-name">푸른솔 공원 놀이터</div>
+                <div class="place-name">효원공원</div>
                 <div class="place-time">하원 후 에너지 넘치는 아이들 집결</div>
             </div>
-            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('푸른솔 공원')">Go</div>
+            <div class="btn-go" onclick="event.stopPropagation(); startNavigation('효원공원')">Go</div>
         </div>
 
         <!-- 2. 판타지움 -->
@@ -698,7 +698,7 @@
             <div onclick="goToPage('recommend')" style="width:40px; height:40px; border-radius:12px; background:white; display:flex; align-items:center; justify-center; cursor:pointer; box-shadow:var(--shadow-sm);">
                 ←
             </div>
-            <h2 style="font-size:17px; color:var(--text-title); flex:1; text-align:center;">푸른솔 공원 놀이터</h2>
+            <h2 style="font-size:17px; color:var(--text-title); flex:1; text-align:center;">효원공원</h2>
             <div style="width:40px;"></div>
         </div>
 
@@ -910,10 +910,10 @@
 
     // 장소별 좌표 데이터 (WGS84 좌표계)
     const placeCoordinates = {
-        '푸른솔 공원': {
+        '효원공원': {
             x: 127.0573,  // 경도
             y: 37.2458,   // 위도
-            name: '푸른솔 공원 놀이터'
+            name: '효원공원'
         },
         '판타지움': {
             x: 127.0588,
@@ -955,12 +955,12 @@
 
     // 장소별 상세 정보 데이터
     const placeDetails = {
-        '푸른솔 공원': {
+        '효원공원': {
             icon: '🌲',
-            name: '푸른솔 공원 놀이터',
+            name: '효원공원',
             distance: '350m',
             time: '5분',
-            message1: '자, 어제 A단지는 갔었죠?<br />오늘은 <strong style="color:var(--primary);">푸른솔 공원 놀이터</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!',
+            message1: '자, 어제 A단지는 갔었죠?<br />오늘은 <strong style="color:var(--primary);">효원공원</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!',
             hasEvent: true,
             eventTitle: '알뜰장터 날',
             eventInfo: {
