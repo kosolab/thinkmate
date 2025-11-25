@@ -572,10 +572,10 @@
             <span class="more" onclick="goToPage('recommend')">더보기</span>
         </div>
 
-        <div class="place-card hotspot-card" onclick="goToPage('recommend')">
-            <div class="place-img hotspot-icon" style="background:linear-gradient(135deg, #FFE0B2, #FF9800); color:#E65100;">🌲</div>
+        <div id="hotspot-card" class="place-card hotspot-card" onclick="goToPage('recommend')">
+            <div id="hotspot-icon" class="place-img hotspot-icon" style="background:linear-gradient(135deg, #FFE0B2, #FF9800); color:#E65100;">🌲</div>
             <div class="place-info">
-                <div class="place-name" style="color:#E65100; font-weight:800;">효원공원</div>
+                <div id="hotspot-name" class="place-name" style="color:#E65100; font-weight:800;">효원공원</div>
                 <div class="place-time hotspot-text">⚡ 지금 유동인구 급증 중</div>
             </div>
             <div class="btn-go" style="background:#FF9800; color:white; border-color:#FF9800;">➔</div>
@@ -895,6 +895,34 @@
 <script>
     /* UI Interaction Scripts */
 
+    // 랜덤 핫스팟 선택
+    function updateRandomHotspot() {
+        const placeNames = ['효원공원', '판타지움', '아이파크 캐슬', '망포 글빛 도서관', '브런치 빈'];
+        const randomIndex = Math.floor(Math.random() * placeNames.length);
+        const selectedPlace = placeNames[randomIndex];
+        const detail = placeDetails[selectedPlace];
+
+        if (detail) {
+            // 아이콘 업데이트
+            const hotspotIcon = document.getElementById('hotspot-icon');
+            if (hotspotIcon) {
+                hotspotIcon.textContent = detail.icon;
+            }
+
+            // 이름 업데이트
+            const hotspotName = document.getElementById('hotspot-name');
+            if (hotspotName) {
+                hotspotName.textContent = detail.name;
+            }
+
+            // 카드 클릭 시 해당 장소 상세 페이지로 이동하도록 설정
+            const hotspotCard = document.getElementById('hotspot-card');
+            if (hotspotCard) {
+                hotspotCard.onclick = () => goToPlaceDetail(selectedPlace);
+            }
+        }
+    }
+
     // 페이지 이동
     function goToPage(pageId) {
         // 페이지 전환
@@ -1201,6 +1229,11 @@
         `;
         list.innerHTML = newItem + list.innerHTML;
     }
+
+    // 페이지 로드 시 랜덤 핫스팟 설정
+    window.addEventListener('DOMContentLoaded', function() {
+        updateRandomHotspot();
+    });
 
 </script>
 
