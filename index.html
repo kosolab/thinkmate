@@ -492,6 +492,12 @@
         }
         .chip:hover { background: var(--primary); color: white; border-color: transparent; }
 
+        /* 영업 시작 버튼 hover 효과 */
+        .btn-sales-start:hover {
+            background: var(--primary) !important;
+            color: white !important;
+        }
+
     </style>
 </head>
 <body>
@@ -645,7 +651,7 @@
         </div>
 
         <!-- 2. 판타지움 -->
-        <div class="place-card">
+        <div class="place-card" onclick="goToPlaceDetail('판타지움')">
             <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🏰</div>
             <div class="place-info">
                 <div class="place-name">판타지움</div>
@@ -655,7 +661,7 @@
         </div>
 
         <!-- 3. 아이파크 캐슬 1단지 -->
-        <div class="place-card">
+        <div class="place-card" onclick="goToPlaceDetail('아이파크 캐슬')">
             <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
             <div class="place-info">
                 <div class="place-name">아이파크 캐슬 1단지</div>
@@ -665,7 +671,7 @@
         </div>
 
         <!-- 4. 망포 글빛 도서관 -->
-        <div class="place-card">
+        <div class="place-card" onclick="goToPlaceDetail('망포 글빛 도서관')">
             <div class="place-img" style="background:#F3E5F5; color:#9C27B0;">📚</div>
             <div class="place-info">
                 <div class="place-name">망포 글빛 도서관</div>
@@ -675,7 +681,7 @@
         </div>
 
         <!-- 5. 브런치 빈 (카페거리) -->
-        <div class="place-card">
+        <div class="place-card" onclick="goToPlaceDetail('브런치 빈')">
             <div class="place-img" style="background:#FBE9E7; color:#FF5722;">☕</div>
             <div class="place-info">
                 <div class="place-name">브런치 빈 (카페거리)</div>
@@ -697,7 +703,7 @@
         </div>
 
         <!-- 거리/시간 정보 카드 -->
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px;">
+        <div class="place-info-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px;">
             <div style="background:white; border-radius:20px; padding:16px; box-shadow:var(--shadow-sm);">
                 <div style="font-size:11px; color:var(--text-caption); margin-bottom:4px;">도보 거리</div>
                 <div style="font-size:18px; color:var(--primary); font-weight:700;">약 350m</div>
@@ -717,7 +723,7 @@
         </div>
 
         <!-- 첫 번째 메시지 -->
-        <div style="background:white; border-radius:20px 20px 20px 4px; padding:18px; margin-bottom:12px; box-shadow:var(--shadow-sm);">
+        <div class="ai-message" style="background:white; border-radius:20px 20px 20px 4px; padding:18px; margin-bottom:12px; box-shadow:var(--shadow-sm);">
             <p style="font-size:15px; color:var(--text-body); line-height:1.6;">
                 자, 어제 A단지는 갔었죠?<br />
                 오늘은 <strong style="color:var(--primary);">푸른솔 공원 놀이터</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!
@@ -725,7 +731,7 @@
         </div>
 
         <!-- 알뜰장터 특별 알림 -->
-        <div style="background:linear-gradient(135deg, #FFF8E1, #FFE082); border-radius:20px 20px 20px 4px; padding:20px; margin-bottom:16px; border:2px solid #FFC107; box-shadow:var(--shadow-md);">
+        <div class="event-section" style="background:linear-gradient(135deg, #FFF8E1, #FFE082); border-radius:20px 20px 20px 4px; padding:20px; margin-bottom:16px; border:2px solid #FFC107; box-shadow:var(--shadow-md);">
             <p style="font-size:15px; color:#F57F17; line-height:1.6; margin-bottom:16px;">
                 게다가 오늘 거긴 <strong>알뜰장터 날</strong>이에요!<br />
                 장터 팀장님 번호 띄워드릴 테니 자리부터 잡으세요. 판촉물 챙기셨죠?
@@ -779,7 +785,7 @@
         </div>
 
         <!-- 추천 활동 시간 -->
-        <div style="background:var(--primary-light); border-radius:16px; padding:16px; margin-bottom:24px;">
+        <div class="tips-section" style="background:var(--primary-light); border-radius:16px; padding:16px; margin-bottom:24px;">
             <div style="display:flex; align-items:start; gap:12px;">
                 <div style="font-size:20px;">💡</div>
                 <div style="flex:1;">
@@ -793,8 +799,14 @@
         </div>
 
         <!-- 하단 액션 버튼 -->
-        <div style="position:fixed; bottom:24px; left:24px; right:24px; max-width:372px; margin:0 auto;">
-            <button onclick="alert('영업 시작!')" style="width:100%; height:56px; background:linear-gradient(135deg, var(--primary), #5D8A72); color:white; border:none; border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(74, 110, 93, 0.3); display:flex; align-items:center; justify-content:center; gap:8px;">
+        <div style="position:fixed; bottom:24px; left:24px; right:24px; max-width:372px; margin:0 auto; display:flex; flex-direction:column; gap:3px; background:linear-gradient(to top, rgba(245,247,246,1) 0%, rgba(245,247,246,0.95) 70%, rgba(245,247,246,0) 100%); padding-top:20px;">
+            <!-- 카카오내비 버튼 -->
+            <button id="btn-navi" onclick="startNavigation(window.currentPlace)" style="width:100%; height:56px; background:linear-gradient(135deg, var(--primary), #5D8A72); color:white; border:none; border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(74, 110, 93, 0.3); display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
+                <span>🚀</span>
+                <span>카카오내비로 출발하기</span>
+            </button>
+            <!-- 영업 시작 버튼 -->
+            <button class="btn-sales-start" onclick="alert('영업 시작!')" style="width:100%; height:56px; background:white; border:2px solid var(--primary); color:var(--primary); border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
                 <span>💼</span>
                 <span>영업 시작</span>
             </button>
@@ -921,10 +933,198 @@
         if(pageId === 'chat') initChat();
     }
 
+    // 장소별 상세 정보 데이터
+    const placeDetails = {
+        '푸른솔 공원': {
+            icon: '🌲',
+            name: '푸른솔 공원 놀이터',
+            distance: '350m',
+            time: '5분',
+            message1: '자, 어제 A단지는 갔었죠?<br />오늘은 <strong style="color:var(--primary);">푸른솔 공원 놀이터</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!',
+            hasEvent: true,
+            eventTitle: '알뜰장터 날',
+            eventInfo: {
+                event: 'C 아파트 알뜰장터 열림',
+                contact: '010-3456-7890',
+                checklist: ['테이블 1개', '판촉물 50개', '명함 & 리플렛']
+            },
+            tips: '• 오후 2시~4시: 하교 시간 집중 공략<br />• 오후 4시~6시: 알뜰장터 방문객 대상'
+        },
+        '판타지움': {
+            icon: '🏰',
+            name: '판타지움',
+            distance: '420m',
+            time: '6분',
+            message1: '판타지움은 <strong style="color:var(--primary);">키즈카페, 병원, 쇼핑몰</strong>이 모두 모여있는 영통 맘들의 핫플레이스예요!<br />소비력이 높은 고객들을 만날 수 있는 최적의 장소입니다.',
+            hasEvent: false,
+            specialInfo: {
+                title: '주요 타겟',
+                items: [
+                    '👨\u200d👩\u200d👧\u200d👦 3~7세 자녀를 둔 가족',
+                    '💰 월 소득 상위 30% 이상',
+                    '🏥 소아과 대기 중인 부모님'
+                ]
+            },
+            tips: '• 오전 10시~12시: 키즈카페 이용 가족<br />• 오후 2시~5시: 소아과 대기실 공략'
+        },
+        '아이파크 캐슬': {
+            icon: '🚌',
+            name: '아이파크 캐슬 1단지',
+            distance: '280m',
+            time: '4분',
+            message1: '아이파크 캐슬은 <strong style="color:var(--primary);">유치원·학원 셔틀버스</strong>가 집결하는 곳이에요!<br />근처에 <strong style="color:#FF9800;">꿈나무 유치원, 해님 어린이집</strong>이 있어서 어머니들이 아이들의 하원을 기다리고 있어요.',
+            hasEvent: false,
+            specialInfo: {
+                title: '하원 시간표',
+                items: [
+                    '🚌 꿈나무 유치원: 14:00, 16:00',
+                    '🚌 해님 어린이집: 14:30, 15:30',
+                    '📚 영어학원: 15:00, 17:00'
+                ]
+            },
+            tips: '• 오후 1시 30분~2시: 첫 하원 대기<br />• 오후 3시~4시: 피크 타임 집중 공략'
+        },
+        '망포 글빛 도서관': {
+            icon: '📚',
+            name: '망포 글빛 도서관',
+            distance: '520m',
+            time: '7분',
+            message1: '망포 글빛 도서관은 <strong style="color:var(--primary);">교육열이 높은 부모님들</strong>이 아이들과 함께 방문하는 곳이에요!<br /><strong style="color:#FF9800;">학습 관련 대화</strong>가 자연스럽게 통하는 타겟층입니다.',
+            hasEvent: false,
+            specialInfo: {
+                title: '접근 포인트',
+                items: [
+                    '📖 1층 어린이 열람실 앞',
+                    '☕ 카페테리아 (학부모 휴게 공간)',
+                    '🎨 문화 강좌실 (영어/미술 수업)'
+                ]
+            },
+            tips: '• 오전 10시~12시: 영유아 프로그램 참여 가족<br />• 오후 3시~6시: 초등생 자기주도학습 학부모'
+        },
+        '브런치 빈': {
+            icon: '☕',
+            name: '브런치 빈 (카페거리)',
+            distance: '380m',
+            time: '5분',
+            message1: '브런치 빈은 <strong style="color:var(--primary);">오전 10~12시</strong> 사이 엄마들의 모임 장소로 유명해요!<br />근처에 <strong style="color:#FF9800;">요가학원, 필라테스</strong>가 있어서 운동 후 차 한잔 하러 오시는 분들이 많아요.',
+            hasEvent: false,
+            specialInfo: {
+                title: '접근 전략',
+                items: [
+                    '☕ 테라스 좌석 (야외에서 접근)',
+                    '🥐 브런치 타임 (10:30~12:00)',
+                    '🧘\u200d♀️ 요가/필라테스 수업 종료 시간 체크'
+                ]
+            },
+            tips: '• 오전 10시~11시: 운동 마친 엄마들<br />• 오전 11시~12시: 브런치 모임 피크타임'
+        }
+    };
+
+    // 현재 선택된 장소를 전역 변수로 저장
+    window.currentPlace = null;
+
     // 장소 상세 페이지로 이동
     function goToPlaceDetail(placeName) {
+        const detail = placeDetails[placeName];
+        if (!detail) return;
+
+        // 현재 장소 저장
+        window.currentPlace = placeName;
+
+        // 페이지 내용 업데이트
+        const detailPage = document.getElementById('page-place-detail');
+
+        // 제목 업데이트
+        detailPage.querySelector('h2').textContent = detail.name;
+
+        // 거리/시간 업데이트
+        const distanceCards = detailPage.querySelectorAll('.place-info-grid > div');
+        distanceCards[0].querySelector('div:last-child').textContent = `약 ${detail.distance}`;
+        distanceCards[1].querySelector('div:last-child').textContent = `약 ${detail.time}`;
+
+        // AI 메시지 업데이트
+        detailPage.querySelector('.ai-message').innerHTML = `<p style="font-size:15px; color:var(--text-body); line-height:1.6;">${detail.message1}</p>`;
+
+        // 이벤트/특별 정보 섹션 업데이트
+        const eventSection = detailPage.querySelector('.event-section');
+        if (detail.hasEvent) {
+            eventSection.style.display = 'block';
+            eventSection.innerHTML = `
+                <p style="font-size:15px; color:#F57F17; line-height:1.6; margin-bottom:16px;">
+                    게다가 오늘 거긴 <strong>${detail.eventTitle}</strong>이에요!<br />
+                    장터 팀장님 번호 띄워드릴 테니 자리부터 잡으세요. 판촉물 챙기셨죠?
+                </p>
+                <div style="background:rgba(255,255,255,0.9); border-radius:16px; padding:16px;">
+                    <div style="display:flex; align-items:start; gap:12px; padding-bottom:12px; border-bottom:1px solid #F0F0F0;">
+                        <div style="font-size:20px;">🚩</div>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; color:var(--text-caption); margin-bottom:4px;">오늘의 이벤트</div>
+                            <div style="font-size:15px; color:var(--text-title);">${detail.eventInfo.event}</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:start; gap:12px; padding:12px 0; border-bottom:1px solid #F0F0F0;">
+                        <div style="font-size:20px;">📞</div>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; color:var(--text-caption); margin-bottom:4px;">장터 팀장님</div>
+                            <div style="font-size:15px; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                                ${detail.eventInfo.contact}
+                                <a href="tel:${detail.eventInfo.contact}" style="font-size:12px; background:var(--primary); color:white; padding:4px 12px; border-radius:20px; text-decoration:none;">전화</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:start; gap:12px; padding-top:12px;">
+                        <div style="font-size:20px;">🎒</div>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; color:var(--text-caption); margin-bottom:8px;">준비물 체크리스트</div>
+                            <div style="display:flex; flex-direction:column; gap:6px;">
+                                ${detail.eventInfo.checklist.map(item => `
+                                    <label style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--text-body); cursor:pointer;">
+                                        <input type="checkbox" style="width:16px; height:16px; accent-color:var(--primary); border-radius:4px;">
+                                        <span>${item}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (detail.specialInfo) {
+            eventSection.style.display = 'block';
+            eventSection.innerHTML = `
+                <div style="background:rgba(255,255,255,0.9); border-radius:16px; padding:20px; box-shadow:var(--shadow-sm);">
+                    <div style="display:flex; align-items:start; gap:12px;">
+                        <div style="font-size:24px;">${detail.icon}</div>
+                        <div style="flex:1;">
+                            <div style="font-size:15px; color:var(--primary); margin-bottom:12px; font-weight:700;">${detail.specialInfo.title}</div>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                ${detail.specialInfo.items.map(item => `
+                                    <div style="font-size:14px; color:var(--text-body); line-height:1.5;">
+                                        ${item}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 팁 섹션 업데이트
+        detailPage.querySelector('.tips-section').innerHTML = `
+            <div style="display:flex; align-items:start; gap:12px;">
+                <div style="font-size:20px;">💡</div>
+                <div style="flex:1;">
+                    <div style="font-size:13px; color:var(--primary); margin-bottom:8px; font-weight:600;">추천 활동 시간</div>
+                    <div style="font-size:14px; color:var(--text-body); line-height:1.6;">
+                        ${detail.tips}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 페이지 전환
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-place-detail').classList.add('active');
+        detailPage.classList.add('active');
     }
 
     // 카카오 내비 연동 기능
