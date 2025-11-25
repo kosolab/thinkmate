@@ -702,13 +702,13 @@
             <div style="width:40px;"></div>
         </div>
 
-        <!-- 지도 영역 -->
-        <div id="map-container" style="width:100%; height:200px; background:#F5F7F6; border-radius:20px; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:var(--shadow-md);">
-            <!-- 네비 이미지 -->
-            <img id="navi-image" src="효원공원.PNG" alt="네비게이션 지도" style="width:100%; height:100%; object-fit:cover;">
-
-            <!-- 상단 프레임 오버레이 (숫자/시간 가리기) -->
-            <div style="position:absolute; top:0; left:0; right:0; height:50px; background:linear-gradient(to bottom, var(--bg-base) 0%, var(--bg-base) 60%, rgba(245,247,246,0) 100%); z-index:2;"></div>
+        <!-- 지도 영역 (장소 이미지 공란) -->
+        <div id="place-image-container" style="width:100%; height:200px; background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius:20px; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:var(--shadow-md); display:flex; align-items:center; justify-content:center;">
+            <!-- 공란 플레이스홀더 -->
+            <div style="text-align:center;">
+                <div style="font-size:48px; margin-bottom:8px; opacity:0.4;">📍</div>
+                <div style="font-size:14px; color:var(--text-caption); opacity:0.6;">장소 이미지 영역</div>
+            </div>
         </div>
 
         <!-- 거리/시간 정보 카드 -->
@@ -810,7 +810,7 @@
         <!-- 하단 액션 버튼 -->
         <div style="position:fixed; bottom:24px; left:24px; right:24px; max-width:372px; margin:0 auto; display:flex; flex-direction:column; gap:3px; background:linear-gradient(to top, rgba(245,247,246,1) 0%, rgba(245,247,246,0.95) 70%, rgba(245,247,246,0) 100%); padding-top:20px;">
             <!-- 카카오내비 버튼 -->
-            <button id="btn-navi" onclick="startNavigation(window.currentPlace)" style="width:100%; height:56px; background:linear-gradient(135deg, var(--primary), #5D8A72); color:white; border:none; border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(74, 110, 93, 0.3); display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
+            <button id="btn-navi" onclick="goToNaviPage()" style="width:100%; height:56px; background:linear-gradient(135deg, var(--primary), #5D8A72); color:white; border:none; border-radius:16px; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(74, 110, 93, 0.3); display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
                 <span>🚀</span>
                 <span>카카오내비로 출발하기</span>
             </button>
@@ -835,7 +835,28 @@
         </div>
     </div>
 
-    <!-- 4. 마이페이지 -->
+    <!-- 4. 네비게이션 화면 -->
+    <div id="page-navi" class="content-area page">
+        <!-- 헤더 -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0; position:sticky; top:0; background:var(--bg-base); z-index:10; padding:10px 0;">
+            <div onclick="goBackFromNavi()" style="width:40px; height:40px; border-radius:12px; background:white; display:flex; align-items:center; justify-center; cursor:pointer; box-shadow:var(--shadow-sm);">
+                ←
+            </div>
+            <h2 style="font-size:17px; color:var(--text-title); flex:1; text-align:center;">카카오내비</h2>
+            <div style="width:40px;"></div>
+        </div>
+
+        <!-- 네비 이미지 전체 화면 -->
+        <div style="width:100%; height:calc(100vh - 200px); position:relative; overflow:hidden; margin:-10px -24px;">
+            <!-- 실제 네비 이미지 -->
+            <img id="navi-image" src="효원공원.PNG" alt="네비게이션" style="width:100%; height:100%; object-fit:cover;">
+
+            <!-- 상단 프레임 오버레이 (숫자/시간 가리기) -->
+            <div style="position:absolute; top:0; left:0; right:0; height:60px; background:linear-gradient(to bottom, var(--bg-base) 0%, var(--bg-base) 50%, rgba(245,247,246,0) 100%); z-index:2;"></div>
+        </div>
+    </div>
+
+    <!-- 5. 마이페이지 -->
     <div id="page-mypage" class="content-area page">
         <div class="section-title" style="margin-top:0;">👤 나의 기록</div>
 
@@ -1036,6 +1057,7 @@
 
     // 현재 선택된 장소를 전역 변수로 저장
     window.currentPlace = null;
+    window.previousPage = 'recommend'; // 네비 화면에서 돌아갈 페이지 저장
 
     // 장소 상세 페이지로 이동
     function goToPlaceDetail(placeName) {
@@ -1050,13 +1072,6 @@
 
         // 제목 업데이트
         detailPage.querySelector('h2').textContent = detail.name;
-
-        // 네비 이미지 업데이트
-        const naviImage = detailPage.querySelector('#navi-image');
-        if (naviImage && detail.naviImage) {
-            naviImage.src = detail.naviImage;
-            naviImage.alt = `${detail.name} 네비게이션`;
-        }
 
         // 거리/시간 업데이트
         const distanceCards = detailPage.querySelectorAll('.place-info-grid > div');
@@ -1146,9 +1161,37 @@
         // 페이지 전환
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         detailPage.classList.add('active');
+
+        // 이전 페이지 저장
+        window.previousPage = 'place-detail';
     }
 
-    // 카카오 내비 연동 기능
+    // 네비 페이지로 이동
+    function goToNaviPage() {
+        if (!window.currentPlace) return;
+
+        const detail = placeDetails[window.currentPlace];
+        if (!detail || !detail.naviImage) return;
+
+        // 네비 이미지 업데이트
+        const naviPage = document.getElementById('page-navi');
+        const naviImage = naviPage.querySelector('#navi-image');
+        if (naviImage) {
+            naviImage.src = detail.naviImage;
+            naviImage.alt = `${detail.name} 네비게이션`;
+        }
+
+        // 페이지 전환
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        naviPage.classList.add('active');
+    }
+
+    // 네비 화면에서 뒤로가기
+    function goBackFromNavi() {
+        goToPage(window.previousPage || 'place-detail');
+    }
+
+    // 카카오 내비 연동 기능 (실제 앱 실행)
     function startNavigation(place) {
         const placeData = placeCoordinates[place];
 
