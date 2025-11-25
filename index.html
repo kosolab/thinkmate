@@ -833,24 +833,17 @@
         </div>
     </div>
 
-    <!-- 4. 네비게이션 화면 -->
-    <div id="page-navi" class="content-area page">
-        <!-- 헤더 -->
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0; position:sticky; top:0; background:var(--bg-base); z-index:10; padding:10px 0;">
-            <div onclick="goBackFromNavi()" style="width:40px; height:40px; border-radius:12px; background:white; display:flex; align-items:center; justify-center; cursor:pointer; box-shadow:var(--shadow-sm);">
-                ←
-            </div>
-            <h2 style="font-size:17px; color:var(--text-title); flex:1; text-align:center;">카카오내비</h2>
-            <div style="width:40px;"></div>
-        </div>
-
-        <!-- 네비 이미지 전체 화면 -->
-        <div style="width:100%; height:calc(100vh - 200px); position:relative; overflow:hidden; margin:-10px -24px;">
+    <!-- 4. 네비게이션 화면 (전체 화면) -->
+    <div id="page-navi" class="page" style="position:fixed; top:0; left:0; right:0; bottom:0; background:#000; z-index:1000; padding:0;">
+        <!-- 네비 이미지 완전 전체 화면 -->
+        <div style="width:100%; height:100vh; position:relative; overflow:hidden;">
             <!-- 실제 네비 이미지 -->
-            <img id="navi-image" src="효원공원.PNG" alt="네비게이션" style="width:100%; height:100%; object-fit:cover;">
+            <img id="navi-image" src="효원공원.jpg" alt="네비게이션" style="width:100%; height:100%; object-fit:cover;">
 
-            <!-- 상단 프레임 오버레이 (숫자/시간 가리기) -->
-            <div style="position:absolute; top:0; left:0; right:0; height:60px; background:linear-gradient(to bottom, var(--bg-base) 0%, var(--bg-base) 50%, rgba(245,247,246,0) 100%); z-index:2;"></div>
+            <!-- 뒤로가기 버튼 (좌측 상단) -->
+            <div onclick="goBackFromNavi()" style="position:absolute; top:20px; left:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.9); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.3); z-index:10; backdrop-filter:blur(10px);">
+                <span style="font-size:20px; color:#333; font-weight:700;">←</span>
+            </div>
         </div>
     </div>
 
@@ -923,7 +916,7 @@
         '효원공원': {
             icon: '🌲',
             name: '효원공원',
-            naviImage: '효원공원.PNG',
+            naviImage: '효원공원.jpg',
             distance: '350m',
             time: '5분',
             message1: '자, 어제 A단지는 갔었죠?<br />오늘은 <strong style="color:var(--primary);">효원공원</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!',
@@ -939,7 +932,7 @@
         '판타지움': {
             icon: '🏰',
             name: '판타지움',
-            naviImage: '더판타지움.PNG',
+            naviImage: '더판타지움.jpg',
             distance: '420m',
             time: '6분',
             message1: '판타지움은 <strong style="color:var(--primary);">키즈카페, 병원, 쇼핑몰</strong>이 모두 모여있는 영통 맘들의 핫플레이스예요!<br />소비력이 높은 고객들을 만날 수 있는 최적의 장소입니다.',
@@ -957,7 +950,7 @@
         '아이파크 캐슬': {
             icon: '🚌',
             name: '아이파크 캐슬 1단지',
-            naviImage: '아이파크캐슬.PNG',
+            naviImage: '아이파크캐슬.jpg',
             distance: '280m',
             time: '4분',
             message1: '아이파크 캐슬은 <strong style="color:var(--primary);">유치원·학원 셔틀버스</strong>가 집결하는 곳이에요!<br />근처에 <strong style="color:#FF9800;">꿈나무 유치원, 해님 어린이집</strong>이 있어서 어머니들이 아이들의 하원을 기다리고 있어요.',
@@ -975,7 +968,7 @@
         '망포 글빛 도서관': {
             icon: '📚',
             name: '망포 글빛 도서관',
-            naviImage: '망포글빛도서관.PNG',
+            naviImage: '망포글빛도서관.jpg',
             distance: '520m',
             time: '7분',
             message1: '망포 글빛 도서관은 <strong style="color:var(--primary);">교육열이 높은 부모님들</strong>이 아이들과 함께 방문하는 곳이에요!<br /><strong style="color:#FF9800;">학습 관련 대화</strong>가 자연스럽게 통하는 타겟층입니다.',
@@ -993,7 +986,7 @@
         '브런치 빈': {
             icon: '☕',
             name: '브런치 빈 (카페거리)',
-            naviImage: '브런치빈.PNG',
+            naviImage: '브런치빈.jpg',
             distance: '380m',
             time: '5분',
             message1: '브런치 빈은 <strong style="color:var(--primary);">오전 10~12시</strong> 사이 엄마들의 모임 장소로 유명해요!<br />근처에 <strong style="color:#FF9800;">요가학원, 필라테스</strong>가 있어서 운동 후 차 한잔 하러 오시는 분들이 많아요.',
