@@ -2223,6 +2223,14 @@
         </div>
     </div>
 
+    <!-- iOS 홈화면 추가 안내 모달 -->
+    <div id="modal-ios-install" class="modal-overlay" onclick="closeModal('ios-install')">
+        <div class="modal-content" style="padding:16px; max-width:320px;" onclick="event.stopPropagation()">
+            <img src="add_home.png" alt="홈화면 추가 방법" style="width:100%; border-radius:12px;">
+            <button class="modal-btn save" onclick="closeModal('ios-install')" style="width:100%; margin-top:12px;">확인</button>
+        </div>
+    </div>
+
     <!-- 6. 랭킹 페이지 -->
     <div id="page-ranking" class="content-area page">
         <!-- Top 3 포디움 -->
@@ -3504,12 +3512,12 @@
             return;
         }
 
-        // iOS Safari - 가이드 안내
+        // iOS Safari - 이미지 모달로 안내
         const isIOS = /iPad|iPhone|iPod/.test(ua);
         const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 
         if (isIOS && !isInStandaloneMode) {
-            alert('홈 화면에 추가하려면:\n\n1. 하단의 공유 버튼(□↑)을 탭하세요\n2. "홈 화면에 추가"를 선택하세요');
+            document.getElementById('modal-ios-install').classList.add('active');
             return;
         }
 
