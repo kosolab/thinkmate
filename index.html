@@ -1830,7 +1830,7 @@
             <div class="lumi-avatar"></div>
             <div class="lumi-info">
                 <div class="lumi-name">LUMI</div>
-                <div class="lumi-status">AI 액션 가이드</div>
+                <div class="lumi-status" id="chat-place-name">AI 액션 가이드</div>
             </div>
         </div>
 
@@ -2311,7 +2311,11 @@
             floatingBtn.style.display = (pageId === 'chat') ? 'none' : 'flex';
         }
 
-        if(pageId === 'chat') initChat();
+        // 채팅 페이지 초기화 (활동 GO에서 진입 시 스킵)
+        if(pageId === 'chat' && !window.skipInitChat) {
+            initChat();
+        }
+        window.skipInitChat = false; // 플래그 초기화
     }
 
     // 뒤로가기
@@ -3506,6 +3510,9 @@
 
         // 챗봇 헤더에 장소명 표시
         document.getElementById('chat-place-name').textContent = detail.name + ' 성과 입력';
+
+        // initChat 스킵 플래그 설정
+        window.skipInitChat = true;
 
         // 챗봇 페이지로 이동하고 대화 시작
         goToPage('chat');
