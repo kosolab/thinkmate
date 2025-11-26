@@ -2379,6 +2379,45 @@
         setTimeout(() => textInput.focus(), 100);
     }
 
+    // --- 활동 추천 시나리오 ---
+    function startRecommendFlow() {
+        setTimeout(() => {
+            addBotMsg("오늘 활동할 장소를 추천해드릴게요! 🗺️<br>어떤 유형의 장소를 원하시나요?");
+
+            setTimeout(() => {
+                const placeTypes = ['공원/야외', '카페/식당', '아파트/주거단지', '기타'];
+                setChips(placeTypes, (selected) => {
+                    addUserMsg(selected);
+
+                    setTimeout(() => {
+                        const recommendations = {
+                            '공원/야외': { name: '효원공원', icon: '🌲', reason: '주말 가족 단위 방문객이 많아요' },
+                            '카페/식당': { name: '브런치 빈', icon: '☕', reason: '직장인 점심시간에 유동인구가 많아요' },
+                            '아파트/주거단지': { name: '아이파크 캐슬', icon: '🏢', reason: '신규 입주 가구가 많은 단지예요' },
+                            '기타': { name: '판타지움', icon: '🏰', reason: '주말 가족 방문객이 많은 키즈카페예요' }
+                        };
+
+                        const rec = recommendations[selected] || recommendations['기타'];
+                        addBotMsg(`<strong>${rec.icon} ${rec.name}</strong>을 추천드려요!<br><br>📊 <strong>추천 이유:</strong> ${rec.reason}<br><br>이 장소로 활동을 시작하시겠어요?`);
+
+                        setTimeout(() => {
+                            setChips(['네, 출발할게요!', '다른 장소 추천'], (choice) => {
+                                addUserMsg(choice);
+                                if (choice === '네, 출발할게요!') {
+                                    setTimeout(() => {
+                                        addBotMsg("좋아요! 화이팅입니다! 💪<br>활동 후 성과 등록을 잊지 마세요~");
+                                    }, 500);
+                                } else {
+                                    startRecommendFlow();
+                                }
+                            });
+                        }, 600);
+                    }, 800);
+                });
+            }, 600);
+        }, 500);
+    }
+
     // --- 질의응답 시나리오 ---
     function startQnAFlow() {
         setTimeout(() => {
@@ -2452,15 +2491,16 @@
         chatBox.innerHTML = '';
         document.getElementById('quick-replies').innerHTML = '';
 
-        // 3. LUMI 인사 메시지
+        // 3. LUMI 인사 메시지 + 3가지 옵션
         setTimeout(() => {
-            addBotMsg("안녕하세요! <strong>LUMI</strong> 입니다. 🧚‍♀️<br>방금 활동하신 <strong>성과</strong>를 바로 등록하시겠어요?");
+            addBotMsg("안녕하세요! <strong>LUMI</strong>입니다. 🧚‍♀️<br>무엇을 도와드릴까요?");
 
-            // 4. 선택지 표시
+            // 4. 3가지 옵션 표시
             setTimeout(() => {
                 const options = [
-                    { text: '네, 등록할게요!', action: 'register' },
-                    { text: '나중에 할게요', action: 'later' }
+                    { text: '성과 등록', action: 'register' },
+                    { text: '활동 추천', action: 'recommend' },
+                    { text: '질의응답', action: 'qna' }
                 ];
 
                 const chipBox = document.getElementById('quick-replies');
@@ -2475,12 +2515,14 @@
                         chipBox.innerHTML = '';
 
                         if (opt.action === 'register') {
-                            // 성과 등록 시작 (리드 → 장소 → 성과 → 특이사항)
+                            // 성과 등록 플로우
                             startSalesChatFlow();
-                        } else {
-                            setTimeout(() => {
-                                addBotMsg("알겠습니다! 😊<br>필요하실 때 언제든 불러주세요~");
-                            }, 500);
+                        } else if (opt.action === 'recommend') {
+                            // 활동 추천 플로우
+                            startRecommendFlow();
+                        } else if (opt.action === 'qna') {
+                            // 질의응답 플로우
+                            startQnAFlow();
                         }
                     };
                     chipBox.appendChild(btn);
