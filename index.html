@@ -870,8 +870,27 @@
             margin-top: 2px;
         }
 
-        /* 챗봇 스타일 개선 */
-        .chat-container { display: flex; flex-direction: column; gap: 16px; padding-top: 24px; padding-bottom: 20px; }
+        /* 챗봇 페이지 레이아웃 (메신저 스타일) */
+        #page-chat {
+            display: none;
+            flex-direction: column;
+            padding: 0 !important;
+            overflow: hidden;
+        }
+        #page-chat.active {
+            display: flex;
+        }
+
+        #page-chat .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 16px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
         .chat-bubble {
             max-width: 80%;
             padding: 14px 18px;
@@ -894,14 +913,24 @@
             box-shadow: 0 4px 12px rgba(74, 110, 93, 0.2);
         }
 
-        .quick-chips {
+        /* 선택지 칩 영역 */
+        #page-chat .quick-chips {
             display: flex;
             gap: 8px;
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            padding: 12px 20px;
+            overflow-x: auto;
+            background: var(--bg-base);
+            border-top: 1px solid #E8E8E8;
+            flex-shrink: 0;
+        }
+        #page-chat .quick-chips:empty {
+            display: none;
+        }
+        #page-chat .quick-chips::-webkit-scrollbar {
+            display: none;
         }
         .chip {
-            background: rgba(255,255,255,0.6);
+            background: white;
             border: 1px solid rgba(74, 110, 93, 0.2);
             color: var(--primary);
             padding: 10px 16px;
@@ -909,9 +938,58 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            backdrop-filter: blur(4px);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .chip:hover { background: var(--primary); color: white; border-color: transparent; }
+
+        /* 하단 고정 입력 바 */
+        .chat-input-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #E8E8E8;
+            flex-shrink: 0;
+        }
+        .chat-input-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #E0E0E0;
+            border-radius: 24px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input-bar input:focus {
+            border-color: var(--primary);
+        }
+        .chat-input-bar .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .chat-input-bar .send-btn:hover {
+            background: #3D5C4D;
+        }
+        .chat-input-bar .send-btn:active {
+            transform: scale(0.95);
+        }
+        .chat-input-bar .send-btn::before {
+            content: '➤';
+            color: white;
+            font-size: 18px;
+        }
 
         /* 활동 GO! 버튼 hover 효과 */
         .btn-sales-start:hover {
@@ -1846,7 +1924,7 @@
     </div>
 
     <!-- 3. 성과 입력 챗봇 페이지 -->
-    <div id="page-chat" class="content-area page">
+    <div id="page-chat" class="page">
         <!-- LUMI 헤더 -->
         <div class="lumi-chat-header">
             <div class="lumi-avatar"></div>
@@ -1856,12 +1934,20 @@
             </div>
         </div>
 
+        <!-- 채팅 메시지 영역 -->
         <div class="chat-container" id="chat-box">
             <!-- 동적 메시지 추가됨 -->
         </div>
 
+        <!-- 선택지 칩 (입력바 위에 표시) -->
         <div class="quick-chips" id="quick-replies">
             <!-- 칩 버튼 -->
+        </div>
+
+        <!-- 하단 고정 입력 바 -->
+        <div class="chat-input-bar">
+            <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." />
+            <button class="send-btn" id="chat-send-btn"></button>
         </div>
     </div>
 
@@ -3032,6 +3118,77 @@
             box.appendChild(c);
         });
     }
+
+    // 하단 입력바 메시지 전송
+    let chatInputMode = 'idle'; // 'qna' | 'idle'
+
+    async function sendChatMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        if (!message) return;
+
+        input.value = '';
+
+        // 질의응답 모드일 때
+        if (chatInputMode === 'qna') {
+            if (qnaCount >= MAX_QNA) {
+                addBotMsg("질문 횟수를 모두 사용했어요. 다른 메뉴를 선택해주세요!");
+                chatInputMode = 'idle';
+                return;
+            }
+
+            qnaCount++;
+            addUserMsg(message, true);
+
+            // Gemini API 호출
+            try {
+                const response = await callGeminiAPI(message);
+                addBotMsg(response);
+            } catch (error) {
+                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
+            }
+
+            // 3회 다 사용했으면 종료
+            if (qnaCount >= MAX_QNA) {
+                setTimeout(() => {
+                    addBotMsg("질문 횟수를 모두 사용했어요. 다른 도움이 필요하시면 말씀해주세요!");
+                    chatInputMode = 'idle';
+                    showInitialOptions();
+                }, 1000);
+            }
+        } else {
+            // idle 모드에서 입력하면 질의응답 자동 시작
+            addUserMsg(message);
+            chatInputMode = 'qna';
+            qnaCount = 1;
+
+            try {
+                const response = await callGeminiAPI(message);
+                addBotMsg(response);
+                addBotMsg(`<span style="font-size:12px; color:var(--text-caption);">남은 질문: ${MAX_QNA - qnaCount}회</span>`);
+            } catch (error) {
+                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
+            }
+        }
+    }
+
+    // 채팅 입력바 이벤트 초기화
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('chat-send-btn');
+
+        if (chatInput) {
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendChatMessage();
+                }
+            });
+        }
+
+        if (sendBtn) {
+            sendBtn.addEventListener('click', sendChatMessage);
+        }
+    });
 
     // 플로팅 버튼에서 챗봇 진입 (LUMI)
     function openChatBot() {
