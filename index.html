@@ -1199,6 +1199,8 @@
             <div class="nav-text-item active" onclick="goToPage('home')" style="font-size:14px; font-weight:600; color:var(--primary); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">홈</div>
             <span style="color:#E0E0E0;">|</span>
             <div class="nav-text-item" onclick="goToPage('mypage')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">마이</div>
+            <span style="color:#E0E0E0;">|</span>
+            <div class="nav-text-item" onclick="goToPage('ranking')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">랭킹</div>
         </div>
     </header>
 
@@ -1926,9 +1928,9 @@
         });
 
         // 클릭한 메뉴 활성화
-        const navMap = {'home':0, 'mypage':1, 'recommend':0, 'chat':0, 'ranking':0};
+        const navMap = {'home':0, 'mypage':1, 'ranking':2, 'recommend':0, 'chat':0};
         const navItems = document.querySelectorAll('.nav-text-item');
-        if(navItems[navMap[pageId]]) {
+        if(navItems[navMap[pageId]] !== undefined) {
             navItems[navMap[pageId]].classList.add('active');
             navItems[navMap[pageId]].style.color = 'var(--primary)';
         }
