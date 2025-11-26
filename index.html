@@ -1156,6 +1156,59 @@
             }
         }
 
+        /* --- [NEW] 오늘 활동 완료 리포트 애니메이션 --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* 오늘 활동 완료 버튼 */
+        .btn-finish-daily {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #2C3E50 0%, #4A6E5D 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-top: 16px;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-finish-daily:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.3);
+        }
+
+        /* 리포트 페이지 스타일 */
+        #page-finish {
+            background: white;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 60px 20px 40px 20px;
+            min-height: 100%;
+            z-index: 300;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .modal-title {
             font-size: 18px;
             font-weight: 700;
@@ -1442,6 +1495,11 @@
             </div>
         </div>
 
+        <!-- [NEW] 오늘 활동 완료 버튼 -->
+        <button class="btn-finish-daily" onclick="showDailyReport()">
+            🎉 오늘 활동 완료
+        </button>
+
         <div class="section-title">
             지금 가야 할 핫스팟
             <span class="more" onclick="goToPage('recommend')">더보기</span>
@@ -1471,7 +1529,7 @@
             </div>
 
             <!-- 3. 오늘 활동 완료 -->
-            <div class="menu-card" onclick="alert('오늘 하루도 수고하셨습니다! 활동이 마감되었습니다.')">
+            <div class="menu-card" onclick="showDailyReport()">
                 <div class="menu-icon">✅</div>
                 <div class="menu-title">오늘 활동 완료</div>
             </div>
@@ -2025,6 +2083,49 @@
                 <div class="r-score">370pt</div>
             </div>
         </div>
+    </div>
+
+    <!-- [NEW] 오늘 활동 완료 리포트 페이지 -->
+    <div id="page-finish">
+        <!-- 루미 얼굴 -->
+        <div class="lumi-container" style="opacity:0; transform: translateY(20px);">
+            <img src="LUMI_front_full.png" alt="Lumi" style="width:160px; height:160px; border-radius:50%; border:5px solid var(--primary); box-shadow: var(--shadow-float); object-fit: cover;">
+        </div>
+
+        <!-- 리포트 텍스트 -->
+        <div class="report-text-container" style="text-align:center; margin-top:30px; width:100%;">
+
+            <!-- 1. 타이틀 -->
+            <p class="report-line line-1" style="font-size:22px; font-weight:800; margin-bottom:16px; display:none; color:var(--text-title);">
+                오늘 달성한 성과야 ✨
+            </p>
+
+            <!-- 2. 성과 박스 -->
+            <div class="report-box line-2" style="background:#f5f7f6; padding:20px; border-radius:20px; margin:0 auto 24px auto; width:80%; display:none; box-shadow:var(--shadow-sm);">
+                <p style="margin:6px 0; font-size:17px; font-weight:600; color:#2C3E50;">✅ 신규 소스 2개 확보</p>
+                <p style="margin:6px 0; font-size:17px; font-weight:600; color:#2C3E50;">✅ 신규 진단 1개 확보</p>
+            </div>
+
+            <!-- 3. 칭찬 -->
+            <p class="report-line line-3" style="color:var(--primary); font-size:18px; font-weight:700; display:none; margin-bottom:30px;">
+                어제보다 더 많이 달성했는데? 😲
+            </p>
+
+            <!-- 4. 내일 추천 -->
+            <p class="report-line line-4" style="font-size:16px; line-height:1.6; color:#555; display:none;">
+                내일은 <span style="background:#FFE0B2; padding:2px 8px; border-radius:8px; font-weight:bold; color:#E65100;">매탄초등학교</span> 앞을<br>방문해 보자.
+            </p>
+
+            <!-- 5. 마무리 -->
+            <p class="report-line line-5" style="margin-top:40px; font-size:26px; font-weight:800; color:var(--text-title); display:none;">
+                오늘도 정말 고생했어! 💖
+            </p>
+        </div>
+
+        <!-- 홈으로 돌아가기 버튼 -->
+        <button class="btn-close-report" onclick="closeDailyReport()" style="margin-top:50px; display:none; background:var(--primary); color:white; border:none; padding:14px 40px; border-radius:30px; font-size:16px; font-weight:bold; box-shadow:0 4px 15px rgba(74, 110, 93, 0.3); cursor:pointer; transition:transform 0.2s;">
+            홈으로 돌아가기 🏠
+        </button>
     </div>
 
     <!-- 플로팅 챗봇 버튼 (LUMI) -->
@@ -2640,6 +2741,98 @@
     function openChatBot() {
         // goToPage('chat')이 initChat()을 호출하므로 그냥 페이지 이동만 하면 됨
         goToPage('chat');
+    }
+
+    // --- [NEW] 오늘 활동 완료 리포트 ---
+    function showDailyReport() {
+        const reportPage = document.getElementById('page-finish');
+        const floatingBtn = document.querySelector('.floating-chat-btn');
+
+        // 1. 리포트 페이지 표시
+        reportPage.style.display = 'flex';
+
+        // 2. 플로팅 버튼 숨김
+        if (floatingBtn) floatingBtn.style.display = 'none';
+
+        // 3. 순차 애니메이션 시작
+        const lumiContainer = reportPage.querySelector('.lumi-container');
+        const line1 = reportPage.querySelector('.line-1');
+        const line2 = reportPage.querySelector('.line-2');
+        const line3 = reportPage.querySelector('.line-3');
+        const line4 = reportPage.querySelector('.line-4');
+        const line5 = reportPage.querySelector('.line-5');
+        const closeBtn = reportPage.querySelector('.btn-close-report');
+
+        // LUMI 등장 (0.1s)
+        setTimeout(() => {
+            lumiContainer.style.opacity = '1';
+            lumiContainer.style.transform = 'translateY(0)';
+            lumiContainer.style.transition = 'all 0.6s ease-out';
+        }, 100);
+
+        // 타이틀 (0.8s)
+        setTimeout(() => {
+            line1.style.display = 'block';
+            line1.classList.add('fade-in-up');
+        }, 800);
+
+        // 성과 박스 (1.8s)
+        setTimeout(() => {
+            line2.style.display = 'block';
+            line2.classList.add('fade-in-up');
+        }, 1800);
+
+        // 칭찬 멘트 (3.0s)
+        setTimeout(() => {
+            line3.style.display = 'block';
+            line3.classList.add('fade-in-up');
+        }, 3000);
+
+        // 내일 추천 (4.2s)
+        setTimeout(() => {
+            line4.style.display = 'block';
+            line4.classList.add('fade-in-up');
+        }, 4200);
+
+        // 마무리 인사 (5.2s)
+        setTimeout(() => {
+            line5.style.display = 'block';
+            line5.classList.add('fade-in-up');
+        }, 5200);
+
+        // 닫기 버튼 (6.0s)
+        setTimeout(() => {
+            closeBtn.style.display = 'inline-block';
+            closeBtn.classList.add('fade-in-up');
+        }, 6000);
+    }
+
+    function closeDailyReport() {
+        const reportPage = document.getElementById('page-finish');
+        const floatingBtn = document.querySelector('.floating-chat-btn');
+
+        // 1. 리포트 페이지 숨김
+        reportPage.style.display = 'none';
+
+        // 2. 플로팅 버튼 다시 표시
+        if (floatingBtn) floatingBtn.style.display = 'block';
+
+        // 3. 요소들 초기화 (다음 실행을 위해)
+        const lumiContainer = reportPage.querySelector('.lumi-container');
+        const lines = reportPage.querySelectorAll('.report-line, .report-box');
+        const closeBtn = reportPage.querySelector('.btn-close-report');
+
+        lumiContainer.style.opacity = '0';
+        lumiContainer.style.transform = 'translateY(20px)';
+        lumiContainer.style.transition = 'none';
+
+        lines.forEach(el => {
+            el.style.display = 'none';
+            el.classList.remove('fade-in-up');
+        });
+
+        closeBtn.style.display = 'none';
+        closeBtn.classList.remove('fade-in-up');
     }
 
     // 활동 GO!에서 진입하는 챗봇
