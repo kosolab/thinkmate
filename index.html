@@ -2872,7 +2872,7 @@
         qnaCount = 0; // 질의응답 시작 시 카운트 초기화
 
         setTimeout(() => {
-            addBotMsg(`궁금한 점을 자유롭게 물어보세요! (최대 ${MAX_QNA}회)`);
+            addBotMsg(`궁금한 점을 자유롭게 물어보세요!`);
             showQnAInput();
         }, 500);
     }
@@ -2894,7 +2894,7 @@
         const submitBtn = document.createElement('button');
         submitBtn.innerText = '전송';
         submitBtn.id = 'qna-submit';
-        submitBtn.style.cssText = 'padding:14px 24px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s;';
+        submitBtn.style.cssText = 'padding:14px 18px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0;';
 
         // 남은 횟수 표시
         const countInfo = document.createElement('div');
