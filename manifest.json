@@ -4,9 +4,9 @@
   "description": "영업 큐레이터를 위한 AI 기반 활동 추천 앱",
   "start_url": "./index.html",
   "scope": "./",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a365d",
+  "display": "fullscreen",
+  "background_color": "#EEF1F0",
+  "theme_color": "#4A6E5D",
   "orientation": "portrait",
   "icons": [
     {
