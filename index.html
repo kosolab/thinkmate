@@ -636,6 +636,20 @@
         .place-name { font-size: 16px; font-weight: 700; color: var(--text-title); margin-bottom: 4px; }
         .place-time { font-size: 13px; color: var(--secondary); font-weight: 600; display: flex; align-items: center; gap: 4px; }
 
+        /* 실시간 반짝이는 효과 */
+        .place-time.sparkle {
+            background: linear-gradient(90deg, #E65100, #FFD54F, #E65100);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
         .btn-go {
             width: 40px; height: 40px;
             border-radius: 50%;
@@ -815,13 +829,14 @@
         .lumi-chat-header {
             position: sticky;
             top: -10px;
-            margin: -10px -24px 0 -24px;
-            padding: 16px 20px;
+            margin: -20px -20px 0 0;
+            padding: 20px 20px 10px 10px;
             background: var(--primary);
             display: flex;
             align-items: center;
             gap: 12px;
             z-index: 100;
+            min-height: 80px;
         }
 
         .lumi-back-btn {
@@ -876,6 +891,7 @@
             flex-direction: column;
             padding: 0 !important;
             overflow: hidden;
+            height: 100%;
         }
         #page-chat.active {
             display: flex;
@@ -913,20 +929,16 @@
             box-shadow: 0 4px 12px rgba(74, 110, 93, 0.2);
         }
 
-        /* 선택지 칩 영역 */
-        #page-chat .quick-chips {
+        /* 선택지 칩 영역 (chat-box 안에서) */
+        #chat-box .quick-chips {
             display: flex;
             gap: 8px;
-            padding: 12px 20px;
-            overflow-x: auto;
-            background: var(--bg-base);
-            border-top: 1px solid #E8E8E8;
-            flex-shrink: 0;
+            flex-wrap: wrap;
+            padding: 0;
+            margin-top: 4px;
+            background: transparent;
         }
-        #page-chat .quick-chips:empty {
-            display: none;
-        }
-        #page-chat .quick-chips::-webkit-scrollbar {
+        #chat-box .quick-chips:empty {
             display: none;
         }
         .chip {
@@ -1643,21 +1655,23 @@
             오늘의 일정
         </div>
 
-        <div class="schedule-block">
+        <div class="schedule-block" id="schedule-list">
             <!-- 09:00 - 10:00 -->
-            <div class="schedule-row">
+            <div class="schedule-row" onclick="openScheduleModal(0)" style="cursor:pointer;">
                 <span class="time-badge">09:00 - 10:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
                     <span class="task-text">업무 확인 및 기존 고객 관리</span>
+                    <span class="task-sub"></span>
                 </div>
             </div>
             <!-- 10:00 - 11:00 -->
-            <div class="schedule-row">
+            <div class="schedule-row" onclick="openScheduleModal(1)" style="cursor:pointer;">
                 <span class="time-badge">10:00 - 11:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
                     <span class="task-text">미팅 및 교육</span>
+                    <span class="task-sub"></span>
                 </div>
             </div>
             <!-- 11:00 - 12:00 (영업 가능) -->
@@ -1670,15 +1684,16 @@
                 </div>
             </div>
             <!-- 12:00 - 13:00 -->
-            <div class="schedule-row">
+            <div class="schedule-row" onclick="openScheduleModal(3)" style="cursor:pointer;">
                 <span class="time-badge">12:00 - 13:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
                     <span class="task-text">점심 시간</span>
+                    <span class="task-sub"></span>
                 </div>
             </div>
             <!-- 13:00 - 14:00 -->
-            <div class="schedule-row">
+            <div class="schedule-row" onclick="openScheduleModal(4)" style="cursor:pointer;">
                 <span class="time-badge">13:00 - 14:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
@@ -1696,7 +1711,7 @@
                 </div>
             </div>
             <!-- 15:00 - 17:00 -->
-            <div class="schedule-row">
+            <div class="schedule-row" onclick="openScheduleModal(6)" style="cursor:pointer;">
                 <span class="time-badge">15:00 - 17:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
@@ -1705,11 +1720,12 @@
                 </div>
             </div>
             <!-- 17:00 - 18:00 -->
-            <div class="schedule-row">
+            <div class="schedule-row" onclick="openScheduleModal(7)" style="cursor:pointer;">
                 <span class="time-badge">17:00 - 18:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
                     <span class="task-text">업무 마무리</span>
+                    <span class="task-sub"></span>
                 </div>
             </div>
         </div>
@@ -1748,55 +1764,8 @@
             도보 거리, 인원 수 기반 추천 장소
         </div>
 
-        <!-- 1. 효원공원 -->
-        <div class="place-card" onclick="goToPlaceDetail('효원공원')">
-            <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
-            <div class="place-info">
-                <div class="place-name">효원공원</div>
-                <div class="place-time">하원 후 에너지 넘치는 아이들 집결</div>
-            </div>
-            <div class="btn-go">Go</div>
-        </div>
-
-        <!-- 2. 판타지움 -->
-        <div class="place-card" onclick="goToPlaceDetail('판타지움')">
-            <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🏰</div>
-            <div class="place-info">
-                <div class="place-name">판타지움</div>
-                <div class="place-time">소비력 높은 영통 맘들의 성지</div>
-            </div>
-            <div class="btn-go">Go</div>
-        </div>
-
-        <!-- 3. 아이파크 캐슬 1단지 -->
-        <div class="place-card" onclick="goToPlaceDetail('아이파크 캐슬')">
-            <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
-            <div class="place-info">
-                <div class="place-name">아이파크 캐슬 1단지</div>
-                <div class="place-time">셔틀버스 집결지, 등하원 시간 최적</div>
-            </div>
-            <div class="btn-go">Go</div>
-        </div>
-
-        <!-- 4. 망포 글빛 도서관 -->
-        <div class="place-card" onclick="goToPlaceDetail('망포 글빛 도서관')">
-            <div class="place-img" style="background:#F3E5F5; color:#9C27B0;">📚</div>
-            <div class="place-info">
-                <div class="place-name">망포 글빛 도서관</div>
-                <div class="place-time">교육열 높은 부모님 대화 가능</div>
-            </div>
-            <div class="btn-go">Go</div>
-        </div>
-
-        <!-- 5. 브런치 빈 (카페거리) -->
-        <div class="place-card" onclick="goToPlaceDetail('브런치 빈')">
-            <div class="place-img" style="background:#FBE9E7; color:#FF5722;">☕</div>
-            <div class="place-info">
-                <div class="place-name">브런치 빈 (카페거리)</div>
-                <div class="place-time">오전 10~12시 엄마들 모임 장소</div>
-            </div>
-            <div class="btn-go">Go</div>
-        </div>
+        <!-- 랜덤 순서로 렌더링되는 장소 카드 -->
+        <div id="recommend-places-list"></div>
     </div>
 
     <!-- 2-1. 장소 상세 페이지 (푸른솔 공원) -->
@@ -1826,10 +1795,8 @@
 
         <!-- AI 가이드 -->
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-            <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--primary), #769F8B); display:flex; align-items:center; justify-content:center; font-size:16px;">
-                🤖
-            </div>
-            <span style="font-size:16px; color:var(--text-title); font-weight:600;">Think Mate 가이드</span>
+            <div style="width:32px; height:32px; border-radius:50%; background-image:url('LUMI_front.png'); background-size:cover; background-position:center;"></div>
+            <span style="font-size:16px; color:var(--text-title); font-weight:600;">LUMI의 액션 가이드</span>
         </div>
 
         <!-- 첫 번째 메시지 -->
@@ -1939,11 +1906,6 @@
             <!-- 동적 메시지 추가됨 -->
         </div>
 
-        <!-- 선택지 칩 (입력바 위에 표시) -->
-        <div class="quick-chips" id="quick-replies">
-            <!-- 칩 버튼 -->
-        </div>
-
         <!-- 하단 고정 입력 바 -->
         <div class="chat-input-bar">
             <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." />
@@ -1986,7 +1948,7 @@
                 <div class="perf-item">
                     <span class="perf-label">현재 보유 포인트</span>
                     <div class="perf-value-wrap">
-                        <span class="perf-value highlight">3,450 P</span>
+                        <span class="perf-value highlight">350 P</span>
                         <span class="perf-arrow">›</span>
                     </div>
                 </div>
@@ -2033,7 +1995,7 @@
 
             <!-- 포인트 사용처 안내 -->
             <div class="perf-usage-msg">
-                🎁 모으신 포인트는 <span class="underline">판촉물</span>을 구매할 수 있어요!
+                🎁 <a href="https://m.woongjinmarket.com/mobile/index/index" target="_blank" style="color:inherit; text-decoration:none;">모으신 포인트는 <span class="underline">판촉물</span>을 구매할 수 있어요!</a>
             </div>
         </div>
 
@@ -2191,6 +2153,30 @@
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeModal('note')">취소</button>
                 <button class="modal-btn save" onclick="saveNote()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 일정 수정 모달 -->
+    <div id="modal-schedule" class="modal-overlay" onclick="closeModalOnOverlay(event, 'schedule')">
+        <div class="modal-content">
+            <div class="modal-title">📝 일정 수정</div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">시간</label>
+                <input type="text" id="input-schedule-time" class="modal-input" readonly style="background:#f5f5f5; color:#999;">
+            </div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">일정 내용</label>
+                <input type="text" id="input-schedule-text" class="modal-input" placeholder="일정 내용을 입력하세요...">
+            </div>
+            <div class="modal-input-group">
+                <label class="modal-input-label">장소 (선택)</label>
+                <input type="text" id="input-schedule-location" class="modal-input" placeholder="예: 📍 삼성1차">
+            </div>
+            <div class="modal-buttons" style="flex-wrap:wrap; gap:8px;">
+                <button class="modal-btn cancel" onclick="closeModal('schedule')">취소</button>
+                <button class="modal-btn" onclick="setScheduleFree()" style="background:#FF9800; color:white;">일정없음</button>
+                <button class="modal-btn save" onclick="saveSchedule()">저장</button>
             </div>
         </div>
     </div>
@@ -2378,6 +2364,42 @@
     // 뒤로가기 필요한 상세 페이지들
     const detailPages = ['place-detail', 'visit-result', 'recommend', 'chat'];
 
+    // 추천 장소 데이터
+    const recommendPlacesData = [
+        { name: '효원공원', icon: '🌲', iconBg: '#E8F5E9', iconColor: '#4CAF50', desc: '하원 후 에너지 넘치는 아이들 집결' },
+        { name: '판타지움', icon: '🏰', iconBg: '#FFF3E0', iconColor: '#FF9800', desc: '소비력 높은 영통 맘들의 성지' },
+        { name: '아이파크 캐슬 1단지', detailName: '아이파크 캐슬', icon: '🚌', iconBg: '#E3F2FD', iconColor: '#2196F3', desc: '셔틀버스 집결지, 등하원 시간 최적' },
+        { name: '망포 글빛 도서관', icon: '📚', iconBg: '#F3E5F5', iconColor: '#9C27B0', desc: '교육열 높은 부모님 대화 가능' },
+        { name: '브런치 빈 (카페거리)', detailName: '브런치 빈', icon: '☕', iconBg: '#FBE9E7', iconColor: '#FF5722', desc: '오전 10~12시 엄마들 모임 장소' }
+    ];
+
+    // 배열 셔플 함수
+    function shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
+    // 추천 장소 랜덤 렌더링
+    function renderRandomPlaces() {
+        const container = document.getElementById('recommend-places-list');
+        const shuffledPlaces = shuffleArray(recommendPlacesData);
+
+        container.innerHTML = shuffledPlaces.map(place => `
+            <div class="place-card" onclick="goToPlaceDetail('${place.detailName || place.name}')">
+                <div class="place-img" style="background:${place.iconBg}; color:${place.iconColor};">${place.icon}</div>
+                <div class="place-info">
+                    <div class="place-name">${place.name}</div>
+                    <div class="place-time sparkle">${place.desc}</div>
+                </div>
+                <div class="btn-go">Go</div>
+            </div>
+        `).join('');
+    }
+
     // 페이지 이동
     function goToPage(pageId) {
         // 페이지 전환
@@ -2424,6 +2446,11 @@
             initChat();
         }
         window.skipInitChat = false; // 플래그 초기화
+
+        // 추천 페이지 진입 시 장소 카드 랜덤 렌더링
+        if(pageId === 'recommend') {
+            renderRandomPlaces();
+        }
     }
 
     // 뒤로가기
@@ -2702,7 +2729,6 @@
     function initChat() {
         const chatBox = document.getElementById('chat-box');
         chatBox.innerHTML = ''; // 초기화
-        document.getElementById('quick-replies').innerHTML = '';
 
         // 초기 메뉴 표시
         setTimeout(() => {
@@ -2761,11 +2787,11 @@
     function askPlace() {
         addBotMsg("어느 장소에서 활동하셨나요?");
 
-        const chipBox = document.getElementById('quick-replies');
+        const chipBox = getOrCreateChipBox();
         chipBox.innerHTML = '';
 
-        // 기존 장소 + 기타 장소 옵션
-        const allPlaces = [...placeOptionsData, { icon: '🏢', name: '기타 장소', iconBg: '#E0E0E0', iconColor: '#757575' }];
+        // 기존 장소 데이터 사용 (기타 장소 이미 포함)
+        const allPlaces = placeOptionsData;
 
         allPlaces.forEach(place => {
             const btn = document.createElement('div');
@@ -2782,50 +2808,27 @@
                     window.tempSalesData.iconBg = place.iconBg;
                     window.tempSalesData.iconColor = place.iconColor;
                     chipBox.innerHTML = '';
-                    setTimeout(() => askResult(), 600);
+                    // 리드가 0명이면 계약 성과 질문 건너뛰기
+                    if (window.tempSalesData.leads === 0) {
+                        window.tempSalesData.result = 'none';
+                        setTimeout(() => askNote(), 600);
+                    } else {
+                        setTimeout(() => askResult(), 600);
+                    }
                 }
             };
             chipBox.appendChild(btn);
         });
     }
 
-    // 기타 장소 입력
+    // 기타 장소 입력 - 하단 입력창 사용
     function askManualPlaceInput() {
         addBotMsg("장소 이름을 입력해주세요.");
-        const chipBox = document.getElementById('quick-replies');
-        chipBox.innerHTML = '';
+        clearChips();
 
-        const inputWrapper = document.createElement('div');
-        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%; margin-top:8px;';
-
-        const textInput = document.createElement('input');
-        textInput.type = 'text';
-        textInput.placeholder = '장소 이름 입력...';
-        textInput.style.cssText = 'flex:1; padding:12px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:14px; font-family:inherit;';
-
-        const submitBtn = document.createElement('button');
-        submitBtn.innerText = '확인';
-        submitBtn.style.cssText = 'padding:12px 20px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer;';
-
-        submitBtn.onclick = () => {
-            const name = textInput.value.trim();
-            if(name) {
-                addUserMsg(name);
-                window.tempSalesData.placeName = name;
-                window.tempSalesData.icon = '🏢';
-                window.tempSalesData.iconBg = '#E0E0E0';
-                window.tempSalesData.iconColor = '#757575';
-
-                setTimeout(() => askResult(), 600);
-            }
-        };
-
-        textInput.onkeypress = (e) => { if(e.key === 'Enter') submitBtn.click(); };
-
-        inputWrapper.appendChild(textInput);
-        inputWrapper.appendChild(submitBtn);
-        chipBox.appendChild(inputWrapper);
-        setTimeout(() => textInput.focus(), 100);
+        chatInputMode = 'place'; // 장소 입력 모드
+        document.getElementById('chat-input').placeholder = '장소 이름 입력...';
+        document.getElementById('chat-input').focus();
     }
 
     // Q3. 계약 성과 질문
@@ -2842,72 +2845,53 @@
         });
     }
 
-    // Q4. 특이사항 질문
+    // Q4. 특이사항 질문 - 하단 입력창 사용
     function askNote() {
         addBotMsg("그럼 기타 특이사항은 있었나요? 📝<br><span style='font-size:13px; color:var(--text-caption);'>(예: 판촉물 필요 여부, 관련 담당자 응대 방법)</span>");
 
-        const chipBox = document.getElementById('quick-replies');
-        chipBox.innerHTML = '';
+        // 없음 버튼만 표시
+        setChips(['없음'], (val) => {
+            completeNote('');
+        });
 
-        const inputWrapper = document.createElement('div');
-        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%; margin-top:8px;';
+        chatInputMode = 'note';
+        document.getElementById('chat-input').placeholder = '특이사항 입력...';
+        document.getElementById('chat-input').focus();
+    }
 
-        const textInput = document.createElement('input');
-        textInput.type = 'text';
-        textInput.placeholder = '특이사항 입력...';
-        textInput.style.cssText = 'flex:1; padding:12px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:14px; font-family:inherit;';
+    // 특이사항 완료 처리
+    function completeNote(text) {
+        window.tempSalesData.note = text;
+        addUserMsg(text || '없음');
+        clearChips();
 
-        const submitBtn = document.createElement('button');
-        submitBtn.innerText = '완료';
-        submitBtn.style.cssText = 'padding:12px 20px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer;';
+        chatInputMode = 'idle';
+        document.getElementById('chat-input').placeholder = '메시지를 입력하세요...';
 
-        const complete = (text) => {
-            window.tempSalesData.note = text;
-            addUserMsg(text || '없음');
-            chipBox.innerHTML = '';
-
-            // 데이터 저장
-            const now = new Date();
-            const newVisit = {
-                id: visitHistoryData.length,
-                name: window.tempSalesData.placeName,
-                icon: window.tempSalesData.icon,
-                iconBg: window.tempSalesData.iconBg,
-                iconColor: window.tempSalesData.iconColor,
-                date: now.toISOString().split('T')[0],
-                startTime: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
-                endTime: '',
-                leads: window.tempSalesData.leads,
-                result: window.tempSalesData.result,
-                note: window.tempSalesData.note
-            };
-            visitHistoryData.unshift(newVisit);
-
-            setTimeout(() => {
-                addBotMsg("기록이 저장되었습니다. 마이페이지에서 확인해보세요! ✅");
-                setTimeout(() => {
-                    goToPage('mypage');
-                }, 1500);
-            }, 600);
+        // 데이터 저장
+        const now = new Date();
+        const newVisit = {
+            id: visitHistoryData.length,
+            name: window.tempSalesData.placeName,
+            icon: window.tempSalesData.icon,
+            iconBg: window.tempSalesData.iconBg,
+            iconColor: window.tempSalesData.iconColor,
+            date: now.toISOString().split('T')[0],
+            startTime: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
+            endTime: '',
+            leads: window.tempSalesData.leads,
+            result: window.tempSalesData.result,
+            note: window.tempSalesData.note
         };
+        visitHistoryData.unshift(newVisit);
+        addNewHistoryCard(newVisit, 0); // 마이페이지에 새 카드 추가
 
-        submitBtn.onclick = () => complete(textInput.value.trim());
-        textInput.onkeypress = (e) => { if(e.key === 'Enter') submitBtn.click(); };
-
-        inputWrapper.appendChild(textInput);
-        inputWrapper.appendChild(submitBtn);
-        chipBox.appendChild(inputWrapper);
-
-        // 없음 버튼
-        const skipBtn = document.createElement('div');
-        skipBtn.className = 'chip';
-        skipBtn.innerText = '없음';
-        skipBtn.style.marginTop = '8px';
-        skipBtn.style.display = 'inline-block';
-        skipBtn.onclick = () => complete('');
-        chipBox.appendChild(skipBtn);
-
-        setTimeout(() => textInput.focus(), 100);
+        setTimeout(() => {
+            addBotMsg("기록이 저장되었습니다! ✅");
+            setTimeout(() => {
+                goToVisitResult(0); // 방금 등록한 카드 세부 내용으로 이동
+            }, 1000);
+        }, 600);
     }
 
     // --- 활동 추천 시나리오 ---
@@ -2956,98 +2940,13 @@
 
     function startQnAFlow() {
         qnaCount = 0; // 질의응답 시작 시 카운트 초기화
+        chatInputMode = 'qna'; // 하단 입력창을 질의응답 모드로 설정
 
         setTimeout(() => {
-            addBotMsg(`궁금한 점을 자유롭게 물어보세요!`);
-            showQnAInput();
+            addBotMsg(`궁금한 점을 자유롭게 물어보세요! 💬<br><span style='font-size:13px; color:var(--text-caption);'></span>`);
+            // 하단 입력창 포커스
+            document.getElementById('chat-input').focus();
         }, 500);
-    }
-
-    function showQnAInput() {
-        const chipBox = document.getElementById('quick-replies');
-        chipBox.innerHTML = '';
-        chipBox.style.cssText = 'position:sticky; bottom:0; background:var(--bg-base); padding:12px 0; margin:0 -24px; padding-left:24px; padding-right:24px;';
-
-        const inputWrapper = document.createElement('div');
-        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%;';
-
-        const textInput = document.createElement('input');
-        textInput.type = 'text';
-        textInput.id = 'qna-input';
-        textInput.placeholder = '질문 입력...';
-        textInput.style.cssText = 'flex:1; padding:14px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:15px; font-family:inherit; transition:border-color 0.2s;';
-
-        const submitBtn = document.createElement('button');
-        submitBtn.innerText = '전송';
-        submitBtn.id = 'qna-submit';
-        submitBtn.style.cssText = 'padding:14px 18px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0;';
-
-        // 남은 횟수 표시
-<!--        const countInfo = document.createElement('div');-->
-<!--        countInfo.id = 'qna-count';-->
-<!--        countInfo.style.cssText = 'font-size:12px; color:var(&#45;&#45;text-caption); text-align:center; margin-top:8px;';-->
-<!--        countInfo.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;-->
-
-        const handleQnA = async () => {
-            const question = textInput.value.trim();
-            if(!question) return;
-
-            if(qnaCount >= MAX_QNA) {
-                addBotMsg("질문 횟수를 모두 사용했어요. 다음에 또 물어봐주세요!");
-                chipBox.innerHTML = '';
-                showInitialOptions();
-                return;
-            }
-
-            qnaCount++;
-            addUserMsg(question, true); // 입력창 유지
-            textInput.value = '';
-            textInput.disabled = true;
-            submitBtn.disabled = true;
-            submitBtn.innerText = '...';
-
-            // Gemini API 호출
-            try {
-                const response = await callGeminiAPI(question);
-                addBotMsg(response);
-            } catch (error) {
-                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
-            }
-
-            textInput.disabled = false;
-            submitBtn.disabled = false;
-            submitBtn.innerText = '전송';
-
-            // 남은 횟수 업데이트
-            const countEl = document.getElementById('qna-count');
-            if(countEl) {
-                countEl.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;
-            }
-
-            // 3회 다 사용했으면 종료
-            if(qnaCount >= MAX_QNA) {
-                setTimeout(() => {
-                    addBotMsg("질문 횟수를 모두 사용했어요. 다른 도움이 필요하시면 말씀해주세요!");
-                    chipBox.innerHTML = '';
-                    chipBox.style.cssText = '';
-                    showInitialOptions();
-                }, 1000);
-            } else {
-                setTimeout(() => textInput.focus(), 100);
-            }
-        };
-
-        submitBtn.onclick = handleQnA;
-        textInput.onkeypress = (e) => { if(e.key === 'Enter') handleQnA(); };
-        textInput.onfocus = () => { textInput.style.borderColor = 'var(--primary)'; };
-        textInput.onblur = () => { textInput.style.borderColor = '#E0E0E0'; };
-
-        inputWrapper.appendChild(textInput);
-        inputWrapper.appendChild(submitBtn);
-        chipBox.appendChild(inputWrapper);
-        chipBox.appendChild(countInfo);
-
-        setTimeout(() => textInput.focus(), 100);
     }
 
     // 초기 옵션 다시 표시
@@ -3106,10 +3005,29 @@
         }
     }
 
-    // setChips 헬퍼 함수
+    // 칩 박스 가져오기 또는 생성 헬퍼 함수
+    function getOrCreateChipBox() {
+        let box = document.querySelector('#chat-box .quick-chips');
+        if (!box) {
+            box = document.createElement('div');
+            box.className = 'quick-chips';
+            box.id = 'quick-replies';
+            document.getElementById('chat-box').appendChild(box);
+        }
+        return box;
+    }
+
+    // 칩 박스 비우기
+    function clearChips() {
+        const box = document.querySelector('#chat-box .quick-chips');
+        if (box) box.innerHTML = '';
+    }
+
+    // setChips 헬퍼 함수 - chat-box 안에 칩 추가
     function setChips(labels, callback) {
-        const box = document.getElementById('quick-replies');
+        const box = getOrCreateChipBox();
         box.innerHTML = '';
+
         labels.forEach(l => {
             const c = document.createElement('div');
             c.className = 'chip';
@@ -3120,7 +3038,7 @@
     }
 
     // 하단 입력바 메시지 전송
-    let chatInputMode = 'idle'; // 'qna' | 'idle'
+    let chatInputMode = 'idle'; // 'qna' | 'place' | 'note' | 'idle'
 
     async function sendChatMessage() {
         const input = document.getElementById('chat-input');
@@ -3129,11 +3047,43 @@
 
         input.value = '';
 
+        // 장소 입력 모드
+        if (chatInputMode === 'place') {
+            addUserMsg(message);
+            window.tempSalesData.placeName = message;
+            window.tempSalesData.icon = '🏢';
+            window.tempSalesData.iconBg = '#E0E0E0';
+            window.tempSalesData.iconColor = '#757575';
+            chatInputMode = 'idle';
+            input.placeholder = '메시지를 입력하세요...';
+            // 리드가 0명이면 계약 성과 질문 건너뛰기
+            if (window.tempSalesData.leads === 0) {
+                window.tempSalesData.result = 'none';
+                setTimeout(() => askNote(), 600);
+            } else {
+                setTimeout(() => askResult(), 600);
+            }
+            return;
+        }
+
+        // 특이사항 입력 모드
+        if (chatInputMode === 'note') {
+            completeNote(message);
+            return;
+        }
+
+        // 특이사항 입력 모드 (활동 GO!에서)
+        if (chatInputMode === 'note_sales') {
+            completeNoteFromSales(message);
+            return;
+        }
+
         // 질의응답 모드일 때
         if (chatInputMode === 'qna') {
             if (qnaCount >= MAX_QNA) {
                 addBotMsg("질문 횟수를 모두 사용했어요. 다른 메뉴를 선택해주세요!");
                 chatInputMode = 'idle';
+                input.placeholder = '메시지를 입력하세요...';
                 return;
             }
 
@@ -3153,6 +3103,7 @@
                 setTimeout(() => {
                     addBotMsg("질문 횟수를 모두 사용했어요. 다른 도움이 필요하시면 말씀해주세요!");
                     chatInputMode = 'idle';
+                    input.placeholder = '메시지를 입력하세요...';
                     showInitialOptions();
                 }, 1000);
             }
@@ -3292,7 +3243,6 @@
     function initSalesChat() {
         const chatBox = document.getElementById('chat-box');
         chatBox.innerHTML = ''; // 초기화
-        document.getElementById('quick-replies').innerHTML = '';
 
         const placeName = window.currentSalesPlace?.name || '현재 장소';
         const placeIcon = window.currentSalesPlace?.icon || '📍';
@@ -3329,7 +3279,7 @@
 
     // 리드 질문 칩만 표시 (메시지 없이 - 활동 GO!에서 사용)
     function startLeadQuestionChipsOnly() {
-        const chipBox = document.getElementById('quick-replies');
+        const chipBox = getOrCreateChipBox();
         chipBox.innerHTML = '';
 
         const leadOptions = ['0명', '1명', '2명', '3명', '4명', '5명', '6명 이상'];
@@ -3371,92 +3321,95 @@
         });
     }
 
-    // 특이사항 질문 (활동 GO!에서 사용)
+    // 특이사항 질문 (활동 GO!에서 사용) - 하단 입력창 사용
     function askNoteFromSales() {
         addBotMsg("그럼 기타 특이사항은 있었나요? 📝<br><span style='font-size:13px; color:var(--text-caption);'>(예: 판촉물 필요 여부, 관련 담당자 응대 방법)</span>");
 
-        const chipBox = document.getElementById('quick-replies');
-        chipBox.innerHTML = '';
+        // 없음 버튼만 표시
+        setChips(['없음'], (val) => {
+            completeNoteFromSales('');
+        });
 
-        const inputWrapper = document.createElement('div');
-        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%; margin-top:8px;';
+        chatInputMode = 'note_sales';
+        document.getElementById('chat-input').placeholder = '특이사항 입력...';
+        document.getElementById('chat-input').focus();
+    }
 
-        const textInput = document.createElement('input');
-        textInput.type = 'text';
-        textInput.placeholder = '특이사항 입력...';
-        textInput.style.cssText = 'flex:1; padding:12px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:14px; font-family:inherit;';
+    // 특이사항 완료 처리 (활동 GO!에서)
+    function completeNoteFromSales(text) {
+        window.tempSalesData.note = text;
+        addUserMsg(text || '없음');
+        clearChips();
 
-        const submitBtn = document.createElement('button');
-        submitBtn.innerText = '완료';
-        submitBtn.style.cssText = 'padding:12px 20px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer;';
+        chatInputMode = 'idle';
+        document.getElementById('chat-input').placeholder = '메시지를 입력하세요...';
 
-        const complete = (text) => {
-            window.tempSalesData.note = text;
-            addUserMsg(text || '없음');
-            chipBox.innerHTML = '';
-
-            // 데이터 저장
-            const now = new Date();
-            const newVisit = {
-                id: visitHistoryData.length,
-                name: window.tempSalesData.placeName,
-                icon: window.tempSalesData.icon,
-                iconBg: window.tempSalesData.iconBg,
-                iconColor: window.tempSalesData.iconColor,
-                date: now.toISOString().split('T')[0],
-                startTime: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
-                endTime: '',
-                leads: window.tempSalesData.leads,
-                result: window.tempSalesData.result,
-                note: window.tempSalesData.note
-            };
-            visitHistoryData.unshift(newVisit);
-            addNewHistoryCard(newVisit, 0);
-
-            setTimeout(() => {
-                addBotMsg("기록이 저장되었습니다. 마이페이지에서 확인해보세요! ✅");
-                setTimeout(() => {
-                    goToVisitResult(0);
-                }, 1000);
-            }, 600);
+        // 데이터 저장
+        const now = new Date();
+        const newVisit = {
+            id: visitHistoryData.length,
+            name: window.tempSalesData.placeName,
+            icon: window.tempSalesData.icon,
+            iconBg: window.tempSalesData.iconBg,
+            iconColor: window.tempSalesData.iconColor,
+            date: now.toISOString().split('T')[0],
+            startTime: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
+            endTime: '',
+            leads: window.tempSalesData.leads,
+            result: window.tempSalesData.result,
+            note: window.tempSalesData.note
         };
+        visitHistoryData.unshift(newVisit);
+        addNewHistoryCard(newVisit, 0);
 
-        submitBtn.onclick = () => complete(textInput.value.trim());
-        textInput.onkeypress = (e) => { if(e.key === 'Enter') submitBtn.click(); };
-
-        inputWrapper.appendChild(textInput);
-        inputWrapper.appendChild(submitBtn);
-        chipBox.appendChild(inputWrapper);
-
-        const skipBtn = document.createElement('div');
-        skipBtn.className = 'chip';
-        skipBtn.innerText = '없음';
-        skipBtn.style.marginTop = '8px';
-        skipBtn.style.display = 'inline-block';
-        skipBtn.onclick = () => complete('');
-        chipBox.appendChild(skipBtn);
-
-        setTimeout(() => textInput.focus(), 100);
+        setTimeout(() => {
+            addBotMsg("기록이 저장되었습니다. 마이페이지에서 확인해보세요! ✅");
+            setTimeout(() => {
+                goToVisitResult(0);
+            }, 1000);
+        }, 600);
     }
 
     function addBotMsg(html) {
         const box = document.getElementById('chat-box');
-        box.innerHTML += `<div class="chat-bubble bot">${html}</div>`;
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble bot';
+        bubble.innerHTML = html;
+
+        // 칩 박스가 있으면 그 앞에 삽입, 없으면 맨 뒤에 추가
+        const chipBox = box.querySelector('.quick-chips');
+        if (chipBox) {
+            box.insertBefore(bubble, chipBox);
+        } else {
+            box.appendChild(bubble);
+        }
         box.scrollTop = box.scrollHeight;
     }
 
     function addUserMsg(text, keepInput = false) {
         const box = document.getElementById('chat-box');
-        box.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble user';
+        bubble.textContent = text;
+
+        // 칩 박스가 있으면 그 앞에 삽입, 없으면 맨 뒤에 추가
+        const chipBox = box.querySelector('.quick-chips');
+        if (chipBox) {
+            box.insertBefore(bubble, chipBox);
+        } else {
+            box.appendChild(bubble);
+        }
+
         if (!keepInput) {
-            document.getElementById('quick-replies').innerHTML = ''; // 칩 제거
+            clearChips(); // 칩 제거
         }
         box.scrollTop = box.scrollHeight;
     }
 
-    // 페이지 로드 시 랜덤 핫스팟 설정
+    // 페이지 로드 시 초기화
     window.addEventListener('DOMContentLoaded', function() {
         updateRandomHotspot();
+        renderRandomPlaces(); // 추천 장소 초기 렌더링
     });
 
     // ========================================
@@ -3523,7 +3476,9 @@
         const dateObj = new Date(visit.date);
         const dateStr = `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
         document.getElementById('visit-date').textContent = dateStr;
-        document.getElementById('visit-time').textContent = `${visit.startTime} ~ ${visit.endTime}`;
+        document.getElementById('visit-time').textContent = visit.endTime
+            ? `${visit.startTime} ~ ${visit.endTime}`
+            : `${visit.startTime} ~ (진행 중)`;
 
         // 리드 업데이트
         document.getElementById('visit-leads').textContent = visit.leads + '명';
@@ -3534,9 +3489,8 @@
         // 비고 업데이트
         document.getElementById('visit-note').textContent = visit.note || '메모 없음';
 
-        // 페이지 전환
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-visit-result').classList.add('active');
+        // 페이지 전환 (goToPage 사용하여 히스토리 관리)
+        goToPage('visit-result');
     }
 
     // 결과 상태 UI 업데이트
@@ -3647,6 +3601,87 @@
         document.getElementById('visit-note').textContent = visit.note || '메모 없음';
 
         closeModal('note');
+    }
+
+    // 일정 데이터
+    let scheduleData = [
+        { time: '09:00 - 10:00', text: '업무 확인 및 기존 고객 관리', location: '' },
+        { time: '10:00 - 11:00', text: '미팅 및 교육', location: '' },
+        { time: '11:00 - 12:00', text: '일정없음', location: '', isFree: true },
+        { time: '12:00 - 13:00', text: '점심 시간', location: '' },
+        { time: '13:00 - 14:00', text: '나웅진 고객 상담', location: '📍 삼성1차' },
+        { time: '14:00 - 15:00', text: '일정없음', location: '', isFree: true },
+        { time: '15:00 - 17:00', text: '판촉 활동', location: '📍 꿈나무 어린이집' },
+        { time: '17:00 - 18:00', text: '업무 마무리', location: '' }
+    ];
+    let currentScheduleIndex = 0;
+
+    // 일정 수정 모달 열기
+    function openScheduleModal(index) {
+        currentScheduleIndex = index;
+        const schedule = scheduleData[index];
+
+        document.getElementById('input-schedule-time').value = schedule.time;
+        document.getElementById('input-schedule-text').value = schedule.text;
+        document.getElementById('input-schedule-location').value = schedule.location;
+
+        document.getElementById('modal-schedule').classList.add('active');
+    }
+
+    // 일정 저장
+    function saveSchedule() {
+        const schedule = scheduleData[currentScheduleIndex];
+        schedule.text = document.getElementById('input-schedule-text').value;
+
+        let location = document.getElementById('input-schedule-location').value.trim();
+        // 장소가 있고 📍로 시작하지 않으면 자동으로 추가
+        if (location && !location.startsWith('📍')) {
+            location = '📍 ' + location;
+        }
+        schedule.location = location;
+
+        // UI 업데이트
+        const rows = document.querySelectorAll('#schedule-list .schedule-row');
+        const row = rows[currentScheduleIndex];
+        if (row) {
+            row.querySelector('.task-text').textContent = schedule.text;
+            const subEl = row.querySelector('.task-sub');
+            if (subEl) {
+                subEl.textContent = schedule.location;
+            }
+        }
+
+        closeModal('schedule');
+    }
+
+    // 일정없음으로 설정
+    function setScheduleFree() {
+        const schedule = scheduleData[currentScheduleIndex];
+        schedule.text = '일정없음';
+        schedule.location = '';
+        schedule.isFree = true;
+
+        // UI 업데이트
+        const rows = document.querySelectorAll('#schedule-list .schedule-row');
+        const row = rows[currentScheduleIndex];
+        if (row) {
+            // free 클래스 추가 및 클릭 이벤트 변경
+            row.classList.add('free');
+            row.onclick = () => goToPage('recommend');
+
+            // 텍스트 업데이트
+            const taskText = row.querySelector('.task-text');
+            taskText.textContent = '일정없음';
+            taskText.classList.add('task-text-free');
+
+            const taskSub = row.querySelector('.task-sub');
+            if (taskSub) {
+                taskSub.textContent = '⚡영업가능';
+                taskSub.classList.add('task-sub-free');
+            }
+        }
+
+        closeModal('schedule');
     }
 
     // 마이페이지 이력 카드 업데이트
