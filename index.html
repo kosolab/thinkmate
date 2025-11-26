@@ -1485,6 +1485,21 @@
             </div>
         </div>
 
+        <!-- 지금 가야 할 핫스팟 -->
+        <div class="section-title">
+            지금 가야 할 핫스팟
+            <span class="more" onclick="goToPage('recommend')">더보기</span>
+        </div>
+
+        <div id="hotspot-card" class="place-card hotspot-card" onclick="goToPage('recommend')">
+            <div id="hotspot-icon" class="place-img hotspot-icon" style="background:linear-gradient(135deg, #FFE0B2, #FF9800); color:#E65100;">🌲</div>
+            <div class="place-info">
+                <div id="hotspot-name" class="place-name" style="color:#E65100; font-weight:800;">효원공원</div>
+                <div class="place-time hotspot-text">⚡ 지금 유동인구 급증 중</div>
+            </div>
+            <div class="btn-go" style="background:#FF9800; color:white; border-color:#FF9800;">➔</div>
+        </div>
+
         <!-- 오늘의 일정 -->
         <div class="section-title">
             오늘의 일정
@@ -1559,20 +1574,6 @@
                     <span class="task-text">업무 마무리</span>
                 </div>
             </div>
-        </div>
-
-        <div class="section-title">
-            지금 가야 할 핫스팟
-            <span class="more" onclick="goToPage('recommend')">더보기</span>
-        </div>
-
-        <div id="hotspot-card" class="place-card hotspot-card" onclick="goToPage('recommend')">
-            <div id="hotspot-icon" class="place-img hotspot-icon" style="background:linear-gradient(135deg, #FFE0B2, #FF9800); color:#E65100;">🌲</div>
-            <div class="place-info">
-                <div id="hotspot-name" class="place-name" style="color:#E65100; font-weight:800;">효원공원</div>
-                <div class="place-time hotspot-text">⚡ 지금 유동인구 급증 중</div>
-            </div>
-            <div class="btn-go" style="background:#FF9800; color:white; border-color:#FF9800;">➔</div>
         </div>
 
         <!-- 3개 주요 기능 버튼 (가로 1행 3열) -->
