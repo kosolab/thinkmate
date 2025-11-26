@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Think Mate 2.0</title>
+    <title>LUMOS | Action Guide</title>
     <!-- Pretendard 폰트 (가장 현대적인 한글 폰트) -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <style>
@@ -870,8 +870,28 @@
             margin-top: 2px;
         }
 
-        /* 챗봇 스타일 개선 */
-        .chat-container { display: flex; flex-direction: column; gap: 16px; padding-top: 24px; padding-bottom: 20px; }
+        /* 챗봇 페이지 레이아웃 (메신저 스타일) */
+        #page-chat {
+            display: flex;
+            flex-direction: column;
+            padding: 0 !important;
+            overflow: hidden;
+        }
+
+        #page-chat.active {
+            display: flex;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 16px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
         .chat-bubble {
             max-width: 80%;
             padding: 14px 18px;
@@ -894,14 +914,26 @@
             box-shadow: 0 4px 12px rgba(74, 110, 93, 0.2);
         }
 
+        /* 선택지 칩 영역 (입력바 위) */
         .quick-chips {
             display: flex;
             gap: 8px;
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            padding: 12px 20px;
+            overflow-x: auto;
+            background: var(--bg-base);
+            border-top: 1px solid #E8E8E8;
+            flex-shrink: 0;
+        }
+        .quick-chips:empty {
+            display: none;
+            padding: 0;
+            border: none;
+        }
+        .quick-chips::-webkit-scrollbar {
+            display: none;
         }
         .chip {
-            background: rgba(255,255,255,0.6);
+            background: white;
             border: 1px solid rgba(74, 110, 93, 0.2);
             color: var(--primary);
             padding: 10px 16px;
@@ -909,9 +941,58 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            backdrop-filter: blur(4px);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .chip:hover { background: var(--primary); color: white; border-color: transparent; }
+
+        /* 하단 고정 입력 바 */
+        .chat-input-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #E8E8E8;
+            flex-shrink: 0;
+        }
+        .chat-input-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #E0E0E0;
+            border-radius: 24px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input-bar input:focus {
+            border-color: var(--primary);
+        }
+        .chat-input-bar .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .chat-input-bar .send-btn:hover {
+            background: #3D5C4D;
+        }
+        .chat-input-bar .send-btn:active {
+            transform: scale(0.95);
+        }
+        .chat-input-bar .send-btn::before {
+            content: '➤';
+            color: white;
+            font-size: 18px;
+        }
 
         /* 활동 GO! 버튼 hover 효과 */
         .btn-sales-start:hover {
@@ -1846,7 +1927,7 @@
     </div>
 
     <!-- 3. 성과 입력 챗봇 페이지 -->
-    <div id="page-chat" class="content-area page">
+    <div id="page-chat" class="page">
         <!-- LUMI 헤더 -->
         <div class="lumi-chat-header">
             <div class="lumi-avatar"></div>
@@ -1856,12 +1937,20 @@
             </div>
         </div>
 
+        <!-- 채팅 메시지 영역 -->
         <div class="chat-container" id="chat-box">
             <!-- 동적 메시지 추가됨 -->
         </div>
 
+        <!-- 선택지 칩 (입력바 위에 표시) -->
         <div class="quick-chips" id="quick-replies">
             <!-- 칩 버튼 -->
+        </div>
+
+        <!-- 하단 고정 입력 바 -->
+        <div class="chat-input-bar">
+            <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." />
+            <button class="send-btn" id="chat-send-btn" onclick="sendChatMessage()"></button>
         </div>
     </div>
 
@@ -2617,6 +2706,8 @@
         const chatBox = document.getElementById('chat-box');
         chatBox.innerHTML = ''; // 초기화
         document.getElementById('quick-replies').innerHTML = '';
+        chatInputMode = 'idle'; // 입력 모드 초기화
+        qnaCount = 0;
 
         // 초기 메뉴 표시
         setTimeout(() => {
@@ -2870,98 +2961,13 @@
 
     function startQnAFlow() {
         qnaCount = 0; // 질의응답 시작 시 카운트 초기화
+        chatInputMode = 'qna'; // 입력 모드를 질의응답으로 설정
 
         setTimeout(() => {
-            addBotMsg(`궁금한 점을 자유롭게 물어보세요!`);
-            showQnAInput();
+            addBotMsg(`궁금한 점을 자유롭게 물어보세요! (최대 ${MAX_QNA}회)<br><span style="font-size:12px; color:var(--text-caption);">하단 입력창에 질문을 입력해주세요.</span>`);
+            document.getElementById('quick-replies').innerHTML = '';
+            document.getElementById('chat-input').focus();
         }, 500);
-    }
-
-    function showQnAInput() {
-        const chipBox = document.getElementById('quick-replies');
-        chipBox.innerHTML = '';
-        chipBox.style.cssText = 'position:sticky; bottom:0; background:var(--bg-base); padding:12px 0; margin:0 -24px; padding-left:24px; padding-right:24px;';
-
-        const inputWrapper = document.createElement('div');
-        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%;';
-
-        const textInput = document.createElement('input');
-        textInput.type = 'text';
-        textInput.id = 'qna-input';
-        textInput.placeholder = '질문 입력...';
-        textInput.style.cssText = 'flex:1; padding:14px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:15px; font-family:inherit; transition:border-color 0.2s;';
-
-        const submitBtn = document.createElement('button');
-        submitBtn.innerText = '전송';
-        submitBtn.id = 'qna-submit';
-        submitBtn.style.cssText = 'padding:14px 18px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0;';
-
-        // 남은 횟수 표시
-<!--        const countInfo = document.createElement('div');-->
-<!--        countInfo.id = 'qna-count';-->
-<!--        countInfo.style.cssText = 'font-size:12px; color:var(&#45;&#45;text-caption); text-align:center; margin-top:8px;';-->
-<!--        countInfo.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;-->
-
-        const handleQnA = async () => {
-            const question = textInput.value.trim();
-            if(!question) return;
-
-            if(qnaCount >= MAX_QNA) {
-                addBotMsg("질문 횟수를 모두 사용했어요. 다음에 또 물어봐주세요!");
-                chipBox.innerHTML = '';
-                showInitialOptions();
-                return;
-            }
-
-            qnaCount++;
-            addUserMsg(question, true); // 입력창 유지
-            textInput.value = '';
-            textInput.disabled = true;
-            submitBtn.disabled = true;
-            submitBtn.innerText = '...';
-
-            // Gemini API 호출
-            try {
-                const response = await callGeminiAPI(question);
-                addBotMsg(response);
-            } catch (error) {
-                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
-            }
-
-            textInput.disabled = false;
-            submitBtn.disabled = false;
-            submitBtn.innerText = '전송';
-
-            // 남은 횟수 업데이트
-            const countEl = document.getElementById('qna-count');
-            if(countEl) {
-                countEl.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;
-            }
-
-            // 3회 다 사용했으면 종료
-            if(qnaCount >= MAX_QNA) {
-                setTimeout(() => {
-                    addBotMsg("질문 횟수를 모두 사용했어요. 다른 도움이 필요하시면 말씀해주세요!");
-                    chipBox.innerHTML = '';
-                    chipBox.style.cssText = '';
-                    showInitialOptions();
-                }, 1000);
-            } else {
-                setTimeout(() => textInput.focus(), 100);
-            }
-        };
-
-        submitBtn.onclick = handleQnA;
-        textInput.onkeypress = (e) => { if(e.key === 'Enter') handleQnA(); };
-        textInput.onfocus = () => { textInput.style.borderColor = 'var(--primary)'; };
-        textInput.onblur = () => { textInput.style.borderColor = '#E0E0E0'; };
-
-        inputWrapper.appendChild(textInput);
-        inputWrapper.appendChild(submitBtn);
-        chipBox.appendChild(inputWrapper);
-        chipBox.appendChild(countInfo);
-
-        setTimeout(() => textInput.focus(), 100);
     }
 
     // 초기 옵션 다시 표시
@@ -3032,6 +3038,79 @@
             box.appendChild(c);
         });
     }
+
+    // 하단 입력바에서 메시지 전송
+    let chatInputMode = 'qna'; // 'qna' | 'note' | 'idle'
+
+    async function sendChatMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        if (!message) return;
+
+        input.value = '';
+
+        // 질의응답 모드일 때
+        if (chatInputMode === 'qna') {
+            if (qnaCount >= MAX_QNA) {
+                addBotMsg("질문 횟수를 모두 사용했어요. 다른 메뉴를 선택해주세요!");
+                return;
+            }
+
+            qnaCount++;
+            addUserMsg(message, true);
+
+            // 남은 횟수 업데이트
+            const countEl = document.getElementById('qna-count');
+            if (countEl) {
+                countEl.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;
+            }
+
+            // Gemini API 호출
+            try {
+                const response = await callGeminiAPI(message);
+                addBotMsg(response);
+            } catch (error) {
+                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
+            }
+
+            // 3회 다 사용했으면 종료
+            if (qnaCount >= MAX_QNA) {
+                setTimeout(() => {
+                    addBotMsg("질문 횟수를 모두 사용했어요. 다른 도움이 필요하시면 말씀해주세요!");
+                    chatInputMode = 'idle';
+                    showInitialOptions();
+                }, 1000);
+            }
+        } else {
+            // 일반 메시지 (질의응답 자동 시작)
+            addUserMsg(message);
+            chatInputMode = 'qna';
+            qnaCount = 0;
+
+            try {
+                const response = await callGeminiAPI(message);
+                addBotMsg(response);
+                qnaCount = 1;
+
+                // 남은 횟수 표시
+                addBotMsg(`<span style="font-size:12px; color:var(--text-caption);">남은 질문: ${MAX_QNA - qnaCount}회</span>`);
+            } catch (error) {
+                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
+            }
+        }
+    }
+
+    // 엔터키로 메시지 전송
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendChatMessage();
+                }
+            });
+        }
+    });
 
     // 플로팅 버튼에서 챗봇 진입 (LUMI)
     function openChatBot() {
