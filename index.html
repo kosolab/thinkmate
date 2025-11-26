@@ -77,22 +77,16 @@
 
         /* --- 상단 헤더 --- */
         .header {
-            padding: 16px 24px;
+            padding: 24px 24px 10px 24px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            background: var(--primary);
+            background: transparent;
             z-index: 10;
         }
 
-        .header-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: white;
-        }
-
         .profile-wrap {
-            display: none; /* 기존 프로필 숨김 */
+            display: flex;
             align-items: center;
             gap: 12px;
         }
@@ -967,49 +961,6 @@
 
         .r-score { font-size: 15px; font-weight: 700; color: var(--primary); }
 
-        /* --- 하단 네비게이션 --- */
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 12px 0;
-            background: white;
-            border-top: 1px solid #eee;
-            position: sticky;
-            bottom: 0;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-
-        .nav-item:hover {
-            background: var(--primary-light);
-        }
-
-        .nav-item.active .nav-icon,
-        .nav-item.active .nav-label {
-            color: var(--primary);
-        }
-
-        .nav-icon {
-            font-size: 20px;
-            color: var(--text-caption);
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-caption);
-        }
-
         /* --- 플로팅 챗봇 버튼 (LUMI) --- */
         .floating-chat-btn {
             position: fixed;
@@ -1236,7 +1187,19 @@
 
     <!-- 공통 헤더 -->
     <header class="header">
-        <span id="header-title" class="header-title">🏆 주간 활동 랭킹</span>
+        <div class="profile-wrap">
+            <div class="avatar">👨‍💼</div>
+            <div class="user-info">
+                <h1>김씽크 님</h1>
+                <p>오늘도 좋은 성과 기대해요!</p>
+            </div>
+        </div>
+        <!-- 상단 텍스트 네비게이션 -->
+        <div style="display:flex; gap:8px; align-items:center;">
+            <div class="nav-text-item active" onclick="goToPage('home')" style="font-size:14px; font-weight:600; color:var(--primary); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">홈</div>
+            <span style="color:#E0E0E0;">|</span>
+            <div class="nav-text-item" onclick="goToPage('mypage')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">마이</div>
+        </div>
     </header>
 
     <!-- 1. 메인 홈 (대시보드) -->
@@ -1914,30 +1877,6 @@
         </div>
     </div>
 
-    <!-- 하단 네비게이션 -->
-    <nav class="bottom-nav">
-        <div class="nav-item" onclick="goToPage('home')">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">홈</span>
-        </div>
-        <div class="nav-item" onclick="goToPage('recommend')">
-            <span class="nav-icon">📍</span>
-            <span class="nav-label">추천</span>
-        </div>
-        <div class="nav-item" onclick="goToPage('chat')">
-            <span class="nav-icon">📝</span>
-            <span class="nav-label">기록</span>
-        </div>
-        <div class="nav-item active" onclick="goToPage('ranking')">
-            <span class="nav-icon">🏆</span>
-            <span class="nav-label">랭킹</span>
-        </div>
-        <div class="nav-item" onclick="goToPage('mypage')">
-            <span class="nav-icon">👤</span>
-            <span class="nav-label">마이</span>
-        </div>
-    </nav>
-
     <!-- 플로팅 챗봇 버튼 (LUMI) -->
     <div class="floating-chat-btn" onclick="openChatBot()"></div>
 
@@ -1980,29 +1919,18 @@
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('page-' + pageId).classList.add('active');
 
-        // 헤더 타이틀 업데이트
-        const headerTitle = document.getElementById('header-title');
-        const titleMap = {
-            'home': '🏠 Think Mate',
-            'recommend': '📍 AI 추천 장소',
-            'chat': '💬 LUMI와 대화',
-            'ranking': '🏆 주간 활동 랭킹',
-            'mypage': '👤 마이페이지'
-        };
-        if (headerTitle) {
-            headerTitle.textContent = titleMap[pageId] || '🏆 주간 활동 랭킹';
-        }
-
-        // 하단 네비게이션 활성화 상태 변경
-        document.querySelectorAll('.nav-item').forEach(item => {
+        // 상단 네비게이션 활성화 상태 변경
+        document.querySelectorAll('.nav-text-item').forEach(item => {
             item.classList.remove('active');
+            item.style.color = 'var(--text-caption)';
         });
 
         // 클릭한 메뉴 활성화
-        const navMap = {'home': 0, 'recommend': 1, 'chat': 2, 'ranking': 3, 'mypage': 4};
-        const navItems = document.querySelectorAll('.nav-item');
-        if (navItems[navMap[pageId]] !== undefined) {
+        const navMap = {'home':0, 'mypage':1, 'recommend':0, 'chat':0, 'ranking':0};
+        const navItems = document.querySelectorAll('.nav-text-item');
+        if(navItems[navMap[pageId]]) {
             navItems[navMap[pageId]].classList.add('active');
+            navItems[navMap[pageId]].style.color = 'var(--primary)';
         }
 
         if(pageId === 'chat') initChat();
@@ -2730,11 +2658,9 @@
         box.scrollTop = box.scrollHeight;
     }
 
-    // 페이지 로드 시 초기화
+    // 페이지 로드 시 랜덤 핫스팟 설정
     window.addEventListener('DOMContentLoaded', function() {
         updateRandomHotspot();
-        // 기본 홈 페이지로 설정
-        goToPage('home');
     });
 
     // ========================================
