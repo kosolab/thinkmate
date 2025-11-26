@@ -2914,7 +2914,7 @@
             }
 
             qnaCount++;
-            addUserMsg(question);
+            addUserMsg(question, true); // 입력창 유지
             textInput.value = '';
             textInput.disabled = true;
             submitBtn.disabled = true;
@@ -3288,10 +3288,12 @@
         box.scrollTop = box.scrollHeight;
     }
 
-    function addUserMsg(text) {
+    function addUserMsg(text, keepInput = false) {
         const box = document.getElementById('chat-box');
         box.innerHTML += `<div class="chat-bubble user">${text}</div>`;
-        document.getElementById('quick-replies').innerHTML = ''; // 칩 제거
+        if (!keepInput) {
+            document.getElementById('quick-replies').innerHTML = ''; // 칩 제거
+        }
         box.scrollTop = box.scrollHeight;
     }
 
