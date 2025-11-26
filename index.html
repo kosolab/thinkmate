@@ -386,6 +386,54 @@
             font-weight: 300;
         }
 
+        /* 포인트 적립 기준 영역 */
+        .perf-info {
+            border-top: 1px dashed #E0E0E0;
+            margin-top: 16px;
+            padding-top: 16px;
+        }
+
+        .perf-info-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 12px;
+        }
+
+        .perf-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .perf-info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-body);
+        }
+
+        .perf-info-item.highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* 포인트 사용처 안내 */
+        .perf-usage-msg {
+            border-top: 1px dashed #E0E0E0;
+            margin-top: 16px;
+            padding-top: 16px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .perf-usage-msg .underline {
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
         /* --- 1. Bento Grid 대시보드 --- */
         .bento-grid {
             display: grid;
@@ -1838,6 +1886,34 @@
                         <span class="perf-arrow">›</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- 포인트 적립 기준 -->
+            <div class="perf-info">
+                <div class="perf-info-title">💡 포인트 적립 기준</div>
+                <div class="perf-info-list">
+                    <div class="perf-info-item">
+                        <span>출석 체크</span>
+                        <span>5 P</span>
+                    </div>
+                    <div class="perf-info-item">
+                        <span>신규 진단 / 소스 확보</span>
+                        <span>각 20 P</span>
+                    </div>
+                    <div class="perf-info-item">
+                        <span>입회 성공</span>
+                        <span>50 P</span>
+                    </div>
+                    <div class="perf-info-item highlight">
+                        <span>일일 미션 모두 달성 시</span>
+                        <span>+100 P</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 포인트 사용처 안내 -->
+            <div class="perf-usage-msg">
+                🎁 모으신 포인트는 <span class="underline">판촉물</span>을 구매할 수 있어요!
             </div>
         </div>
 
