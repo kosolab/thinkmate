@@ -2306,6 +2306,12 @@
             pageHistory.push(pageId);
         }
 
+        // 플로팅 LUMI 버튼 표시/숨김 (채팅 페이지에서는 숨김)
+        const floatingBtn = document.querySelector('.floating-chat-btn');
+        if (floatingBtn) {
+            floatingBtn.style.display = (pageId === 'chat') ? 'none' : 'flex';
+        }
+
         if(pageId === 'chat') initChat();
     }
 
