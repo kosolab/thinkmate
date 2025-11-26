@@ -2483,52 +2483,8 @@
 
     // 플로팅 버튼에서 챗봇 진입 (LUMI)
     function openChatBot() {
-        // 1. 페이지 이동
+        // goToPage('chat')이 initChat()을 호출하므로 그냥 페이지 이동만 하면 됨
         goToPage('chat');
-
-        // 2. 대화 초기화
-        const chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML = '';
-        document.getElementById('quick-replies').innerHTML = '';
-
-        // 3. LUMI 인사 메시지 + 3가지 옵션
-        setTimeout(() => {
-            addBotMsg("안녕하세요! <strong>LUMI</strong>입니다. 🧚‍♀️<br>무엇을 도와드릴까요?");
-
-            // 4. 3가지 옵션 표시
-            setTimeout(() => {
-                const options = [
-                    { text: '성과 등록', action: 'register' },
-                    { text: '활동 추천', action: 'recommend' },
-                    { text: '질의응답', action: 'qna' }
-                ];
-
-                const chipBox = document.getElementById('quick-replies');
-                chipBox.innerHTML = '';
-
-                options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'chip';
-                    btn.textContent = opt.text;
-                    btn.onclick = () => {
-                        addUserMsg(opt.text);
-                        chipBox.innerHTML = '';
-
-                        if (opt.action === 'register') {
-                            // 성과 등록 플로우
-                            startSalesChatFlow();
-                        } else if (opt.action === 'recommend') {
-                            // 활동 추천 플로우
-                            startRecommendFlow();
-                        } else if (opt.action === 'qna') {
-                            // 질의응답 플로우
-                            startQnAFlow();
-                        }
-                    };
-                    chipBox.appendChild(btn);
-                });
-            }, 600);
-        }, 400);
     }
 
     // 활동 GO!에서 진입하는 챗봇
