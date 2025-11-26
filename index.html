@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Think Mate">
-    <link rel="apple-touch-icon" href="LUMI_front.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a365d">
     <title>LUMOS</title>
@@ -3502,12 +3502,14 @@
         }
     }
 
-    // iOS에서는 항상 버튼 표시 (가이드 제공용)
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
-        document.addEventListener('DOMContentLoaded', () => {
+    // 모바일에서는 항상 버튼 표시 (가이드 제공용)
+    // standalone 모드(이미 설치됨)가 아닌 경우에만 표시
+    document.addEventListener('DOMContentLoaded', () => {
+        const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        if (!isInStandaloneMode) {
             document.getElementById('btn-install-pwa').classList.add('show');
-        });
-    }
+        }
+    });
 
     // ========================================
     // 방문 결과 상세 페이지 관련 기능
