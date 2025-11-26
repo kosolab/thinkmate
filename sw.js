@@ -1,4 +1,4 @@
-// Service Worker for Think Mate PWA
+// Service Worker for LUMOS PWA
 const CACHE_NAME = 'thinkmate-v1';
 const urlsToCache = [
   '/',

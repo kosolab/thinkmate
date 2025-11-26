@@ -1,6 +1,6 @@
 {
-  "name": "Think Mate - 씽크메이트",
-  "short_name": "Think Mate",
+  "name": "LUMOS - 루모스",
+  "short_name": "LUMOS",
   "description": "영업 큐레이터를 위한 AI 기반 활동 추천 앱",
   "start_url": "./index.html",
   "scope": "./",
