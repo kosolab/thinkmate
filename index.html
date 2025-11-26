@@ -2188,6 +2188,7 @@
             icon: '🌲',
             name: '효원공원',
             naviImage: '효원공원.jpg',
+            mapImage: '효원공원_map.jpg',
             distance: '350m',
             time: '5분',
             message1: '자, 어제 A단지는 갔었죠?<br />오늘은 <strong style="color:var(--primary);">효원공원</strong>입니다. 여긴 지금 <strong style="color:#FF9800;">초등생 하교 시간</strong>이라 엄마들이 제일 많이 모여 있어요!',
@@ -2204,6 +2205,7 @@
             icon: '🏰',
             name: '판타지움',
             naviImage: '더판타지움.jpg',
+            mapImage: '더판타지움_map.jpg',
             distance: '420m',
             time: '6분',
             message1: '판타지움은 <strong style="color:var(--primary);">키즈카페, 병원, 쇼핑몰</strong>이 모두 모여있는 영통 맘들의 핫플레이스예요!<br />소비력이 높은 고객들을 만날 수 있는 최적의 장소입니다.',
@@ -2222,6 +2224,7 @@
             icon: '🚌',
             name: '아이파크 캐슬 1단지',
             naviImage: '아이파크캐슬.jpg',
+            mapImage: '아이파크캐슬_map.jpg',
             distance: '280m',
             time: '4분',
             message1: '아이파크 캐슬은 <strong style="color:var(--primary);">유치원·학원 셔틀버스</strong>가 집결하는 곳이에요!<br />근처에 <strong style="color:#FF9800;">꿈나무 유치원, 해님 어린이집</strong>이 있어서 어머니들이 아이들의 하원을 기다리고 있어요.',
@@ -2240,6 +2243,7 @@
             icon: '📚',
             name: '망포 글빛 도서관',
             naviImage: '망포글빛도서관.jpg',
+            mapImage: '망포글빛도서관_map.jpg',
             distance: '520m',
             time: '7분',
             message1: '망포 글빛 도서관은 <strong style="color:var(--primary);">교육열이 높은 부모님들</strong>이 아이들과 함께 방문하는 곳이에요!<br /><strong style="color:#FF9800;">학습 관련 대화</strong>가 자연스럽게 통하는 타겟층입니다.',
@@ -2258,6 +2262,7 @@
             icon: '☕',
             name: '브런치 빈 (카페거리)',
             naviImage: '브런치빈.jpg',
+            mapImage: '브런치빈_map.jpg',
             distance: '380m',
             time: '5분',
             message1: '브런치 빈은 <strong style="color:var(--primary);">오전 10~12시</strong> 사이 엄마들의 모임 장소로 유명해요!<br />근처에 <strong style="color:#FF9800;">요가학원, 필라테스</strong>가 있어서 운동 후 차 한잔 하러 오시는 분들이 많아요.',
@@ -2291,6 +2296,18 @@
 
         // 제목 업데이트
         detailPage.querySelector('h2').textContent = detail.name;
+
+        // 지도 이미지 업데이트
+        const imageContainer = document.getElementById('place-image-container');
+        if (detail.mapImage) {
+            imageContainer.innerHTML = `<img src="${detail.mapImage}" alt="${detail.name} 지도" style="width:100%; height:100%; object-fit:cover; border-radius:20px;">`;
+        } else {
+            imageContainer.innerHTML = `
+                <div style="text-align:center;">
+                    <div style="font-size:48px; margin-bottom:8px; opacity:0.4;">📍</div>
+                    <div style="font-size:14px; color:var(--text-caption); opacity:0.6;">장소 이미지 영역</div>
+                </div>`;
+        }
 
         // 거리/시간 업데이트
         const distanceCards = detailPage.querySelectorAll('.place-info-grid > div');
