@@ -1583,7 +1583,7 @@
                 </div>
             </div>
             <!-- 11:00 - 12:00 (영업 가능) -->
-            <div class="schedule-row free">
+            <div class="schedule-row free" onclick="goToPage('recommend')" style="cursor:pointer;">
                 <span class="time-badge">11:00 - 12:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
@@ -1609,7 +1609,7 @@
                 </div>
             </div>
             <!-- 14:00 - 15:00 (영업 가능) -->
-            <div class="schedule-row free">
+            <div class="schedule-row free" onclick="goToPage('recommend')" style="cursor:pointer;">
                 <span class="time-badge">14:00 - 15:00</span>
                 <div class="status-divider"></div>
                 <div class="task-info">
@@ -2897,10 +2897,10 @@
         submitBtn.style.cssText = 'padding:14px 18px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0;';
 
         // 남은 횟수 표시
-        const countInfo = document.createElement('div');
-        countInfo.id = 'qna-count';
-        countInfo.style.cssText = 'font-size:12px; color:var(--text-caption); text-align:center; margin-top:8px;';
-        countInfo.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;
+<!--        const countInfo = document.createElement('div');-->
+<!--        countInfo.id = 'qna-count';-->
+<!--        countInfo.style.cssText = 'font-size:12px; color:var(&#45;&#45;text-caption); text-align:center; margin-top:8px;';-->
+<!--        countInfo.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;-->
 
         const handleQnA = async () => {
             const question = textInput.value.trim();
