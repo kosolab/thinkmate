@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Think Mate 2.0</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Think Mate">
+    <link rel="apple-touch-icon" href="LUMI_front.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a365d">
+    <title>LUMOS</title>
     <!-- Pretendard 폰트 (가장 현대적인 한글 폰트) -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <style>
@@ -748,6 +754,28 @@
 
         .nav-text-item.active {
             background: var(--primary-light);
+        }
+
+        /* PWA 설치 버튼 */
+        .btn-install-pwa {
+            display: none;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-install-pwa:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-install-pwa.show {
+            display: block;
         }
 
         /* 페이지 전환 애니메이션 */
@@ -1568,8 +1596,8 @@
             <span style="color:#E0E0E0;">|</span>
             <div class="nav-text-item" onclick="goToPage('ranking')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">랭킹</div>
         </div>
-        <!-- 균형을 위한 빈 공간 -->
-        <div style="width:40px;"></div>
+        <!-- PWA 설치 버튼 -->
+        <button id="btn-install-pwa" class="btn-install-pwa" onclick="installPWA()">+ 홈화면</button>
     </header>
 
     <!-- 1. 메인 홈 (대시보드) -->
@@ -3413,7 +3441,73 @@
     window.addEventListener('DOMContentLoaded', function() {
         updateRandomHotspot();
         renderRandomPlaces(); // 추천 장소 초기 렌더링
+
+        // Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker 등록 완료'))
+                .catch(err => console.log('Service Worker 등록 실패:', err));
+        }
     });
+
+    // ========================================
+    // PWA 설치 기능
+    // ========================================
+    let deferredPrompt = null;
+
+    // beforeinstallprompt 이벤트 감지 (Android Chrome)
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // 설치 버튼 표시
+        document.getElementById('btn-install-pwa').classList.add('show');
+    });
+
+    // 설치 완료 후 버튼 숨김
+    window.addEventListener('appinstalled', () => {
+        document.getElementById('btn-install-pwa').classList.remove('show');
+        deferredPrompt = null;
+    });
+
+    // 설치 버튼 클릭 함수
+    function installPWA() {
+        const btn = document.getElementById('btn-install-pwa');
+
+        // Android Chrome - 네이티브 설치 프롬프트
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('PWA 설치 수락');
+                }
+                deferredPrompt = null;
+            });
+            return;
+        }
+
+        // iOS Safari - 가이드 안내
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+        if (isIOS && !isInStandaloneMode) {
+            alert('홈 화면에 추가하려면:\\n\\n1. 하단의 공유 버튼(□↑)을 탭하세요\\n2. "홈 화면에 추가"를 선택하세요');
+            return;
+        }
+
+        // 이미 설치되었거나 지원하지 않는 경우
+        if (isInStandaloneMode) {
+            alert('이미 홈 화면에 추가되어 있습니다!');
+        } else {
+            alert('홈 화면에 추가하려면 브라우저 메뉴에서 "홈 화면에 추가"를 선택하세요.');
+        }
+    }
+
+    // iOS에서는 항상 버튼 표시 (가이드 제공용)
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btn-install-pwa').classList.add('show');
+        });
+    }
 
     // ========================================
     // 방문 결과 상세 페이지 관련 기능

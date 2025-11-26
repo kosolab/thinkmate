@@ -1,0 +1,24 @@
+{
+  "name": "Think Mate - 씽크메이트",
+  "short_name": "Think Mate",
+  "description": "영업 큐레이터를 위한 AI 기반 활동 추천 앱",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a365d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "LUMI_front.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "LUMI_front.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
