@@ -77,16 +77,22 @@
 
         /* --- 상단 헤더 --- */
         .header {
-            padding: 24px 24px 10px 24px;
+            padding: 16px 24px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            background: transparent;
+            background: var(--primary);
             z-index: 10;
         }
 
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
         .profile-wrap {
-            display: flex;
+            display: none; /* 기존 프로필 숨김 */
             align-items: center;
             gap: 12px;
         }
@@ -839,6 +845,171 @@
             }
         }
 
+        /* --- [랭킹] 페이지 스타일 --- */
+        /* Top 3 포디움 */
+        .ranking-podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 240px;
+            margin-bottom: 0;
+            gap: 12px;
+        }
+
+        .podium-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 순위별 높이 및 스타일 */
+        .podium-1 { order: 2; z-index: 2; margin-bottom: 10px; }
+        .podium-2 { order: 1; }
+        .podium-3 { order: 3; }
+
+        .rank-avatar {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: -15px;
+            z-index: 2;
+            background-color: #ddd;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+
+        .podium-1 .rank-avatar { width: 64px; height: 64px; border-color: #FFD700; font-size: 30px; }
+
+        .rank-box {
+            width: 100px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            color: white;
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+
+        .rank-box::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: inherit;
+            z-index: -1;
+        }
+
+        /* 1등 (골드) */
+        .podium-1 .rank-box {
+            height: 170px;
+            background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
+        }
+        /* 2등 (실버) */
+        .podium-2 .rank-box {
+            height: 140px;
+            background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
+        }
+        /* 3등 (브론즈) */
+        .podium-3 .rank-box {
+            height: 115px;
+            background: linear-gradient(135deg, #CD7F32 0%, #A05A2C 100%);
+        }
+
+        .rank-num { font-size: 24px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 4px; }
+        .rank-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .rank-group { font-size: 11px; opacity: 0.9; margin-bottom: 4px; text-align: center; }
+        .rank-score { font-size: 16px; font-weight: 800; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+
+        .rank-crown { position: absolute; top: -30px; font-size: 32px; animation: crownFloat 2s infinite ease-in-out; }
+
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* 4~10위 리스트 */
+        .ranking-list {
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 10px 20px;
+            position: relative;
+            z-index: 10;
+            margin-top: -10px;
+        }
+
+        .rank-row {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .rank-row:last-child { border-bottom: none; }
+
+        .r-rank { font-size: 16px; font-weight: 700; color: var(--text-caption); width: 30px; text-align: center; }
+        .r-info { flex: 1; margin-left: 12px; display: flex; align-items: center; gap: 6px; }
+        .r-name { font-size: 15px; font-weight: 600; color: var(--text-title); }
+
+        .r-group {
+            font-size: 12px;
+            color: var(--text-caption);
+            margin-top: 0;
+            padding-left: 6px;
+            border-left: 1px solid #ddd;
+            line-height: 1;
+        }
+
+        .r-score { font-size: 15px; font-weight: 700; color: var(--primary); }
+
+        /* --- 하단 네비게이션 --- */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0;
+            background: white;
+            border-top: 1px solid #eee;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: var(--primary-light);
+        }
+
+        .nav-item.active .nav-icon,
+        .nav-item.active .nav-label {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            color: var(--text-caption);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-caption);
+        }
+
         /* --- 플로팅 챗봇 버튼 (LUMI) --- */
         .floating-chat-btn {
             position: fixed;
@@ -1065,19 +1236,7 @@
 
     <!-- 공통 헤더 -->
     <header class="header">
-        <div class="profile-wrap">
-            <div class="avatar">👨‍💼</div>
-            <div class="user-info">
-                <h1>김씽크 님</h1>
-                <p>오늘도 좋은 성과 기대해요!</p>
-            </div>
-        </div>
-        <!-- 상단 텍스트 네비게이션 -->
-        <div style="display:flex; gap:8px; align-items:center;">
-            <div class="nav-text-item active" onclick="goToPage('home')" style="font-size:14px; font-weight:600; color:var(--primary); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">홈</div>
-            <span style="color:#E0E0E0;">|</span>
-            <div class="nav-text-item" onclick="goToPage('mypage')" style="font-size:14px; font-weight:600; color:var(--text-caption); cursor:pointer; padding:8px 12px; border-radius:8px; transition:all 0.2s;">마이</div>
-        </div>
+        <span id="header-title" class="header-title">🏆 주간 활동 랭킹</span>
     </header>
 
     <!-- 1. 메인 홈 (대시보드) -->
@@ -1657,6 +1816,128 @@
         </div>
     </div>
 
+    <!-- 6. 랭킹 페이지 -->
+    <div id="page-ranking" class="content-area page">
+        <!-- Top 3 포디움 -->
+        <div class="ranking-podium">
+            <!-- 2위 -->
+            <div class="podium-item podium-2">
+                <div class="rank-avatar">🥈</div>
+                <div class="rank-box">
+                    <div class="rank-num">2</div>
+                    <div class="rank-name">마웅진</div>
+                    <div class="rank-group">마곡71지역국</div>
+                    <div class="rank-score">510pt</div>
+                </div>
+            </div>
+            <!-- 1위 -->
+            <div class="podium-item podium-1">
+                <div class="rank-crown">👑</div>
+                <div class="rank-avatar">🥇</div>
+                <div class="rank-box">
+                    <div class="rank-num">1</div>
+                    <div class="rank-name">수웅진</div>
+                    <div class="rank-group">수원11지역국</div>
+                    <div class="rank-score">520pt</div>
+                </div>
+            </div>
+            <!-- 3위 -->
+            <div class="podium-item podium-3">
+                <div class="rank-avatar">🥉</div>
+                <div class="rank-box">
+                    <div class="rank-num">3</div>
+                    <div class="rank-name">고웅진</div>
+                    <div class="rank-group">고양31지역국</div>
+                    <div class="rank-score">480pt</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4~10위 리스트 -->
+        <div class="ranking-list">
+            <div class="rank-row">
+                <div class="r-rank">4</div>
+                <div class="r-info">
+                    <span class="r-name">천웅진</span>
+                    <span class="r-group">천안탕정사업국</span>
+                </div>
+                <div class="r-score">475pt</div>
+            </div>
+            <div class="rank-row">
+                <div class="r-rank">5</div>
+                <div class="r-info">
+                    <span class="r-name">여웅진</span>
+                    <span class="r-group">여수사업국</span>
+                </div>
+                <div class="r-score">460pt</div>
+            </div>
+            <div class="rank-row">
+                <div class="r-rank">6</div>
+                <div class="r-info">
+                    <span class="r-name">포웅진</span>
+                    <span class="r-group">포항사업국</span>
+                </div>
+                <div class="r-score">420pt</div>
+            </div>
+            <div class="rank-row">
+                <div class="r-rank">7</div>
+                <div class="r-info">
+                    <span class="r-name">부웅진</span>
+                    <span class="r-group">부산동부직할사업국</span>
+                </div>
+                <div class="r-score">405pt</div>
+            </div>
+            <div class="rank-row">
+                <div class="r-rank">8</div>
+                <div class="r-info">
+                    <span class="r-name">제웅진</span>
+                    <span class="r-group">제주남부사업국</span>
+                </div>
+                <div class="r-score">395pt</div>
+            </div>
+            <div class="rank-row">
+                <div class="r-rank">9</div>
+                <div class="r-info">
+                    <span class="r-name">용웅진</span>
+                    <span class="r-group">용인사업국</span>
+                </div>
+                <div class="r-score">380pt</div>
+            </div>
+            <div class="rank-row">
+                <div class="r-rank">10</div>
+                <div class="r-info">
+                    <span class="r-name">용웅진</span>
+                    <span class="r-group">용산마포사업국</span>
+                </div>
+                <div class="r-score">370pt</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="goToPage('home')">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">홈</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('recommend')">
+            <span class="nav-icon">📍</span>
+            <span class="nav-label">추천</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('chat')">
+            <span class="nav-icon">📝</span>
+            <span class="nav-label">기록</span>
+        </div>
+        <div class="nav-item active" onclick="goToPage('ranking')">
+            <span class="nav-icon">🏆</span>
+            <span class="nav-label">랭킹</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('mypage')">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">마이</span>
+        </div>
+    </nav>
+
     <!-- 플로팅 챗봇 버튼 (LUMI) -->
     <div class="floating-chat-btn" onclick="openChatBot()"></div>
 
@@ -1699,18 +1980,29 @@
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('page-' + pageId).classList.add('active');
 
-        // 상단 네비게이션 활성화 상태 변경
-        document.querySelectorAll('.nav-text-item').forEach(item => {
+        // 헤더 타이틀 업데이트
+        const headerTitle = document.getElementById('header-title');
+        const titleMap = {
+            'home': '🏠 Think Mate',
+            'recommend': '📍 AI 추천 장소',
+            'chat': '💬 LUMI와 대화',
+            'ranking': '🏆 주간 활동 랭킹',
+            'mypage': '👤 마이페이지'
+        };
+        if (headerTitle) {
+            headerTitle.textContent = titleMap[pageId] || '🏆 주간 활동 랭킹';
+        }
+
+        // 하단 네비게이션 활성화 상태 변경
+        document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
-            item.style.color = 'var(--text-caption)';
         });
 
         // 클릭한 메뉴 활성화
-        const navMap = {'home':0, 'mypage':1, 'recommend':0, 'chat':0};
-        const navItems = document.querySelectorAll('.nav-text-item');
-        if(navItems[navMap[pageId]]) {
+        const navMap = {'home': 0, 'recommend': 1, 'chat': 2, 'ranking': 3, 'mypage': 4};
+        const navItems = document.querySelectorAll('.nav-item');
+        if (navItems[navMap[pageId]] !== undefined) {
             navItems[navMap[pageId]].classList.add('active');
-            navItems[navMap[pageId]].style.color = 'var(--primary)';
         }
 
         if(pageId === 'chat') initChat();
@@ -2438,9 +2730,11 @@
         box.scrollTop = box.scrollHeight;
     }
 
-    // 페이지 로드 시 랜덤 핫스팟 설정
+    // 페이지 로드 시 초기화
     window.addEventListener('DOMContentLoaded', function() {
         updateRandomHotspot();
+        // 기본 홈 페이지로 설정
+        goToPage('home');
     });
 
     // ========================================
