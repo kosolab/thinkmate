@@ -2838,53 +2838,160 @@
     }
 
     // --- 질의응답 시나리오 ---
+    let qnaCount = 0;
+    const MAX_QNA = 3;
+    const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY'; // Gemini API 키 입력
+
     function startQnAFlow() {
+        qnaCount = 0; // 질의응답 시작 시 카운트 초기화
+
         setTimeout(() => {
-            addBotMsg("궁금한 점을 자유롭게 물어보세요.");
-
-            const chipBox = document.getElementById('quick-replies');
-            chipBox.innerHTML = '';
-
-            const inputWrapper = document.createElement('div');
-            inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%; margin-top:8px;';
-
-            const textInput = document.createElement('input');
-            textInput.type = 'text';
-            textInput.placeholder = '질문 입력...';
-            textInput.style.cssText = 'flex:1; padding:12px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:14px; font-family:inherit;';
-
-            const submitBtn = document.createElement('button');
-            submitBtn.innerText = '전송';
-            submitBtn.style.cssText = 'padding:12px 20px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:14px; font-weight:600; cursor:pointer;';
-
-            const handleQnA = () => {
-                const question = textInput.value.trim();
-                if(!question) return;
-
-                addUserMsg(question);
-                textInput.value = '';
-
-                setTimeout(() => {
-                    const salesKeywords = ['영업', '고객', '리드', '계약', '활동', '장소', '추천', '매출', '상담', '판촉'];
-                    const isRelated = salesKeywords.some(keyword => question.includes(keyword));
-
-                    if (isRelated) {
-                        addBotMsg("좋은 질문입니다! (여기에 AI 답변이 들어갑니다)");
-                    } else {
-                        addBotMsg("이 질문은 영업활동과 관련이 없어요. 다른 질문이 있을까요?");
-                    }
-                }, 800);
-            };
-
-            submitBtn.onclick = handleQnA;
-            textInput.onkeypress = (e) => { if(e.key === 'Enter') handleQnA(); };
-
-            inputWrapper.appendChild(textInput);
-            inputWrapper.appendChild(submitBtn);
-            chipBox.appendChild(inputWrapper);
-
-            setTimeout(() => textInput.focus(), 100);
+            addBotMsg(`궁금한 점을 자유롭게 물어보세요! (최대 ${MAX_QNA}회)`);
+            showQnAInput();
         }, 500);
+    }
+
+    function showQnAInput() {
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+        chipBox.style.cssText = 'position:sticky; bottom:0; background:var(--bg-base); padding:12px 0; margin:0 -24px; padding-left:24px; padding-right:24px;';
+
+        const inputWrapper = document.createElement('div');
+        inputWrapper.style.cssText = 'display:flex; gap:8px; width:100%;';
+
+        const textInput = document.createElement('input');
+        textInput.type = 'text';
+        textInput.id = 'qna-input';
+        textInput.placeholder = '질문 입력...';
+        textInput.style.cssText = 'flex:1; padding:14px 16px; border:2px solid #E0E0E0; border-radius:14px; font-size:15px; font-family:inherit; transition:border-color 0.2s;';
+
+        const submitBtn = document.createElement('button');
+        submitBtn.innerText = '전송';
+        submitBtn.id = 'qna-submit';
+        submitBtn.style.cssText = 'padding:14px 24px; background:var(--primary); color:white; border:none; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s;';
+
+        // 남은 횟수 표시
+        const countInfo = document.createElement('div');
+        countInfo.id = 'qna-count';
+        countInfo.style.cssText = 'font-size:12px; color:var(--text-caption); text-align:center; margin-top:8px;';
+        countInfo.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;
+
+        const handleQnA = async () => {
+            const question = textInput.value.trim();
+            if(!question) return;
+
+            if(qnaCount >= MAX_QNA) {
+                addBotMsg("질문 횟수를 모두 사용했어요. 다음에 또 물어봐주세요!");
+                chipBox.innerHTML = '';
+                showInitialOptions();
+                return;
+            }
+
+            qnaCount++;
+            addUserMsg(question);
+            textInput.value = '';
+            textInput.disabled = true;
+            submitBtn.disabled = true;
+            submitBtn.innerText = '...';
+
+            // Gemini API 호출
+            try {
+                const response = await callGeminiAPI(question);
+                addBotMsg(response);
+            } catch (error) {
+                addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
+            }
+
+            textInput.disabled = false;
+            submitBtn.disabled = false;
+            submitBtn.innerText = '전송';
+
+            // 남은 횟수 업데이트
+            const countEl = document.getElementById('qna-count');
+            if(countEl) {
+                countEl.innerText = `남은 질문: ${MAX_QNA - qnaCount}회`;
+            }
+
+            // 3회 다 사용했으면 종료
+            if(qnaCount >= MAX_QNA) {
+                setTimeout(() => {
+                    addBotMsg("질문 횟수를 모두 사용했어요. 다른 도움이 필요하시면 말씀해주세요!");
+                    chipBox.innerHTML = '';
+                    chipBox.style.cssText = '';
+                    showInitialOptions();
+                }, 1000);
+            } else {
+                setTimeout(() => textInput.focus(), 100);
+            }
+        };
+
+        submitBtn.onclick = handleQnA;
+        textInput.onkeypress = (e) => { if(e.key === 'Enter') handleQnA(); };
+        textInput.onfocus = () => { textInput.style.borderColor = 'var(--primary)'; };
+        textInput.onblur = () => { textInput.style.borderColor = '#E0E0E0'; };
+
+        inputWrapper.appendChild(textInput);
+        inputWrapper.appendChild(submitBtn);
+        chipBox.appendChild(inputWrapper);
+        chipBox.appendChild(countInfo);
+
+        setTimeout(() => textInput.focus(), 100);
+    }
+
+    // 초기 옵션 다시 표시
+    function showInitialOptions() {
+        setTimeout(() => {
+            const options = ['성과 등록', '활동 추천', '질의응답'];
+            setChips(options, (val) => {
+                addUserMsg(val);
+                if (val === '성과 등록') {
+                    startPerformanceFlow();
+                } else if (val === '활동 추천') {
+                    startActivityRecommendFlow();
+                } else if (val === '질의응답') {
+                    startQnAFlow();
+                }
+            });
+        }, 500);
+    }
+
+    // Gemini API 호출 함수
+    async function callGeminiAPI(question) {
+        const systemPrompt = `당신은 영업 활동을 돕는 AI 어시스턴트 LUMI입니다.
+영업 관련 질문에 친절하고 간결하게 답변해주세요.
+답변은 2-3문장으로 짧게 해주세요.
+영업, 고객, 리드, 계약, 활동, 장소, 추천, 매출, 상담, 판촉 등 영업 관련 질문에 집중해주세요.`;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: `${systemPrompt}\n\n사용자 질문: ${question}`
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 256,
+                    }
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                return data.candidates[0].content.parts[0].text;
+            } else {
+                return "답변을 생성하는 데 문제가 발생했어요. 다시 시도해주세요.";
+            }
+        } catch (error) {
+            console.error('Gemini API Error:', error);
+            return "네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.";
+        }
     }
 
     // setChips 헬퍼 함수
