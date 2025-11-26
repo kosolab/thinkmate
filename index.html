@@ -779,6 +779,77 @@
             }
         }
 
+        /* --- 플로팅 챗봇 버튼 (LUMI) --- */
+        .floating-chat-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('LUMI_front.png');
+            background-size: cover;
+            background-position: center;
+            background-color: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(74, 110, 93, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .floating-chat-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(74, 110, 93, 0.4);
+        }
+
+        .floating-chat-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 알림 뱃지 (빨간 점) */
+        .floating-chat-btn::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: #FF5252;
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(50px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1) translateY(-10px);
+            }
+            70% {
+                transform: scale(0.95) translateY(5px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
         .modal-title {
             font-size: 18px;
             font-weight: 700;
@@ -1527,8 +1598,8 @@
         </div>
     </div>
 
-
-
+    <!-- 플로팅 챗봇 버튼 (LUMI) -->
+    <div class="floating-chat-btn" onclick="openChatBot()"></div>
 
 </div>
 
@@ -1843,6 +1914,81 @@
         setTimeout(() => {
             startPlaceQuestion();
         }, 300);
+    }
+
+    // 플로팅 버튼에서 챗봇 진입 (LUMI)
+    function openChatBot() {
+        // 1. 페이지 이동
+        goToPage('chat');
+
+        // 2. 대화 초기화
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML = '';
+        document.getElementById('quick-replies').innerHTML = '';
+
+        // 3. 부제목 변경
+        document.getElementById('chat-place-name').textContent = 'LUMI와 대화';
+
+        // 4. LUMI 인사 메시지
+        setTimeout(() => {
+            addBotMsg("안녕하세요! <strong>LUMI</strong> 입니다. 🧚‍♀️<br>방금 활동하신 <strong>성과</strong>를 바로 등록하시겠어요?");
+
+            // 5. 선택지 표시
+            setTimeout(() => {
+                showLumiInitialChips();
+            }, 600);
+        }, 400);
+    }
+
+    // LUMI 초기 선택지
+    function showLumiInitialChips() {
+        const chipBox = document.getElementById('quick-replies');
+        chipBox.innerHTML = '';
+
+        const options = [
+            { text: '네, 등록할게요!', action: 'register' },
+            { text: '나중에 할게요', action: 'later' }
+        ];
+
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'chip';
+            btn.textContent = opt.text;
+            btn.onclick = () => handleLumiChoice(opt.action, opt.text);
+            chipBox.appendChild(btn);
+        });
+    }
+
+    // LUMI 선택 처리
+    function handleLumiChoice(action, displayText) {
+        // 사용자 선택 표시
+        addUserMsg(displayText);
+        document.getElementById('quick-replies').innerHTML = '';
+
+        if (action === 'register') {
+            // 성과 등록 시작 - 장소 질문부터
+            window.tempSalesData = {
+                place: '',
+                icon: '',
+                iconBg: '',
+                iconColor: '',
+                leads: 0,
+                result: '',
+                note: ''
+            };
+
+            setTimeout(() => {
+                addBotMsg("좋아요! 👍<br>먼저, 어느 장소에서 활동하셨나요?");
+                setTimeout(() => {
+                    startPlaceQuestion();
+                }, 600);
+            }, 500);
+        } else {
+            // 나중에 하기
+            setTimeout(() => {
+                addBotMsg("알겠습니다! 😊<br>필요하실 때 언제든 불러주세요~");
+            }, 500);
+        }
     }
 
     // 활동 GO!에서 진입하는 챗봇
