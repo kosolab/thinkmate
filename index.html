@@ -607,6 +607,23 @@
             justify-content: center;
         }
 
+        /* 지도 위 핀 마커 */
+        .map-pin {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -80%);
+            font-size: 48px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            animation: pinBounce 1s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes pinBounce {
+            0%, 100% { transform: translate(-50%, -80%); }
+            50% { transform: translate(-50%, -90%); }
+        }
+
         /* 상단 네비게이션 텍스트 hover 효과 */
         .nav-text-item:hover {
             background: var(--primary-light);
@@ -2297,10 +2314,12 @@
         // 제목 업데이트
         detailPage.querySelector('h2').textContent = detail.name;
 
-        // 지도 이미지 업데이트
+        // 지도 이미지 + 핀 마커 업데이트
         const imageContainer = document.getElementById('place-image-container');
         if (detail.mapImage) {
-            imageContainer.innerHTML = `<img src="${detail.mapImage}" alt="${detail.name} 지도" style="width:100%; height:100%; object-fit:cover; border-radius:20px;">`;
+            imageContainer.innerHTML = `
+                <img src="${detail.mapImage}" alt="${detail.name} 지도" style="width:100%; height:100%; object-fit:cover;">
+                <div class="map-pin">📍</div>`;
         } else {
             imageContainer.innerHTML = `
                 <div style="text-align:center;">
