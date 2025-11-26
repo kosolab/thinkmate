@@ -553,6 +553,34 @@
             box-shadow: var(--shadow-sm);
         }
 
+        /* 지도 이미지가 포함된 장소 카드 */
+        .place-card-with-map {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .place-card-with-map:active {
+            transform: scale(0.98);
+        }
+
+        .place-map-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .place-card-content {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
         .place-img {
             width: 56px; height: 56px;
             border-radius: 16px;
@@ -1561,53 +1589,68 @@
         </div>
 
         <!-- 1. 효원공원 -->
-        <div class="place-card" onclick="goToPlaceDetail('효원공원')">
-            <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
-            <div class="place-info">
-                <div class="place-name">효원공원</div>
-                <div class="place-time">하원 후 에너지 넘치는 아이들 집결</div>
+        <div class="place-card-with-map" onclick="goToPlaceDetail('효원공원')">
+            <img src="효원공원_map.jpg" alt="효원공원 지도" class="place-map-img">
+            <div class="place-card-content">
+                <div class="place-img" style="background:#E8F5E9; color:#4CAF50;">🌲</div>
+                <div class="place-info">
+                    <div class="place-name">효원공원</div>
+                    <div class="place-time">하원 후 에너지 넘치는 아이들 집결</div>
+                </div>
+                <div class="btn-go">Go</div>
             </div>
-            <div class="btn-go">Go</div>
         </div>
 
         <!-- 2. 판타지움 -->
-        <div class="place-card" onclick="goToPlaceDetail('판타지움')">
-            <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🏰</div>
-            <div class="place-info">
-                <div class="place-name">판타지움</div>
-                <div class="place-time">소비력 높은 영통 맘들의 성지</div>
+        <div class="place-card-with-map" onclick="goToPlaceDetail('판타지움')">
+            <img src="더판타지움_map.jpg" alt="판타지움 지도" class="place-map-img">
+            <div class="place-card-content">
+                <div class="place-img" style="background:#FFF3E0; color:#FF9800;">🏰</div>
+                <div class="place-info">
+                    <div class="place-name">판타지움</div>
+                    <div class="place-time">소비력 높은 영통 맘들의 성지</div>
+                </div>
+                <div class="btn-go">Go</div>
             </div>
-            <div class="btn-go">Go</div>
         </div>
 
         <!-- 3. 아이파크 캐슬 1단지 -->
-        <div class="place-card" onclick="goToPlaceDetail('아이파크 캐슬')">
-            <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
-            <div class="place-info">
-                <div class="place-name">아이파크 캐슬 1단지</div>
-                <div class="place-time">셔틀버스 집결지, 등하원 시간 최적</div>
+        <div class="place-card-with-map" onclick="goToPlaceDetail('아이파크 캐슬')">
+            <img src="아이파크캐슬_map.jpg" alt="아이파크 캐슬 지도" class="place-map-img">
+            <div class="place-card-content">
+                <div class="place-img" style="background:#E3F2FD; color:#2196F3;">🚌</div>
+                <div class="place-info">
+                    <div class="place-name">아이파크 캐슬 1단지</div>
+                    <div class="place-time">셔틀버스 집결지, 등하원 시간 최적</div>
+                </div>
+                <div class="btn-go">Go</div>
             </div>
-            <div class="btn-go">Go</div>
         </div>
 
         <!-- 4. 망포 글빛 도서관 -->
-        <div class="place-card" onclick="goToPlaceDetail('망포 글빛 도서관')">
-            <div class="place-img" style="background:#F3E5F5; color:#9C27B0;">📚</div>
-            <div class="place-info">
-                <div class="place-name">망포 글빛 도서관</div>
-                <div class="place-time">교육열 높은 부모님 대화 가능</div>
+        <div class="place-card-with-map" onclick="goToPlaceDetail('망포 글빛 도서관')">
+            <img src="망포글빛도서관_map.jpg" alt="망포 글빛 도서관 지도" class="place-map-img">
+            <div class="place-card-content">
+                <div class="place-img" style="background:#F3E5F5; color:#9C27B0;">📚</div>
+                <div class="place-info">
+                    <div class="place-name">망포 글빛 도서관</div>
+                    <div class="place-time">교육열 높은 부모님 대화 가능</div>
+                </div>
+                <div class="btn-go">Go</div>
             </div>
-            <div class="btn-go">Go</div>
         </div>
 
         <!-- 5. 브런치 빈 (카페거리) -->
-        <div class="place-card" onclick="goToPlaceDetail('브런치 빈')">
-            <div class="place-img" style="background:#FBE9E7; color:#FF5722;">☕</div>
-            <div class="place-info">
-                <div class="place-name">브런치 빈 (카페거리)</div>
-                <div class="place-time">오전 10~12시 엄마들 모임 장소</div>
+        <div class="place-card-with-map" onclick="goToPlaceDetail('브런치 빈')">
+            <img src="브런치빈_map.jpg" alt="브런치 빈 지도" class="place-map-img">
+            <div class="place-card-content">
+                <div class="place-img" style="background:#FBE9E7; color:#FF5722;">☕</div>
+                <div class="place-info">
+                    <div class="place-name">브런치 빈 (카페거리)</div>
+                    <div class="place-time">오전 10~12시 엄마들 모임 장소</div>
+                </div>
+                <div class="btn-go">Go</div>
             </div>
-            <div class="btn-go">Go</div>
         </div>
     </div>
 
