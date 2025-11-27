@@ -3175,7 +3175,6 @@
             try {
                 const response = await callGeminiAPI(message);
                 addBotMsg(response);
-                addBotMsg(`<span style="font-size:12px; color:var(--text-caption);">남은 질문: ${MAX_QNA - qnaCount}회</span>`);
             } catch (error) {
                 addBotMsg("죄송해요, 답변을 가져오는 데 문제가 발생했어요.");
             }
