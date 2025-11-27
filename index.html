@@ -3020,6 +3020,17 @@
 
     // Gemini API 호출 함수
     async function callGeminiAPI(question) {
+        // 미리 정의된 답변
+        const predefinedAnswers = {
+            '유치원 부모 대상 영업 방법': '유치원 부모 대상 영업은 신뢰 구축이 중요합니다. 학부모 대상 설명회를 통해 교육 철학, 프로그램의 장점을 진솔하게 전달하고, 자녀의 성장 가능성을 제시하는 것이 효과적입니다. 긍정적인 후기나 추천을 활용하여 신뢰도를 높이는 것도 좋은 방법입니다.'
+        };
+
+        // 미리 정의된 답변 확인
+        const normalizedQuestion = question.trim();
+        if (predefinedAnswers[normalizedQuestion]) {
+            return predefinedAnswers[normalizedQuestion];
+        }
+
         const systemPrompt = `당신은 영업 활동을 돕는 AI 어시스턴트 LUMI입니다.
 영업 관련 질문에 친절하고 간결하게 답변해주세요.
 답변은 2-3문장으로 짧게 해주세요.
